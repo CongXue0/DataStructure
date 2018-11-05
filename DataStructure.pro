@@ -25,9 +25,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         widget.cpp \
-    tool.cpp
+    src/utils/tool.cpp \
+    src/utils/question.cpp \
+    src/utils/questionbank.cpp \
+    src/01_LinearList/chapter1_part1.cpp
 
 HEADERS  += widget.h \
-    tool.h
+    src/utils/tool.h \
+    src/utils/question.h \
+    src/utils/questionbank.h \
+    src/01_LinearList/chapter1_part1.h
 
 FORMS    += widget.ui

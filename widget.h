@@ -2,6 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include "src/utils/questionbank.h"
 
 namespace Ui {
 class Widget;
@@ -16,7 +17,15 @@ public:
     ~Widget();
 
 private:
+    void loadQuestion();
+
+
+
+
     Ui::Widget *ui;
+
+    QuestionBank m_bank;
+
 };
 
 #endif // WIDGET_H
