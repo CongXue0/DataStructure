@@ -23,17 +23,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
-SOURCES += main.cpp\
-        widget.cpp \
+SOURCES += main.cpp \
+    widget.cpp \
     src/utils/tool.cpp \
     src/utils/question.cpp \
     src/utils/questionbank.cpp \
-    src/01_LinearList/chapter1_part1.cpp
+    src/01_LinearList/chapter1_part1.cpp \
+    src/utils/json.cpp
 
 HEADERS  += widget.h \
     src/utils/tool.h \
     src/utils/question.h \
     src/utils/questionbank.h \
-    src/01_LinearList/chapter1_part1.h
+    src/01_LinearList/chapter1_part1.h \
+    src/utils/json.h \
+    src/01_LinearList/seqlist.h
 
 FORMS    += widget.ui

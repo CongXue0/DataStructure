@@ -2,6 +2,8 @@
 #define TOOL_H
 
 #include <QDebug>
+#include <QString>
+#include "src/01_LinearList/seqlist.h"
 
 #define BOOLSTR(a) ((a == true) ? "true" : "false")
 #define TIMEFORMAT ("yyyy-MM-dd hh:mm:ss")
@@ -21,8 +23,22 @@ public:
     static bool makePath(const QString &path);
     static bool makeDir(const QString &path);
 
+    /* 数据结构相关 */
+    template<typename T>
+    static QString printSeqList(SeqList<T> &list);
 
 
 };
+
+template<typename T>
+QString Tool::printSeqList(SeqList<T> &list)
+{
+    QString result;
+    for (int i = 0; i < list.getLength(); i++)
+    {
+        result.append(QString::number(list.at(i)) + " ");
+    }
+    return result;
+}
 
 #endif // TOOL_H

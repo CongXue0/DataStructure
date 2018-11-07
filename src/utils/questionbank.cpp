@@ -54,5 +54,6 @@ void QuestionBank::execSolution(int chapterIndex, int questionIndex, QString &re
         questionIndex = 0;
     if (questionIndex > count - 1)
         questionIndex = count - 1;
+    result = "";
     m_list[chapterIndex][questionIndex].exec(result);
 }

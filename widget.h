@@ -19,9 +19,11 @@ public:
 private:
     void loadQuestion();
 
+private slots:
+    void slot_comboBox_chapter_currentIndexChanged(int index);
+    void slot_pushButton_exec_clicked();
 
-
-
+private:
     Ui::Widget *ui;
 
     QuestionBank m_bank;

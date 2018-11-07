@@ -70,4 +70,3 @@ bool Tool::makeDir(const QString &path)
     }
     return true;
 }
-
