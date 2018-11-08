@@ -65,7 +65,9 @@ Widget::~Widget()
 
 void Widget::loadQuestion()
 {
-    m_bank.addQuestion(0, Question("合并顺序表", Chapter1_Part1::practice_001));
+    m_bank.addQuestion(0, Question("合并顺序表", Chapter1_Part1::practice_000));
+    m_bank.addQuestion(0, Question("逆序创建链表", Chapter1_Part1::practice_050));
+    m_bank.addQuestion(0, Question("双向链表demo", Chapter1_Part1::practice_100));
 }
 
 void Widget::slot_comboBox_chapter_currentIndexChanged(int index)
@@ -75,7 +77,7 @@ void Widget::slot_comboBox_chapter_currentIndexChanged(int index)
     int count = m_bank.getQuestionCount(index);
     for (int i = 0; i < count; i++)
     {
-        ui->comboBox_question->insertItem(i, QString("%1. ").arg(i + 1) + m_bank.getQuestionDescription(index, i));
+        ui->comboBox_question->insertItem(i, QString("%1. ").arg(i) + m_bank.getQuestionDescription(index, i));
     }
 }
 
@@ -91,7 +93,7 @@ void Widget::slot_pushButton_exec_clicked()
     }
 
     QString result;
-    m_bank.execSolution(ui->comboBox_chapter->currentIndex(), ui->comboBox_question->currentIndex(), result);
+    m_bank.execSolution(ui->comboBox_chapter->currentIndex(), ui->comboBox_question->currentIndex(), ui->textEdit_input->toPlainText(), result);
     ui->textEdit_result->setText(result);
     DEBUG<<"result:"<<result;
 }

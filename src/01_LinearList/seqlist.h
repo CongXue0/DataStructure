@@ -2,6 +2,7 @@
 #define SEQLIST_H
 
 #include <assert.h>
+#include <string.h>
 
 #define SEQLIST_INIT_SIZE 100
 #define SEQLIST_INCREMENT 100 //线性表的分配增量
@@ -89,10 +90,14 @@ void SeqList<T>::insert(int i, const T &t)
         return;
     if (m_length >= m_capacity)
     {
-        if (m_elem != nullptr)
-            delete[] m_elem;
         m_capacity += SEQLIST_INCREMENT;
-        m_elem = new T[m_capacity];
+        T *tmp = new T[m_capacity];
+        if (m_elem != nullptr)
+        {
+            memcpy(tmp, m_elem, m_length);
+            delete[] m_elem;
+        }
+        m_elem = tmp;
     }
     if (m_length > 0)
     {
@@ -106,7 +111,7 @@ void SeqList<T>::insert(int i, const T &t)
 template<typename T>
 void SeqList<T>::append(const T &t)
 {
-    this->insert(m_length, t);
+    insert(m_length, t);
 }
 
 template<typename T>

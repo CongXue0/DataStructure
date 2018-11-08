@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QString>
 #include "src/01_LinearList/seqlist.h"
+#include "src/01_LinearList/linklist.h"
+#include "src/01_LinearList/doublelinklist.h"
 
 #define BOOLSTR(a) ((a == true) ? "true" : "false")
 #define TIMEFORMAT ("yyyy-MM-dd hh:mm:ss")
@@ -26,12 +28,37 @@ public:
     /* 数据结构相关 */
     template<typename T>
     static QString printSeqList(SeqList<T> &list);
-
+    template<typename T>
+    static QString printLinkList(LinkList<T> &list);
+    template<typename T>
+    static QString printDoubleLinkList(DoubleLinkList<T> &list);
 
 };
 
 template<typename T>
 QString Tool::printSeqList(SeqList<T> &list)
+{
+    QString result;
+    for (int i = 0; i < list.getLength(); i++)
+    {
+        result.append(QString::number(list.at(i)) + " ");
+    }
+    return result;
+}
+
+template<typename T>
+QString Tool::printLinkList(LinkList<T> &list)
+{
+    QString result;
+    for (int i = 0; i < list.getLength(); i++)
+    {
+        result.append(QString::number(list.at(i)) + " ");
+    }
+    return result;
+}
+
+template<typename T>
+QString Tool::printDoubleLinkList(DoubleLinkList<T> &list)
 {
     QString result;
     for (int i = 0; i < list.getLength(); i++)

@@ -37,6 +37,8 @@ HEADERS  += widget.h \
     src/utils/questionbank.h \
     src/01_LinearList/chapter1_part1.h \
     src/utils/json.h \
-    src/01_LinearList/seqlist.h
+    src/01_LinearList/seqlist.h \
+    src/01_LinearList/linklist.h \
+    src/01_LinearList/doublelinklist.h
 
 FORMS    += widget.ui

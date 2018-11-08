@@ -49,11 +49,47 @@
   <widget class="QTextEdit" name="textEdit_result">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>120</y>
-     <width>791</width>
-     <height>411</height>
+     <x>340</x>
+     <y>140</y>
+     <width>471</width>
+     <height>391</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="textEdit_input">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>140</y>
+     <width>301</width>
+     <height>391</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_input">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>110</y>
+     <width>72</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>input</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_result">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>110</y>
+     <width>72</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>result</string>
    </property>
   </widget>
  </widget>
