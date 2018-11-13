@@ -70,3 +70,18 @@ bool Tool::makeDir(const QString &path)
     }
     return true;
 }
+
+int Tool::rand(const int &a, const int &b)
+{
+    if (a == b)
+        return a;
+    return (qrand() % (b - a + 1)) + a;
+}
+
+void Tool::createRandArr(int arr[], int len, int left, int right)
+{
+    for (int i = 0; i < len; i++)
+    {
+        arr[i] = rand(left, right);
+    }
+}

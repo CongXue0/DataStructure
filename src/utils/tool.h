@@ -6,12 +6,14 @@
 #include "src/01_LinearList/seqlist.h"
 #include "src/01_LinearList/linklist.h"
 #include "src/01_LinearList/doublelinklist.h"
+#include "src/utils/mydebug.h"
 
 #define BOOLSTR(a) ((a == true) ? "true" : "false")
 #define TIMEFORMAT ("yyyy-MM-dd hh:mm:ss")
-#define DEBUG qDebug() << QString("%1 %2:%3 ").arg(QString(__FILE__).split('\\').last()).arg(__FUNCTION__).arg(__LINE__)
+//#define DEBUG qDebug() << QString("%1 %2:%3 ").arg(QString(__FILE__).split('\\').last()).arg(__FUNCTION__).arg(__LINE__)
+#define DEBUG MyDebug::info() << QString("%1 %2:%3 ").arg(QString(__FILE__).split('\\').last()).arg(__FUNCTION__).arg(__LINE__)
 
-#define MAX_CHAPTER_NUM 10
+#define MAX_CHAPTER_NUM 12
 
 class Tool
 {
@@ -25,7 +27,13 @@ public:
     static bool makePath(const QString &path);
     static bool makeDir(const QString &path);
 
+    /* 其他 */
+    static int rand(const int &a, const int &b);//得到一个 [a, b] 范围内的随机数
+    static void createRandArr(int arr[], int len, int left, int right);
+
     /* 数据结构相关 */
+    template<typename T>
+    static QString printArr(T arr[], int len);
     template<typename T>
     static QString printSeqList(SeqList<T> &list);
     template<typename T>
@@ -34,6 +42,17 @@ public:
     static QString printDoubleLinkList(DoubleLinkList<T> &list);
 
 };
+
+template<typename T>
+QString Tool::printArr(T arr[], int len)
+{
+    QString result;
+    for (int i = 0; i < len; i++)
+    {
+        result.append(QString::number(arr[i]) + " ");
+    }
+    return result;
+}
 
 template<typename T>
 QString Tool::printSeqList(SeqList<T> &list)

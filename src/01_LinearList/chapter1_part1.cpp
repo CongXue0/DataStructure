@@ -45,8 +45,7 @@ void Chapter1_Part1::practice_000(QString input, QString &result)
     {
         listc.append(listb.at(ib));
     }
-    result = Tool::printSeqList(listc);
-    DEBUG<<"result:"<<result;
+    DEBUG<<Tool::printSeqList(listc);
 }
 
 /*
@@ -69,7 +68,7 @@ void Chapter1_Part1::practice_050(QString input, QString &result)
         list.m_header = node;
         list.m_length++;
     }
-    result.append(Tool::printLinkList(list) + "\n");
+    DEBUG<<Tool::printLinkList(list);
 }
 
 /*
@@ -85,16 +84,14 @@ void Chapter1_Part1::practice_100(QString input, QString &result)
     list.append(99);
     list.append(200);
     list.append(134);
-    result.append(Tool::printDoubleLinkList(list) + "\n");
+    DEBUG<<Tool::printDoubleLinkList(list);
 
     list.insert(4, -87);
-    result.append(Tool::printDoubleLinkList(list) + "\n");
+    DEBUG<<Tool::printDoubleLinkList(list);
 
     list.removeAt(6);
-    result.append(Tool::printDoubleLinkList(list) + "\n");
+    DEBUG<<Tool::printDoubleLinkList(list);
 
     list.clear();
-    result.append(Tool::printDoubleLinkList(list) + "\n");
-
-    DEBUG<<result;
+    DEBUG<<Tool::printDoubleLinkList(list);
 }

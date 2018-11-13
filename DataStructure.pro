@@ -29,7 +29,14 @@ SOURCES += main.cpp \
     src/utils/question.cpp \
     src/utils/questionbank.cpp \
     src/01_LinearList/chapter1_part1.cpp \
-    src/utils/json.cpp
+    src/utils/json.cpp \
+    src/11_LogicThinking/logicthinking_part1.cpp \
+    src/12_ClassicAlgorithm/classicalgorithm_part1.cpp \
+    src/08_Search/search.cpp \
+    src/09_Sorting/sorting.cpp \
+    src/09_Sorting/chapter9_part1.cpp \
+    src/08_Search/chapter8_part1.cpp \
+    src/utils/mydebug.cpp
 
 HEADERS  += widget.h \
     src/utils/tool.h \
@@ -39,6 +46,13 @@ HEADERS  += widget.h \
     src/utils/json.h \
     src/01_LinearList/seqlist.h \
     src/01_LinearList/linklist.h \
-    src/01_LinearList/doublelinklist.h
+    src/01_LinearList/doublelinklist.h \
+    src/11_LogicThinking/logicthinking_part1.h \
+    src/12_ClassicAlgorithm/classicalgorithm_part1.h \
+    src/08_Search/search.h \
+    src/09_Sorting/sorting.h \
+    src/09_Sorting/chapter9_part1.h \
+    src/08_Search/chapter8_part1.h \
+    src/utils/mydebug.h
 
 FORMS    += widget.ui
