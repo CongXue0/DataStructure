@@ -13,11 +13,9 @@ class Widget : public QWidget
     Q_OBJECT
 
 public:
+    void loadQuestion();
     explicit Widget(QWidget *parent = 0);
     ~Widget();
-
-private:
-    void loadQuestion();
 
 private slots:
     void slot_comboBox_chapter_currentIndexChanged(int index);

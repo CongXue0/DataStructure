@@ -2,10 +2,8 @@
 #define SEQLIST_H
 
 #include <assert.h>
-#include <string.h>
 
 #define SEQLIST_INIT_SIZE 100
-#define SEQLIST_INCREMENT 100 //线性表的分配增量
 
 template <typename T>
 class SeqList
@@ -90,11 +88,12 @@ void SeqList<T>::insert(int i, const T &t)
         return;
     if (m_length >= m_capacity)
     {
-        m_capacity += SEQLIST_INCREMENT;
+        m_capacity = m_capacity * 2;
         T *tmp = new T[m_capacity];
         if (m_elem != nullptr)
         {
-            memcpy(tmp, m_elem, m_length);
+            for (int j = 0; j < m_length; j++)
+                tmp[j] = m_elem[j];
             delete[] m_elem;
         }
         m_elem = tmp;
@@ -111,7 +110,20 @@ void SeqList<T>::insert(int i, const T &t)
 template<typename T>
 void SeqList<T>::append(const T &t)
 {
-    insert(m_length, t);
+    if (m_length >= m_capacity)
+    {
+        m_capacity = m_capacity * 2;
+        T *tmp = new T[m_capacity];
+        if (m_elem != nullptr)
+        {
+            for (int j = 0; j < m_length; j++)
+                tmp[j] = m_elem[j];
+            delete[] m_elem;
+        }
+        m_elem = tmp;
+    }
+    m_elem[m_length] = t;
+    m_length++;
 }
 
 template<typename T>
@@ -119,9 +131,10 @@ void SeqList<T>::removeAt(int i)
 {
     if (i < 0 || i >= m_length)
         return;
+    m_length--;
     for (int j = i; j < m_length; j++)
         m_elem[j] = m_elem[j + 1];
-    m_length--;
+
 }
 
 #endif // SEQLIST_H

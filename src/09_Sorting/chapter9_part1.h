@@ -9,6 +9,7 @@ public:
     Chapter9_Part1() = delete;
 
     static void practice_000(QString input, QString &result);
+    static void practice_100(QString input, QString &result);
 
 
 };

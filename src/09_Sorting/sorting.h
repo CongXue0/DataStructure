@@ -1,6 +1,7 @@
 #ifndef SORTING_H
 #define SORTING_H
 
+#include "src/utils/tool.h"
 
 class Sorting
 {
@@ -8,9 +9,9 @@ public:
     Sorting() = delete;
 
     template <typename T>
-    static void selectSort(T arr[], int len);//选择排序
+    static void selectSort(T arr[], int low, int high);//选择排序
     template <typename T>
-    static void bubbleSort(T arr[], int len);//冒泡排序
+    static void bubbleSort(T arr[], int low, int high);//冒泡排序
     template <typename T>
     static void insertSort(T arr[], int len);//插入排序
     template <typename T>
@@ -18,24 +19,24 @@ public:
     template <typename T>
     static void quickSort(T arr[], int low, int high);//快速排序
     template <typename T>
+    static void merge(T arr[], int low, int mid, int high);//合并
+    template <typename T>
     static void mergeSort(T arr[], int low, int high);//归并排序
 
 private:
-    template <typename T>
-    static void mergeSort(T src[], T des[], int start, int end);
 
 
 };
 
 template <typename T>
-void Sorting::selectSort(T arr[], int len)//选择排序
+void Sorting::selectSort(T arr[], int low, int high)//选择排序
 {
     int i, j, min;
     T tmp;
-    for (i = 0; i < len; i++)
+    for (i = low; i <= high; i++)
     {
         min = i;
-        for (j = i + 1; j < len; j++)
+        for (j = i + 1; j <= high; j++)
         {
             if (arr[j] < arr[min])
                 min = j;
@@ -50,15 +51,15 @@ void Sorting::selectSort(T arr[], int len)//选择排序
 }
 
 template <typename T>
-void Sorting::bubbleSort(T arr[], int len)//冒泡排序
+void Sorting::bubbleSort(T arr[], int low, int high)//冒泡排序
 {
     int i, j;
     bool exchange = true;
     T tmp;
-    for (i = len - 1; i > 0 && exchange; i--)
+    for (i = high; i > low && exchange; i--)
     {
         exchange = false;
-        for (j = 0; j < i; j++)
+        for (j = low; j < i; j++)
         {
             if (arr[j] > arr[j + 1])
             {
@@ -139,9 +140,44 @@ void Sorting::quickSort(T arr[], int low, int high)
 
 
 template <typename T>
-void merge(T arr[], int low, int mid, int high)
+void Sorting::merge(T arr[], int low, int mid, int high)
 {
+    if (low <= mid && mid < high)
+    {
+        int len = high - low + 1;
+        T *tmp = new T[len];
+        int i = low, j = mid + 1, k = 0;
 
+        while (i <= mid && j <= high)
+        {
+            if (arr[i] <= arr[j])
+            {
+                tmp[k] = arr[i];
+                k++;
+                i++;
+            }
+            else
+            {
+                tmp[k] = arr[j];
+                k++;
+                j++;
+            }
+        }
+        for (; i <= mid; i++, k++)//剩余表元素插入 tmp
+        {
+            tmp[k] = arr[i];
+        }
+        for (; j <= high; j++, k++)//剩余表元素插入 tmp
+        {
+            tmp[k] = arr[j];
+        }
+
+        for (i = 0; i < len; i++)
+        {
+            arr[low + i] = tmp[i];
+        }
+        delete[] tmp;
+    }
 }
 
 template <typename T>
@@ -152,8 +188,7 @@ void Sorting::mergeSort(T arr[], int low, int high)//归并排序
         int mid = (low + high) / 2;
         mergeSort(arr, low, mid);
         mergeSort(arr, mid + 1, high);
-
-        merge(arr, low, mid, high);
+        merge(arr, low, mid, high);//合并两个序列
     }
 }
 

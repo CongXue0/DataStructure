@@ -5,22 +5,21 @@
 #include "src/01_LinearList/chapter1_part1.h"
 
 template <typename T>
-class DoubleLinkListNode
-{
-public:
-    DoubleLinkListNode()
-    {
-        prior = nullptr;
-        next = nullptr;
-    }
-    T data;
-    DoubleLinkListNode *prior;
-    DoubleLinkListNode *next;
-};
-
-template <typename T>
 class DoubleLinkList //双向链表
 {
+    class DoubleLinkListNode
+    {
+    public:
+        DoubleLinkListNode()
+        {
+            prior = nullptr;
+            next = nullptr;
+        }
+        T data;
+        DoubleLinkListNode *prior;
+        DoubleLinkListNode *next;
+    };
+
 public:
     friend class Chapter1_Part1;
     DoubleLinkList();
@@ -34,7 +33,7 @@ public:
     void removeAt(int i);
 
 private:
-    DoubleLinkListNode<T> *m_header;
+    DoubleLinkListNode *m_header;
     int m_length;
 
 };
@@ -61,15 +60,22 @@ int DoubleLinkList<T>::getLength()
 template<typename T>
 void DoubleLinkList<T>::clear()
 {
-    while (m_length > 0)
-        removeAt(0);
+    DoubleLinkListNode *tmp;
+    for (int i = 0; i < m_length; i++)
+    {
+        tmp = m_header;
+        m_header = m_header->next;
+        delete tmp;
+    }
+    m_header = nullptr;
+    m_length = 0;
 }
 
 template<typename T>
 const T &DoubleLinkList<T>::at(int i) const
 {
     assert(i >= 0 && i < m_length);
-    DoubleLinkListNode<T> *tmp = m_header;
+    DoubleLinkListNode *tmp = m_header;
     for (int j = 0; j < i; j++)
         tmp = tmp->next;
     return tmp->data;
@@ -79,7 +85,7 @@ template<typename T>
 T &DoubleLinkList<T>::operator[](int i)
 {
     assert(i >= 0 && i < m_length);
-    DoubleLinkListNode<T> *tmp = m_header;
+    DoubleLinkListNode *tmp = m_header;
     for (int j = 0; j < i; j++)
         tmp = tmp->next;
     return tmp->data;
@@ -90,7 +96,7 @@ void DoubleLinkList<T>::insert(int i, const T &t)
 {
     if (i < 0 || i > m_length)
         return;
-    DoubleLinkListNode<T> *node = new DoubleLinkListNode<T>();
+    DoubleLinkListNode *node = new DoubleLinkListNode();
     node->data = t;
     if (m_length == 0)
     {
@@ -100,7 +106,7 @@ void DoubleLinkList<T>::insert(int i, const T &t)
     }
     else
     {
-        DoubleLinkListNode<T> *tmp = m_header;
+        DoubleLinkListNode *tmp = m_header;
         for (int j = 0; j < i; j++)//找到插入位置
             tmp = tmp->next;
         node->prior = tmp->prior;
@@ -114,7 +120,22 @@ void DoubleLinkList<T>::insert(int i, const T &t)
 template<typename T>
 void DoubleLinkList<T>::append(const T &t)
 {
-    insert(m_length, t);
+    DoubleLinkListNode *node = new DoubleLinkListNode();
+    node->data = t;
+    if (m_length == 0)
+    {
+        node->prior = node;
+        node->next = node;
+        m_header = node;
+    }
+    else
+    {
+        node->prior = m_header->prior;
+        node->next = m_header;
+        m_header->prior->next = node;
+        m_header->prior = node;
+    }
+    m_length++;
 }
 
 template<typename T>
@@ -129,7 +150,7 @@ void DoubleLinkList<T>::removeAt(int i)
     }
     else
     {
-        DoubleLinkListNode<T> *tmp = m_header;
+        DoubleLinkListNode *tmp = m_header;
         for (int j = 0; j < i; j++)//找到插入位置
             tmp = tmp->next;
         tmp->prior->next = tmp->next;

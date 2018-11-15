@@ -10,6 +10,7 @@ public:
 
     static void practice_000(QString input, QString &result);
     static void practice_050(QString input, QString &result);
+    static void practice_051(QString input, QString &result);
     static void practice_100(QString input, QString &result);
 
 };

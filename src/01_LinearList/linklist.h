@@ -5,20 +5,19 @@
 #include "src/01_LinearList/chapter1_part1.h"
 
 template <typename T>
-class LinkListNode
-{
-public:
-    LinkListNode()
-    {
-        next = nullptr;
-    }
-    T data;
-    LinkListNode *next;
-};
-
-template <typename T>
 class LinkList
 {
+    class LinkListNode
+    {
+    public:
+        LinkListNode()
+        {
+            next = nullptr;
+        }
+        T data;
+        LinkListNode *next;
+    };
+
 public:
     friend class Chapter1_Part1;
     LinkList();
@@ -32,7 +31,7 @@ public:
     void removeAt(int i);
 
 private:
-    LinkListNode<T> *m_header;
+    LinkListNode *m_header;
     int m_length;
 };
 
@@ -58,15 +57,21 @@ int LinkList<T>::getLength()
 template<typename T>
 void LinkList<T>::clear()
 {
-    while (m_length > 0)
-        removeAt(0);
+    LinkListNode *tmp;
+    while (m_header != nullptr)
+    {
+        tmp = m_header;
+        m_header = m_header->next;
+        delete tmp;
+    }
+    m_length = 0;
 }
 
 template<typename T>
 const T &LinkList<T>::at(int i) const
 {
     assert(i >= 0 && i < m_length);
-    LinkListNode<T> *tmp = m_header;
+    LinkListNode *tmp = m_header;
     for (int j = 0; j < i; j++)
         tmp = tmp->next;
     return tmp->data;
@@ -76,7 +81,7 @@ template<typename T>
 T &LinkList<T>::operator[](int i)
 {
     assert(i >= 0 && i < m_length);
-    LinkListNode<T> *tmp = m_header;
+    LinkListNode *tmp = m_header;
     for (int j = 0; j < i; j++)
         tmp = tmp->next;
     return tmp->data;
@@ -87,7 +92,7 @@ void LinkList<T>::insert(int i, const T &t)
 {
     if (i < 0 || i > m_length)
         return;
-    LinkListNode<T> *node = new LinkListNode<T>();
+    LinkListNode *node = new LinkListNode();
     node->data = t;
     if (i == 0)
     {
@@ -96,7 +101,7 @@ void LinkList<T>::insert(int i, const T &t)
     }
     else
     {
-        LinkListNode<T> *tmp = m_header;
+        LinkListNode *tmp = m_header;
         for (int j = 0; j < i - 1; j++)//找到插入位置的前驱
             tmp = tmp->next;
         node->next = tmp->next;
@@ -108,7 +113,21 @@ void LinkList<T>::insert(int i, const T &t)
 template<typename T>
 void LinkList<T>::append(const T &t)
 {
-    insert(m_length, t);
+    LinkListNode *node = new LinkListNode();
+    node->data = t;
+    node->next = nullptr;
+    if (m_header == nullptr)
+    {
+        m_header = node;
+    }
+    else
+    {
+        LinkListNode *tmp = m_header;
+        while (tmp->next != nullptr)
+            tmp = tmp->next;
+        tmp->next = node;
+    }
+    m_length++;
 }
 
 template<typename T>
@@ -116,7 +135,7 @@ void LinkList<T>::removeAt(int i)
 {
     if (i < 0 || i >= m_length)
         return;
-    LinkListNode<T> *tmp1 = m_header;
+    LinkListNode *tmp1 = m_header;
     if (i == 0)
     {
         m_header = tmp1->next;
@@ -126,7 +145,7 @@ void LinkList<T>::removeAt(int i)
     {
         for (int j = 0; j < i - 1; j++)
             tmp1 = tmp1->next;
-        LinkListNode<T> *tmp2 = tmp1->next;
+        LinkListNode *tmp2 = tmp1->next;
         tmp1->next = tmp2->next;
         delete tmp2;
     }

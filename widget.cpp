@@ -6,6 +6,22 @@
 #include "src/utils/json.h"
 #include "src/08_Search/chapter8_part1.h"
 #include "src/09_Sorting/chapter9_part1.h"
+#include "src/02_StackAndQueue/chapter2_part1.h"
+
+void Widget::loadQuestion()
+{
+    m_bank.addQuestion(0, Question("链表demo", Chapter1_Part1::practice_000, 1, "严蔚敏"));
+    m_bank.addQuestion(0, Question("逆序创建链表", Chapter1_Part1::practice_050, 1, "严蔚敏"));
+    m_bank.addQuestion(0, Question("合并顺序表", Chapter1_Part1::practice_051, 1, "严蔚敏"));
+    m_bank.addQuestion(0, Question("双向链表demo", Chapter1_Part1::practice_100, 1, "严蔚敏"));
+
+    m_bank.addQuestion(1, Question("栈与队列demo", Chapter2_Part1::practice_000, 1, "邓俊辉"));
+
+    m_bank.addQuestion(7, Question("二分查找demo", Chapter8_Part1::practice_000, 1, "王道"));
+
+    m_bank.addQuestion(8, Question("排序demo", Chapter9_Part1::practice_000, 1, "王道"));
+    m_bank.addQuestion(8, Question("范围查询(Range)", Chapter9_Part1::practice_000, 4, "邓俊辉"));
+}
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -19,7 +35,7 @@ Widget::Widget(QWidget *parent) :
     QDir::setCurrent(QCoreApplication::applicationDirPath());
 
     ui->comboBox_chapter->insertItem(0, "01_LinearList");
-    ui->comboBox_chapter->insertItem(1, "02_Stack & Queue");
+    ui->comboBox_chapter->insertItem(1, "02_StackAndQueue");
     ui->comboBox_chapter->insertItem(2, "03_String");
     ui->comboBox_chapter->insertItem(3, "04_Tree");
     ui->comboBox_chapter->insertItem(4, "05_GeneralizedList");
@@ -65,19 +81,6 @@ Widget::Widget(QWidget *parent) :
 Widget::~Widget()
 {
     delete ui;
-}
-
-void Widget::loadQuestion()
-{
-    m_bank.addQuestion(0, Question("合并顺序表", Chapter1_Part1::practice_000, 1, "严蔚敏"));
-    m_bank.addQuestion(0, Question("逆序创建链表", Chapter1_Part1::practice_050, 1, "严蔚敏"));
-    m_bank.addQuestion(0, Question("双向链表demo", Chapter1_Part1::practice_100, 1, "严蔚敏"));
-
-    m_bank.addQuestion(7, Question("二分查找demo", Chapter8_Part1::practice_000, 1, "王道"));
-
-    m_bank.addQuestion(8, Question("排序demo", Chapter9_Part1::practice_000, 1, "王道"));
-
-
 }
 
 void Widget::slot_comboBox_chapter_currentIndexChanged(int index)

@@ -29,11 +29,11 @@ public:
 
     /* 其他 */
     static int rand(const int &a, const int &b);//得到一个 [a, b] 范围内的随机数
-    static void createRandArr(int arr[], int len, int left, int right);
+    static void createRandArr(int arr[], int len, int left, int right);//生成随机数组
 
     /* 数据结构相关 */
     template<typename T>
-    static QString printArr(T arr[], int len);
+    static QString printArr(T arr[], int low, int high);
     template<typename T>
     static QString printSeqList(SeqList<T> &list);
     template<typename T>
@@ -44,10 +44,10 @@ public:
 };
 
 template<typename T>
-QString Tool::printArr(T arr[], int len)
+QString Tool::printArr(T arr[], int low, int high)
 {
     QString result;
-    for (int i = 0; i < len; i++)
+    for (int i = low; i <= high; i++)
     {
         result.append(QString::number(arr[i]) + " ");
     }

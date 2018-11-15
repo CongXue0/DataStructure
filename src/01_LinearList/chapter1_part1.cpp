@@ -5,9 +5,53 @@
 #include "src/01_LinearList/doublelinklist.h"
 
 /*
-已知顺序表 La 和 Lb 的元素递增排列，归并 La 和 Lb 到 Lc，使其也为递增排列
+链表demo
 */
 void Chapter1_Part1::practice_000(QString input, QString &result)
+{
+//    SeqList<int> list;
+//    list.insert(0, 1);
+//    list.insert(0, -1);
+//    list.insert(2, 3);
+//    list.append(23);
+//    list.append(1);
+//    list.append(1);
+//    list.append(3);
+//    list.append(6);
+//    DEBUG<<Tool::printSeqList(list);
+//    list.clear();
+//    DEBUG<<Tool::printSeqList(list);
+
+
+}
+
+/*
+逆位序输入n个元素的值，建立单链表list
+*/
+void Chapter1_Part1::practice_050(QString input, QString &result)
+{
+    if (input.isEmpty())
+    {
+        input = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
+    }
+    QStringList strList = input.split('\n');
+
+    LinkList<int> list;
+    for (int i = 0; i < strList.count(); i++)
+    {
+        LinkList<int>::LinkListNode *node = new LinkList<int>::LinkListNode();
+        node->data = strList.at(i).toInt();
+        node->next = list.m_header;
+        list.m_header = node;
+        list.m_length++;
+    }
+    DEBUG<<Tool::printLinkList(list);
+}
+
+/*
+已知顺序表 La 和 Lb 的元素递增排列，归并 La 和 Lb 到 Lc，使其也为递增排列
+*/
+void Chapter1_Part1::practice_051(QString input, QString &result)
 {
     SeqList<int> lista;
     lista.append(-20);
@@ -46,29 +90,6 @@ void Chapter1_Part1::practice_000(QString input, QString &result)
         listc.append(listb.at(ib));
     }
     DEBUG<<Tool::printSeqList(listc);
-}
-
-/*
-逆位序输入n个元素的值，建立单链表list
-*/
-void Chapter1_Part1::practice_050(QString input, QString &result)
-{
-    if (input.isEmpty())
-    {
-        input = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
-    }
-    QStringList strList = input.split('\n');
-
-    LinkList<int> list;
-    for (int i = 0; i < strList.count(); i++)
-    {
-        LinkListNode<int> *node = new LinkListNode<int>();
-        node->data = strList.at(i).toInt();
-        node->next = list.m_header;
-        list.m_header = node;
-        list.m_length++;
-    }
-    DEBUG<<Tool::printLinkList(list);
 }
 
 /*
