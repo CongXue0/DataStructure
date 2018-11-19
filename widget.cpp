@@ -15,6 +15,7 @@ void Widget::loadQuestion()
     m_bank.addQuestion(0, Question("顺序表的逆置", Chapter1_Part1::practice_002, 1, "王道"));
     m_bank.addQuestion(0, Question("删除顺序表中[s,t]之间的元素", Chapter1_Part1::practice_003, 2, "王道"));
     m_bank.addQuestion(0, Question("互换数组区间", Chapter1_Part1::practice_004, 3, "王道"));
+    m_bank.addQuestion(0, Question("主元素", Chapter1_Part1::practice_005, 3, "王道"));
     m_bank.addQuestion(0, Question("逆序创建链表", Chapter1_Part1::practice_050, 1, "严蔚敏"));
     m_bank.addQuestion(0, Question("合并顺序表", Chapter1_Part1::practice_051, 1, "严蔚敏"));
     m_bank.addQuestion(0, Question("祖玛", Chapter1_Part1::practice_052, 4, "邓俊辉"));

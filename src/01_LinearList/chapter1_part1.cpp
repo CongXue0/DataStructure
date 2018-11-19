@@ -153,6 +153,47 @@ void Chapter1_Part1::practice_004(QString input, QString &result)
 }
 
 /*
+已知一个线性表A，其拥有n个元素，如果存在一个元素x，A中存在x的个数大于n/2，则称这个x为A的主元素，请设计一个算法找出一个数组的主元素，若存在输出主元素，不存在输出-1
+*/
+int searchMainElem(int arr[], int low, int high)
+{
+    if (low >= high || high - low < 1)
+        return -1;
+    int x = arr[0], count = 1, i;
+    for (i = low + 1; i <= high; i++) //先找出可能的主元素
+    {
+        if (arr[i] == x)
+        {
+            count++;
+        }
+        else
+        {
+            count--;
+        }
+        if (count == 0)
+        {
+            x = arr[i];
+            count = 1;
+        }
+    }
+    count = 0;
+    for (i = low; i <= high; i++)
+    {
+        if (arr[i] == x)
+            count++;
+    }
+    if (count > (high - low + 1) / 2)
+        return x;
+    else
+        return -1;
+}
+void Chapter1_Part1::practice_005(QString input, QString &result)
+{
+    int arr[11] = {1, 5, 5, 0, 10, 5, 5, 99, 4, 5, 5};
+    DEBUG<<"main elem:"<<searchMainElem(arr, 0, 10);
+}
+
+/*
 逆位序输入n个元素的值，建立单链表list
 */
 void Chapter1_Part1::practice_050(QString input, QString &result)

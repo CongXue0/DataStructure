@@ -13,6 +13,7 @@ public:
     static void practice_002(QString input, QString &result);
     static void practice_003(QString input, QString &result);
     static void practice_004(QString input, QString &result);
+    static void practice_005(QString input, QString &result);
     static void practice_050(QString input, QString &result);
     static void practice_051(QString input, QString &result);
     static void practice_052(QString input, QString &result);
