@@ -110,11 +110,46 @@ void Chapter1_Part1::practice_003(QString input, QString &result)
 }
 
 /*
-已知在一维数组中依次存放着两个线性表(a1,...,am)和(b1,...,bn)，将里那个
+已知在一维数组中依次存放着两个线性表(a1,...,am)和(b1,...,bn)，将两个线性表位置互换，要求时间复杂度O(n)，空间复杂度O(1)
 */
+void exchangeArr(int arr[], int low, int mid, int high)//交换[low,mid-1] [mid,high]区间
+{
+    if (low >= high || mid > high || mid <= low)
+        return;
+    int t;
+    int tmp1 = low, tmp2 = high;
+    while (tmp1 < tmp2) //先逆置整个区间
+    {
+        t = arr[tmp1];
+        arr[tmp1] = arr[tmp2];
+        arr[tmp2] = t;
+        tmp1++, tmp2--;
+    }
+    tmp1 = low, tmp2 = low + high - mid;
+    while (tmp1 < tmp2) //逆置左边区间
+    {
+        t = arr[tmp1];
+        arr[tmp1] = arr[tmp2];
+        arr[tmp2] = t;
+        tmp1++, tmp2--;
+    }
+    tmp1 = low + high - mid + 1, tmp2 = high;
+    while (tmp1 < tmp2) //逆置右边区间
+    {
+        t = arr[tmp1];
+        arr[tmp1] = arr[tmp2];
+        arr[tmp2] = t;
+        tmp1++, tmp2--;
+    }
+}
 void Chapter1_Part1::practice_004(QString input, QString &result)
 {
-
+    const int len = 20;
+    int arr[len];
+    Tool::createRandArr(arr, len, 0, 100);
+    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    exchangeArr(arr, 0, 13, 19);
+    DEBUG<<Tool::printArr(arr, 0, len - 1);
 }
 
 /*
