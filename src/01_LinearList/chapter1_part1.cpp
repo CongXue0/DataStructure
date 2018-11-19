@@ -110,6 +110,14 @@ void Chapter1_Part1::practice_003(QString input, QString &result)
 }
 
 /*
+已知在一维数组中依次存放着两个线性表(a1,...,am)和(b1,...,bn)，将里那个
+*/
+void Chapter1_Part1::practice_004(QString input, QString &result)
+{
+
+}
+
+/*
 逆位序输入n个元素的值，建立单链表list
 */
 void Chapter1_Part1::practice_050(QString input, QString &result)
