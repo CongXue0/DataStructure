@@ -7,20 +7,19 @@
 template <typename T>
 class LinkQueue
 {
+public:
     class LinkQueueNode
     {
     public:
         LinkQueueNode()
         {
-            prior = nullptr;
-            next = nullptr;
+            prior = NULL;
+            next = NULL;
         }
         T data;
         LinkQueueNode *prior;
         LinkQueueNode *next;
     };
-
-public:
     LinkQueue();
     ~LinkQueue();
     int getSize();
@@ -39,7 +38,7 @@ private:
 template <typename T>
 LinkQueue<T>::LinkQueue()
 {
-    m_header = nullptr;
+    m_header = NULL;
     m_size = 0;
 }
 
@@ -58,14 +57,14 @@ int LinkQueue<T>::getSize()
 template <typename T>
 void LinkQueue<T>::clear()
 {
-    LinkQueue<T> *tmp;
+    LinkQueueNode *tmp;
     for (int i = 0; i < m_size; i++)
     {
         tmp = m_header;
         m_header = m_header->next;
         delete tmp;
     }
-    m_header = nullptr;
+    m_header = NULL;
     m_size = 0;
 }
 
@@ -106,7 +105,7 @@ T LinkQueue<T>::dequeue()
     {
         tmpData = m_header->data;
         delete m_header;
-        m_header = nullptr;
+        m_header = NULL;
     }
     else
     {
@@ -128,7 +127,7 @@ QString LinkQueue<T>::print()
     LinkQueueNode *tmp = m_header;
     for (int i = 0; i < m_size; i++)
     {
-        info.append(tmp->data);
+        info.append(QString::number(tmp->data) + " ");
         tmp = tmp->next;
     }
     return info;

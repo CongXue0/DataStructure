@@ -3,7 +3,6 @@
 
 #include <assert.h>
 #include <QString>
-#include "src/utils/tool.h"
 
 #define SEQSTACK_INIT_SIZE 100
 
@@ -46,7 +45,7 @@ SeqStack<T>::SeqStack(int capacity)
 template<typename T>
 SeqStack<T>::~SeqStack()
 {
-    if (m_elem != nullptr)
+    if (m_elem != NULL)
         delete[] m_elem;
 }
 
@@ -82,7 +81,7 @@ void SeqStack<T>::push(const T &t)
     {
         m_capacity = m_capacity * 2;
         T *tmp = new T[m_capacity];
-        if (m_elem != nullptr)
+        if (m_elem != NULL)
         {
             for (int i = 0; i < m_size; i++)
                 tmp[i] = m_elem[i];

@@ -45,7 +45,7 @@ SeqQueue<T>::SeqQueue(int capacity)
 template<typename T>
 SeqQueue<T>::~SeqQueue()
 {
-    if (m_elem != nullptr)
+    if (m_elem != NULL)
         delete[] m_elem;
 }
 
@@ -81,7 +81,7 @@ void SeqQueue<T>::enqueue(const T &t)
     {
         m_capacity = m_capacity * 2;
         T *tmp = new T[m_capacity];
-        if (m_elem != nullptr)
+        if (m_elem != NULL)
         {
             for (int i = 0; i < m_size; i++)
                 tmp[i] = m_elem[i];

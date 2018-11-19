@@ -2,24 +2,22 @@
 #define LINKLIST_H
 
 #include <assert.h>
-#include "src/01_LinearList/chapter1_part1.h"
+#include <QString>
 
 template <typename T>
 class LinkList
 {
+public:
     class LinkListNode
     {
     public:
         LinkListNode()
         {
-            next = nullptr;
+            next = NULL;
         }
         T data;
         LinkListNode *next;
     };
-
-public:
-    friend class Chapter1_Part1;
     LinkList();
     ~LinkList();
     int getLength();
@@ -29,6 +27,7 @@ public:
     void insert(int i, const T &t);
     void append(const T &t);
     void removeAt(int i);
+    QString print();
 
 private:
     LinkListNode *m_header;
@@ -38,7 +37,7 @@ private:
 template<typename T>
 LinkList<T>::LinkList()
 {
-    m_header = nullptr;
+    m_header = NULL;
     m_length = 0;
 }
 
@@ -58,7 +57,7 @@ template<typename T>
 void LinkList<T>::clear()
 {
     LinkListNode *tmp;
-    while (m_header != nullptr)
+    while (m_header != NULL)
     {
         tmp = m_header;
         m_header = m_header->next;
@@ -115,15 +114,15 @@ void LinkList<T>::append(const T &t)
 {
     LinkListNode *node = new LinkListNode();
     node->data = t;
-    node->next = nullptr;
-    if (m_header == nullptr)
+    node->next = NULL;
+    if (m_header == NULL)
     {
         m_header = node;
     }
     else
     {
         LinkListNode *tmp = m_header;
-        while (tmp->next != nullptr)
+        while (tmp->next != NULL)
             tmp = tmp->next;
         tmp->next = node;
     }
@@ -150,6 +149,19 @@ void LinkList<T>::removeAt(int i)
         delete tmp2;
     }
     m_length--;
+}
+
+template<typename T>
+QString LinkList<T>::print()
+{
+    QString info;
+    LinkListNode *tmp = m_header;
+    for (int i = 0; i < m_length; i++)
+    {
+        info.append(QString::number(tmp->data) + " ");
+        tmp = tmp->next;
+    }
+    return info;
 }
 
 #endif // LINKLIST_H

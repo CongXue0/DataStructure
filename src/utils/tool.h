@@ -30,16 +30,8 @@ public:
     /* 其他 */
     static int rand(const int &a, const int &b);//得到一个 [a, b] 范围内的随机数
     static void createRandArr(int arr[], int len, int left, int right);//生成随机数组
-
-    /* 数据结构相关 */
     template<typename T>
     static QString printArr(T arr[], int low, int high);
-    template<typename T>
-    static QString printSeqList(SeqList<T> &list);
-    template<typename T>
-    static QString printLinkList(LinkList<T> &list);
-    template<typename T>
-    static QString printDoubleLinkList(DoubleLinkList<T> &list);
 
 };
 
@@ -50,39 +42,6 @@ QString Tool::printArr(T arr[], int low, int high)
     for (int i = low; i <= high; i++)
     {
         result.append(QString::number(arr[i]) + " ");
-    }
-    return result;
-}
-
-template<typename T>
-QString Tool::printSeqList(SeqList<T> &list)
-{
-    QString result;
-    for (int i = 0; i < list.getLength(); i++)
-    {
-        result.append(QString::number(list.at(i)) + " ");
-    }
-    return result;
-}
-
-template<typename T>
-QString Tool::printLinkList(LinkList<T> &list)
-{
-    QString result;
-    for (int i = 0; i < list.getLength(); i++)
-    {
-        result.append(QString::number(list.at(i)) + " ");
-    }
-    return result;
-}
-
-template<typename T>
-QString Tool::printDoubleLinkList(DoubleLinkList<T> &list)
-{
-    QString result;
-    for (int i = 0; i < list.getLength(); i++)
-    {
-        result.append(QString::number(list.at(i)) + " ");
     }
     return result;
 }

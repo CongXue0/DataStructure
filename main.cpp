@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    qsrand(time(nullptr));
+    qsrand(time(NULL));
 
     Widget w;
     w.show();

@@ -2,6 +2,7 @@
 #define SEQLIST_H
 
 #include <assert.h>
+#include <QString>
 
 #define SEQLIST_INIT_SIZE 100
 
@@ -19,6 +20,7 @@ public:
     void insert(int i, const T &t);
     void append(const T &t);
     void removeAt(int i);
+    QString print();
 
 private:
     T *m_elem;
@@ -45,7 +47,7 @@ SeqList<T>::SeqList(int capacity)
 template<typename T>
 SeqList<T>::~SeqList()
 {
-    if (m_elem != nullptr)
+    if (m_elem != NULL)
         delete[] m_elem;
 }
 
@@ -90,7 +92,7 @@ void SeqList<T>::insert(int i, const T &t)
     {
         m_capacity = m_capacity * 2;
         T *tmp = new T[m_capacity];
-        if (m_elem != nullptr)
+        if (m_elem != NULL)
         {
             for (int j = 0; j < m_length; j++)
                 tmp[j] = m_elem[j];
@@ -114,7 +116,7 @@ void SeqList<T>::append(const T &t)
     {
         m_capacity = m_capacity * 2;
         T *tmp = new T[m_capacity];
-        if (m_elem != nullptr)
+        if (m_elem != NULL)
         {
             for (int j = 0; j < m_length; j++)
                 tmp[j] = m_elem[j];
@@ -134,7 +136,17 @@ void SeqList<T>::removeAt(int i)
     m_length--;
     for (int j = i; j < m_length; j++)
         m_elem[j] = m_elem[j + 1];
+}
 
+template<typename T>
+QString SeqList<T>::print()
+{
+    QString info;
+    for (int i = 0; i < m_length; i++)
+    {
+        info.append(QString::number(m_elem[i]) + " ");
+    }
+    return info;
 }
 
 #endif // SEQLIST_H

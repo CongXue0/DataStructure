@@ -2,26 +2,24 @@
 #define DOUBLELINKLIST_H
 
 #include <assert.h>
-#include "src/01_LinearList/chapter1_part1.h"
+#include <QString>
 
 template <typename T>
 class DoubleLinkList //双向链表
 {
+public:
     class DoubleLinkListNode
     {
     public:
         DoubleLinkListNode()
         {
-            prior = nullptr;
-            next = nullptr;
+            prior = NULL;
+            next = NULL;
         }
         T data;
         DoubleLinkListNode *prior;
         DoubleLinkListNode *next;
     };
-
-public:
-    friend class Chapter1_Part1;
     DoubleLinkList();
     ~DoubleLinkList();
     int getLength();
@@ -31,6 +29,7 @@ public:
     void insert(int i, const T &t);
     void append(const T &t);
     void removeAt(int i);
+    QString print();
 
 private:
     DoubleLinkListNode *m_header;
@@ -41,7 +40,7 @@ private:
 template<typename T>
 DoubleLinkList<T>::DoubleLinkList()
 {
-    m_header = nullptr;
+    m_header = NULL;
     m_length = 0;
 }
 
@@ -67,7 +66,7 @@ void DoubleLinkList<T>::clear()
         m_header = m_header->next;
         delete tmp;
     }
-    m_header = nullptr;
+    m_header = NULL;
     m_length = 0;
 }
 
@@ -146,7 +145,7 @@ void DoubleLinkList<T>::removeAt(int i)
     if (m_length == 1)
     {
         delete m_header;
-        m_header = nullptr;
+        m_header = NULL;
     }
     else
     {
@@ -158,6 +157,19 @@ void DoubleLinkList<T>::removeAt(int i)
         delete tmp;
     }
     m_length--;
+}
+
+template<typename T>
+QString DoubleLinkList<T>::print()
+{
+    QString info;
+    DoubleLinkListNode *tmp = m_header;
+    for (int i = 0; i < m_length; i++)
+    {
+        info.append(QString::number(tmp->data) + " ");
+        tmp = tmp->next;
+    }
+    return info;
 }
 
 #endif // DOUBLELINKLIST_H

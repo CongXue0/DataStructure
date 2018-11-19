@@ -7,20 +7,19 @@
 template <typename T>
 class LinkStack
 {
+public:
     class LinkStackNode
     {
     public:
         LinkStackNode()
         {
-            prior = nullptr;
-            next = nullptr;
+            prior = NULL;
+            next = NULL;
         }
         T data;
         LinkStackNode *prior;
         LinkStackNode *next;
     };
-
-public:
     LinkStack();
     ~LinkStack();
     int getSize();
@@ -39,7 +38,7 @@ private:
 template <typename T>
 LinkStack<T>::LinkStack()
 {
-    m_header = nullptr;
+    m_header = NULL;
     m_size = 0;
 }
 
@@ -58,14 +57,14 @@ int LinkStack<T>::getSize()
 template<typename T>
 void LinkStack<T>::clear()
 {
-    LinkStack<T> *tmp;
+    LinkStackNode *tmp;
     for (int i = 0; i < m_size; i++)
     {
         tmp = m_header;
         m_header = m_header->next;
         delete tmp;
     }
-    m_header = nullptr;
+    m_header = NULL;
     m_size = 0;
 }
 
@@ -106,7 +105,7 @@ T LinkStack<T>::pop()
     {
         tmpData = m_header->data;
         delete m_header;
-        m_header = nullptr;
+        m_header = NULL;
     }
     else
     {
@@ -127,7 +126,7 @@ QString LinkStack<T>::print()
     LinkStackNode *tmp = m_header;
     for (int i = 0; i < m_size; i++)
     {
-        info.append(tmp->data);
+        info.append(QString::number(tmp->data) + " ");
         tmp = tmp->next;
     }
     return info;

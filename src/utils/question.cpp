@@ -3,7 +3,7 @@
 Question::Question()
 {
     m_description = "";
-    m_func = nullptr;
+    m_func = NULL;
 }
 
 Question::Question(QString description, void (*func)(QString, QString &), int level, QString source)
@@ -35,7 +35,7 @@ void Question::setFunc(void (*func)(QString, QString &))
 
 void Question::exec(QString input, QString &result)
 {
-    if (m_func != nullptr)
+    if (m_func != NULL)
     {
         m_func(input, result);
     }
