@@ -169,3 +169,158 @@ void Chapter2_Part1::practice_003(QString input, QString &result)
     DEBUG<<"isStackShuffle:"<<isStackShuffle(arrA, arrB, 5);
     DEBUG<<"isStackShuffle:"<<isStackShuffle(arrA, arrC, 5);
 }
+
+/*
+表达式求值，中缀表达式先转成后缀表达式，在求值
+中缀转后缀算法：
+    数字直接输出
+    符号：
+        左括号 进栈
+        运算符号 与栈顶符号比较优先级，若栈顶优先级低进栈
+            ，若栈顶优先级高，栈顶出栈，符号进栈，默认左括号优先级最低
+        右括号 将栈顶符号弹出，直到匹配到左括号
+*/
+void infixToSuffixExpression_transform(char *source, char *destination)//中缀转后缀表达式
+{
+    int len = strlen(source);
+    char ch, tmp;
+    bool first = true;
+    SeqStack<char> stack;
+    for (int i = 0, j = 0; i < len; i++)
+    {
+        ch = source[i];
+        if (ch == ' ')
+            continue;
+        if (ch >= '0' && ch <= '9')
+        {
+            destination[j++] = ch;
+            while (source[i + 1] >= '0' && source[i + 1] <= '9')
+            {
+                destination[j++] = source[++i];
+            }
+            destination[j++] = ' ';
+        }
+        else
+        {
+            if (ch == '(' || stack.getSize() == 0)
+            {
+                if (first && (ch == '-' || ch == '+'))
+                {
+                    destination[j++] = '0';
+                    destination[j++] = ' ';
+                    while (source[i + 1] >= '0' && source[i + 1] <= '9')
+                    {
+                        destination[j++] = source[++i];
+                    }
+                    destination[j++] = ' ';
+                    destination[j++] = ch;
+                    destination[j++] = ' ';
+                }
+                else
+                    stack.push(ch);
+            }
+            else if (ch == '*' || ch == '/')
+            {
+                tmp = stack.top();
+                if (tmp == '+' || tmp == '-' || tmp == '(')
+                    stack.push(ch);
+                else if (tmp == '*' || tmp == '/')
+                {
+                    destination[j++] = stack.pop();
+                    destination[j++] = ' ';
+                    stack.push(ch);
+                }
+            }
+            else if (ch == '+' || ch == '-')
+            {
+                tmp = stack.top();
+                if (tmp == '(' || stack.getSize() == 0)
+                    stack.push(ch);
+                else if (tmp == '+' || tmp == '-' || tmp == '*' || tmp == '/')
+                {
+                    destination[j++] = stack.pop();
+                    destination[j++] = ' ';
+                    stack.push(ch);
+                }
+            }
+            else if (ch == ')')
+            {
+                while ((tmp = stack.pop()) != '(')
+                {
+                    destination[j++] = tmp;
+                    destination[j++] = ' ';
+                }
+            }
+        }
+        first = false;
+        if (i == len - 1)
+        {
+            while (stack.getSize() > 0)
+            {
+                destination[j++] = stack.pop();
+                destination[j++] = ' ';
+            }
+            destination[j] = '\0';
+        }
+    }
+}
+int suffixExpression_calc(char *expression)
+{
+    LinkStack<int> stack;
+    int len = strlen(expression);
+    for (int i = 0; i < len; i++)
+    {
+        char ch = expression[i];
+        if (ch == ' ')
+            continue;
+        if (ch >= '0' && ch <= '9')
+        {
+            int tmp = ch - '0';
+            while (expression[i + 1] >= '0' && expression[i + 1] <= '9')
+            {
+                tmp = tmp * 10 + expression[i + 1] - '0';
+                i++;
+            }
+            stack.push(tmp);
+        }
+        else
+        {
+            int tmp2 = stack.pop();
+            int tmp1 = stack.pop();
+            switch (ch)
+            {
+            case '+':
+                tmp1 = tmp1 + tmp2;
+                break;
+            case '-':
+                tmp1 = tmp1 - tmp2;
+                break;
+            case '*':
+                tmp1 = tmp1 * tmp2;
+                break;
+            case '/':
+                tmp1 = tmp1 / tmp2;
+                break;
+            }
+            stack.push(tmp1);
+        }
+    }
+    return stack.top();
+}
+void Chapter2_Part1::practice_004(QString input, QString &result)
+{
+    Q_UNUSED(input);Q_UNUSED(result);
+//    char *expression1 = "(1 - 4) * 8 + 29 / ((5 - 2) * 3)";
+    char *expression1 = "-1 * 20 + 100";
+    char buffer[50];
+    infixToSuffixExpression_transform(expression1 , buffer);
+    DEBUG<<"expression1:"<<expression1;
+    DEBUG<<"expression1 tran:"<<buffer;
+    DEBUG<<"结果为: "<<suffixExpression_calc(buffer);
+
+    char *expression2 = "1+2*(66/(2*3))+7";
+    infixToSuffixExpression_transform(expression2, buffer);
+    DEBUG<<"expression2:"<<expression2;
+    DEBUG<<"expression2 tran:"<<buffer;
+    DEBUG<<"结果为: "<<suffixExpression_calc(buffer);
+}
