@@ -7,5 +7,5 @@
 */
 void LogicThinking_Part1::practice_000(QString input, QString &result)
 {
-
+    Q_UNUSED(input);Q_UNUSED(result);
 }

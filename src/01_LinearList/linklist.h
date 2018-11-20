@@ -5,6 +5,12 @@
 #include <QString>
 
 template <typename T>
+struct C_LinkL
+{
+
+};
+
+template <typename T>
 class LinkList
 {
 public:

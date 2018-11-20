@@ -9,6 +9,7 @@
 */
 void Chapter1_Part1::practice_000(QString input, QString &result)
 {
+    Q_UNUSED(input);Q_UNUSED(result);
 //    SeqList<int> list;
 //    list.insert(0, 1);
 //    list.insert(0, -1);
@@ -28,6 +29,7 @@ void Chapter1_Part1::practice_000(QString input, QString &result)
 */
 void Chapter1_Part1::practice_001(QString input, QString &result)
 {
+    Q_UNUSED(input);Q_UNUSED(result);
     DoubleLinkList<int> list;
     list.append(-1);
     list.append(-2);
@@ -64,6 +66,7 @@ void reverseArr(int arr[], int low, int high)
 }
 void Chapter1_Part1::practice_002(QString input, QString &result)
 {
+    Q_UNUSED(input);Q_UNUSED(result);
     int arr[20];
     Tool::createRandArr(arr, 20, 0, 200);
     DEBUG<<Tool::printArr(arr, 0, 19);
@@ -100,6 +103,7 @@ void removeAllFromArr(int arr[], int low, int high, int s, int t, int &len)
 }
 void Chapter1_Part1::practice_003(QString input, QString &result)
 {
+    Q_UNUSED(input);Q_UNUSED(result);
     int len = 20;
     int arr[20];
     Tool::createRandArr(arr, len, 0, 100);
@@ -144,6 +148,7 @@ void exchangeArr(int arr[], int low, int mid, int high)//交换[low,mid-1] [mid,
 }
 void Chapter1_Part1::practice_004(QString input, QString &result)
 {
+    Q_UNUSED(input);Q_UNUSED(result);
     const int len = 20;
     int arr[len];
     Tool::createRandArr(arr, len, 0, 100);
@@ -189,6 +194,7 @@ int searchMainElem(int arr[], int low, int high)
 }
 void Chapter1_Part1::practice_005(QString input, QString &result)
 {
+    Q_UNUSED(input);Q_UNUSED(result);
     int arr[11] = {1, 5, 5, 0, 10, 5, 5, 99, 4, 5, 5};
     DEBUG<<"main elem:"<<searchMainElem(arr, 0, 10);
 }
@@ -217,6 +223,7 @@ void Chapter1_Part1::practice_050(QString input, QString &result)
 */
 void Chapter1_Part1::practice_051(QString input, QString &result)
 {
+    Q_UNUSED(input);Q_UNUSED(result);
     SeqList<int> lista;
     lista.append(-20);
     lista.append(30);
@@ -379,6 +386,7 @@ void shootBead(int pos, char ch)//射击珠子
 }
 void Chapter1_Part1::practice_052(QString input, QString &result)
 {
+    Q_UNUSED(input);Q_UNUSED(result);
     int opNum, pos, i;
     char ch;
     scanf("%s", zumaStr);

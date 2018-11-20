@@ -21,8 +21,9 @@ void Widget::loadQuestion()
     m_bank.addQuestion(0, Question("祖玛", Chapter1_Part1::practice_052, 4, "邓俊辉"));
 
     m_bank.addQuestion(1, Question("栈与队列demo", Chapter2_Part1::practice_000, 1, "邓俊辉"));
-    m_bank.addQuestion(1, Question("进制转换", Chapter2_Part1::practice_050, 2, "邓俊辉"));
-    m_bank.addQuestion(1, Question("就近匹配", Chapter2_Part1::practice_051, 2, "邓俊辉"));
+    m_bank.addQuestion(1, Question("进制转换", Chapter2_Part1::practice_001, 2, "邓俊辉"));
+    m_bank.addQuestion(1, Question("就近匹配", Chapter2_Part1::practice_002, 2, "邓俊辉"));
+    m_bank.addQuestion(1, Question("栈混洗", Chapter2_Part1::practice_003, 2, "邓俊辉"));
 
     m_bank.addQuestion(7, Question("二分查找demo", Chapter8_Part1::practice_000, 1, "王道"));
 

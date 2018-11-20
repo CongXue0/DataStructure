@@ -8,6 +8,7 @@
 */
 void Chapter9_Part1::practice_000(QString input, QString &result)
 {
+    Q_UNUSED(input);Q_UNUSED(result);
     const int len = 10000000;
     int *arr = new int[len];
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
@@ -126,6 +127,7 @@ int searchRight(int arr[], int low, int high,  const int &key)//二分之右
 }
 void Chapter9_Part1::practice_100(QString input, QString &result)
 {
+    Q_UNUSED(input);Q_UNUSED(result);
     int i, j;
     int size, count, left, right;
     int *arr = NULL;
