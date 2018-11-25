@@ -7,6 +7,7 @@
 #include "src/08_Search/chapter8_part1.h"
 #include "src/09_Sorting/chapter9_part1.h"
 #include "src/02_StackAndQueue/chapter2_part1.h"
+#include "src/04_Tree/chapter4_part1.h"
 
 void Widget::loadQuestion()
 {
@@ -25,6 +26,8 @@ void Widget::loadQuestion()
     m_bank.addQuestion(1, Question("就近匹配", Chapter2_Part1::practice_002, 2, "邓俊辉"));
     m_bank.addQuestion(1, Question("栈混洗", Chapter2_Part1::practice_003, 2, "邓俊辉"));
     m_bank.addQuestion(1, Question("表达式求值", Chapter2_Part1::practice_004, 3, "扫地僧"));
+
+    m_bank.addQuestion(3, Question("二叉树demo", Chapter4_Part1::practice_000, 2, "扫地僧"));
 
     m_bank.addQuestion(7, Question("二分查找demo", Chapter8_Part1::practice_000, 1, "王道"));
 

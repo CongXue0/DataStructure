@@ -184,9 +184,29 @@ void infixToSuffixExpression_transform(char *source, char *destination)//中缀�
 {
     int len = strlen(source);
     char ch, tmp;
-    bool first = true;
+    int i = 0, j = 0;
     SeqStack<char> stack;
-    for (int i = 0, j = 0; i < len; i++)
+    for (; i < len; i++)
+    {
+        ch = source[i];
+        if (ch == ' ')
+            continue;
+        if (ch == '-' || ch == '+')
+        {
+            destination[j++] = '0';
+            destination[j++] = ' ';
+            while (source[i + 1] >= '0' && source[i + 1] <= '9')
+            {
+                destination[j++] = source[++i];
+            }
+            destination[j++] = ' ';
+            destination[j++] = ch;
+            destination[j++] = ' ';
+            i++;
+        }
+        break;
+    }
+    for (; i < len; i++)
     {
         ch = source[i];
         if (ch == ' ')
@@ -204,20 +224,7 @@ void infixToSuffixExpression_transform(char *source, char *destination)//中缀�
         {
             if (ch == '(' || stack.getSize() == 0)
             {
-                if (first && (ch == '-' || ch == '+'))
-                {
-                    destination[j++] = '0';
-                    destination[j++] = ' ';
-                    while (source[i + 1] >= '0' && source[i + 1] <= '9')
-                    {
-                        destination[j++] = source[++i];
-                    }
-                    destination[j++] = ' ';
-                    destination[j++] = ch;
-                    destination[j++] = ' ';
-                }
-                else
-                    stack.push(ch);
+                stack.push(ch);
             }
             else if (ch == '*' || ch == '/')
             {
@@ -252,7 +259,6 @@ void infixToSuffixExpression_transform(char *source, char *destination)//中缀�
                 }
             }
         }
-        first = false;
         if (i == len - 1)
         {
             while (stack.getSize() > 0)
