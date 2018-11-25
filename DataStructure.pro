@@ -62,6 +62,7 @@ HEADERS  += widget.h \
     src/02_StackAndQueue/seqqueue.h \
     src/02_StackAndQueue/linkqueue.h \
     src/04_Tree/chapter4_part1.h \
-    src/04_Tree/binarytree.h
+    src/04_Tree/binarytree.h \
+    src/04_Tree/threadbinarytree.h
 
 FORMS    += widget.ui

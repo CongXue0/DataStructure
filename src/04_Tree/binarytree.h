@@ -3,6 +3,7 @@
 
 #include "src/utils/tool.h"
 #include "src/02_StackAndQueue/linkstack.h"
+#include "src/02_StackAndQueue/linkqueue.h"
 
 template <typename T>
 class BinaryTree
@@ -27,10 +28,10 @@ public:
     BinaryTree<T>::BinaryTreeNode *&root();
     void insert(const T &t);
     void insert(int pos, const T &t);//根节点标号为1
+    void levelOrderTrav();//层次遍历
     void preOrderTrav();//先序遍历
     void inOrderTrav();//中序遍历
     void postOrderTrav();//后序遍历
-
 
     static void deleteTree(BinaryTree<T>::BinaryTreeNode *root);
     static void copyTree(BinaryTree<T>::BinaryTreeNode *&sroot, const BinaryTree<T>::BinaryTreeNode *droot);
@@ -70,6 +71,7 @@ template <typename T>
 void BinaryTree<T>::clear()
 {
     BinaryTree<T>::deleteTree(m_root);
+    m_size = 0;
 }
 
 template <typename T>
@@ -155,23 +157,70 @@ void BinaryTree<T>::insert(int pos, const T &t)
 }
 
 template <typename T>
+void BinaryTree<T>::levelOrderTrav()
+{
+    LinkQueue<BinaryTreeNode *> queue;
+    if (m_root != NULL)
+    {
+        queue.enqueue(m_root);
+    }
+    BinaryTreeNode *tmp;
+    while (queue.getSize() > 0)
+    {
+        tmp = queue.dequeue();
+        DEBUG << tmp->data << " ";
+        if (tmp->lchild != NULL)
+            queue.enqueue(tmp->lchild);
+        if (tmp->rchild != NULL)
+            queue.enqueue(tmp->rchild);
+    }
+}
+
+template <typename T>
 void BinaryTree<T>::preOrderTrav()
 {
     LinkStack<BinaryTreeNode *> stack;
     BinaryTreeNode *node = m_root;
-    while (stack.getSize() != 0 || node != NULL)
+//    while (stack.getSize() > 0 || node != NULL)
+//    {
+//        if (node != NULL)
+//        {
+//            DEBUG << node->data << " ";
+//            stack.push(node);
+//            node = node->lchild;
+//        }
+//        else
+//        {
+//            node = stack.pop();
+//            node = node->rchild;
+//        }
+//    }
+
+//    if (m_root != NULL)
+//        stack.push(m_root);
+//    BinaryTreeNode *tmp;
+//    while (stack.getSize() > 0)
+//    {
+//        tmp = stack.pop();
+//        DEBUG<<tmp->data<<" ";
+//        if (tmp->rchild != NULL)
+//            stack.push(tmp->rchild);
+//        if (tmp->lchild != NULL)
+//            stack.push(tmp->lchild);
+//    }
+
+    while (true)
     {
-        if (node != NULL)
+        while (node != NULL)//延左分支入栈
         {
             DEBUG << node->data << " ";
-            stack.push(node);
+            if (node->rchild != NULL)
+                stack.push(node->rchild);
             node = node->lchild;
         }
-        else
-        {
-            node = stack.pop();
-            node = node->rchild;
-        }
+        if (stack.getSize() == 0)
+            break;
+        node = stack.pop();
     }
 }
 
@@ -180,19 +229,33 @@ void BinaryTree<T>::inOrderTrav()
 {
     LinkStack<BinaryTreeNode *> stack;
     BinaryTreeNode *node = m_root;
-    while (stack.getSize() != 0 || node != NULL)
+//    while (stack.getSize() > 0 || node != NULL)
+//    {
+//        if (node != NULL)
+//        {
+//            stack.push(node);
+//            node = node->lchild;
+//        }
+//        else
+//        {
+//            node = stack.pop();
+//            DEBUG << node->data << " ";
+//            node = node->rchild;
+//        }
+//    }
+
+    while (true)
     {
-        if (node != NULL)
+        while (node != NULL)//延左分支入栈
         {
             stack.push(node);
             node = node->lchild;
         }
-        else
-        {
-            node = stack.pop();
-            DEBUG << node->data << " ";
-            node = node->rchild;
-        }
+        if (stack.getSize() == 0)
+            break;
+        node = stack.pop();
+        DEBUG << node->data << " ";
+        node = node->rchild;
     }
 }
 
@@ -202,7 +265,7 @@ void BinaryTree<T>::postOrderTrav()
     LinkStack<BinaryTreeNode *> stack;
     BinaryTreeNode *node = m_root;
     BinaryTreeNode *tmp = NULL;
-    while (stack.getSize() != 0 || node != NULL)
+    while (stack.getSize() > 0 || node != NULL)
     {
         if (node != NULL)
         {

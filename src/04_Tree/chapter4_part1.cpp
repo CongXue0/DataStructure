@@ -34,27 +34,28 @@ void Chapter4_Part1::practice_000(QString input, QString &result)
     bt2.insert(5, 999);//插入失败
     bt2.insert(13, 999);//插入失败
     bt2.insert(10, 23);
-//    BinaryTree<int>::preOrderTrav_R(bt2.root());
-//    DEBUG<<"--------------------";
-//    bt2.preOrderTrav();
-//    DEBUG<<"--------------------";
+    BinaryTree<int>::preOrderTrav_R(bt2.root());
+    DEBUG<<"--------------------";
+    bt2.preOrderTrav();
+    DEBUG<<"--------------------";
 //    BinaryTree<int>::inOrderTrav_R(bt2.root());
 //    DEBUG<<"--------------------";
 //    bt2.inOrderTrav();
 //    DEBUG<<"--------------------";
-    BinaryTree<int>::postOrderTrav_R(bt2.root());
-    DEBUG<<"--------------------";
-    bt2.postOrderTrav();
-    DEBUG<<"--------------------";
+//    BinaryTree<int>::postOrderTrav_R(bt2.root());
+//    DEBUG<<"--------------------";
+//    bt2.postOrderTrav();
+//    DEBUG<<"--------------------";
     DEBUG << "叶子节点个数: " << bt2.leafCount();
     DEBUG << "深度: " << bt2.depth();
+//    bt2.levelOrderTrav();
 
-    BinaryTree<int> bt3;
-    BinaryTree<int>::copyTree(bt3.root(), bt2.root());
-    BinaryTree<int>::postOrderTrav_R(bt3.root());
-    DEBUG<<"--------------------";
-    bt3.postOrderTrav();
-    DEBUG<<"--------------------";
-    DEBUG << "叶子节点个数: " << bt3.leafCount();
-    DEBUG << "深度: " << bt3.depth();
+//    BinaryTree<int> bt3;
+//    BinaryTree<int>::copyTree(bt3.root(), bt2.root());
+//    BinaryTree<int>::postOrderTrav_R(bt3.root());
+//    DEBUG<<"--------------------";
+//    bt3.postOrderTrav();
+//    DEBUG<<"--------------------";
+//    DEBUG << "叶子节点个数: " << bt3.leafCount();
+//    DEBUG << "深度: " << bt3.depth();
 }
