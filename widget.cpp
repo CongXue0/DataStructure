@@ -8,6 +8,7 @@
 #include "src/09_Sorting/chapter9_part1.h"
 #include "src/02_StackAndQueue/chapter2_part1.h"
 #include "src/04_Tree/chapter4_part1.h"
+#include "src/06_Graph/chapter6_part1.h"
 
 void Widget::loadQuestion()
 {
@@ -28,6 +29,9 @@ void Widget::loadQuestion()
     m_bank.addQuestion(1, Question("表达式求值", Chapter2_Part1::practice_004, 3, "扫地僧"));
 
     m_bank.addQuestion(3, Question("二叉树demo", Chapter4_Part1::practice_000, 2, "扫地僧"));
+
+    m_bank.addQuestion(5, Question("邻接矩阵demo", Chapter6_Part1::practice_000, 4, "王道"));
+    m_bank.addQuestion(5, Question("单源最短路径", Chapter6_Part1::practice_020, 3, "王道"));
 
     m_bank.addQuestion(7, Question("二分查找demo", Chapter8_Part1::practice_000, 1, "王道"));
 

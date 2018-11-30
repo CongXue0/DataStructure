@@ -38,7 +38,9 @@ SOURCES += main.cpp \
     src/08_Search/chapter8_part1.cpp \
     src/utils/mydebug.cpp \
     src/02_StackAndQueue/chapter2_part1.cpp \
-    src/04_Tree/chapter4_part1.cpp
+    src/04_Tree/chapter4_part1.cpp \
+    src/06_Graph/adjacencymatrixgraph.cpp \
+    src/06_Graph/chapter6_part1.cpp
 
 HEADERS  += widget.h \
     src/utils/tool.h \
@@ -63,6 +65,8 @@ HEADERS  += widget.h \
     src/02_StackAndQueue/linkqueue.h \
     src/04_Tree/chapter4_part1.h \
     src/04_Tree/binarytree.h \
-    src/04_Tree/threadbinarytree.h
+    src/04_Tree/threadbinarytree.h \
+    src/06_Graph/adjacencymatrixgraph.h \
+    src/06_Graph/chapter6_part1.h
 
 FORMS    += widget.ui
