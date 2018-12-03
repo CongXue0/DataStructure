@@ -67,6 +67,7 @@ HEADERS  += widget.h \
     src/04_Tree/binarytree.h \
     src/04_Tree/threadbinarytree.h \
     src/06_Graph/adjacencymatrixgraph.h \
-    src/06_Graph/chapter6_part1.h
+    src/06_Graph/chapter6_part1.h \
+    src/06_Graph/graph.h
 
 FORMS    += widget.ui

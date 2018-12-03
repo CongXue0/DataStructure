@@ -32,6 +32,7 @@ void Widget::loadQuestion()
 
     m_bank.addQuestion(5, Question("邻接矩阵demo", Chapter6_Part1::practice_000, 4, "王道"));
     m_bank.addQuestion(5, Question("单源最短路径", Chapter6_Part1::practice_020, 3, "王道"));
+    m_bank.addQuestion(5, Question("Prim算法", Chapter6_Part1::practice_021, 3, "王道"));
 
     m_bank.addQuestion(7, Question("二分查找demo", Chapter8_Part1::practice_000, 1, "王道"));
 

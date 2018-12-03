@@ -20,6 +20,7 @@ public:
     void insert(int i, const T &t);
     void append(const T &t);
     void removeAt(int i);
+    void removeAll(const T &t);
     QString print();
 
 private:
@@ -136,6 +137,28 @@ void SeqList<T>::removeAt(int i)
     m_length--;
     for (int j = i; j < m_length; j++)
         m_elem[j] = m_elem[j + 1];
+}
+
+template<typename T>
+void SeqList<T>::removeAll(const T &t)
+{
+    int i, j, num = 0;
+    for (i = 0, j = 0; i < m_length; i++)
+    {
+        if (m_elem[i] != t)
+        {
+            if (num > 0)
+            {
+                m_elem[j] = m_elem[i];
+            }
+            j++;
+        }
+        else
+        {
+            num++;
+        }
+    }
+    m_length = m_length - num;
 }
 
 template<typename T>

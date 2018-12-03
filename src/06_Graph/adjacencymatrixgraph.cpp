@@ -64,7 +64,7 @@ bool AdjacencyMatrixGraph::isVertexExist(int v)
 
 bool AdjacencyMatrixGraph::isArcExist(int v, int w)
 {
-    if (v >= m_capacity || v < 0 || w >= m_capacity || v == w || w < 0)
+    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0 || v == w)
         return false;
     return m_arc[v][w] > 0;
 }
@@ -85,7 +85,7 @@ int AdjacencyMatrixGraph::firstAdjVex(int v)
 
 int AdjacencyMatrixGraph::nextAdjVex(int v, int w)
 {
-    if (v >= m_capacity || v < 0 || w >= m_capacity || v == w || w < 0)
+    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0 || v == w)
         return -1;
     for (int i = w + 1; i < m_capacity; i++)
     {
@@ -201,10 +201,8 @@ void AdjacencyMatrixGraph::removeVertex(int v)
 
 void AdjacencyMatrixGraph::insertDArc(int v, int w, int value)
 {
-    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0 || v == w)
+    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0 || v == w || value < 1)
         return;
-    if (value == 0)
-        value = 1;
     if (m_arc[v][w] == 0)
     {
         m_arc[v][w] = value;
@@ -214,10 +212,8 @@ void AdjacencyMatrixGraph::insertDArc(int v, int w, int value)
 
 void AdjacencyMatrixGraph::insertUArc(int v, int w, int value)
 {
-    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0 || v == w)
+    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0 || v == w || value < 1)
         return;
-    if (value == 0)
-        value = 1;
     if (m_arc[v][w] == 0)
     {
         m_arc[v][w] = value;
@@ -228,6 +224,81 @@ void AdjacencyMatrixGraph::insertUArc(int v, int w, int value)
         m_arc[w][v] = value;
         m_arcNum++;
     }
+}
+
+void AdjacencyMatrixGraph::insertDArcs(LinkList<ARC> &arcList)
+{
+    LinkList<ARC>::LinkListNode *header = arcList.m_header;
+    while (header != NULL)
+    {
+        if (m_arc[header->data.v][header->data.w] == 0)
+        {
+            m_arc[header->data.v][header->data.w] = header->data.val;
+            m_arcNum++;
+        }
+        header = header->next;
+    }
+}
+
+void AdjacencyMatrixGraph::insertUArcs(LinkList<ARC> &arcList)
+{
+    LinkList<ARC>::LinkListNode *header = arcList.m_header;
+    while (header != NULL)
+    {
+        if (m_arc[header->data.v][header->data.w] == 0)
+        {
+            m_arc[header->data.v][header->data.w] = header->data.val;
+            m_arcNum++;
+        }
+        if (m_arc[header->data.w][header->data.v] == 0)
+        {
+            m_arc[header->data.w][header->data.v] = header->data.val;
+            m_arcNum++;
+        }
+        header = header->next;
+    }
+}
+
+void AdjacencyMatrixGraph::removeDArc(int v, int w)
+{
+    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0)
+        return;
+    if (m_arc[v][w] > 0)
+    {
+        m_arc[v][w] = 0;
+        m_arcNum--;
+    }
+}
+
+void AdjacencyMatrixGraph::removeUArc(int v, int w)
+{
+    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0)
+        return;
+    if (m_arc[v][w] > 0)
+    {
+        m_arc[v][w] = 0;
+        m_arcNum--;
+    }
+    if (m_arc[w][v] > 0)
+    {
+        m_arc[w][v] = 0;
+        m_arcNum--;
+    }
+}
+
+void AdjacencyMatrixGraph::setValue(int v, int w, int value)
+{
+    if (isArcExist(v, w) && value > 0)
+    {
+        m_arc[v][w] = value;
+    }
+}
+
+int AdjacencyMatrixGraph::getValue(int v, int w)
+{
+    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0)
+        return 0;
+    return m_arc[v][w];
 }
 
 void AdjacencyMatrixGraph::BFSTraverse()

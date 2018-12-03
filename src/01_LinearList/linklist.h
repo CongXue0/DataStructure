@@ -5,12 +5,6 @@
 #include <QString>
 
 template <typename T>
-struct C_LinkL
-{
-
-};
-
-template <typename T>
 class LinkList
 {
 public:
@@ -32,10 +26,11 @@ public:
     T &operator[](int i);
     void insert(int i, const T &t);
     void append(const T &t);
+    LinkList<T> &operator<<(const T &t) { append(t); return *this; }
     void removeAt(int i);
     QString print();
 
-private:
+public:
     LinkListNode *m_header;
     int m_length;
 };
