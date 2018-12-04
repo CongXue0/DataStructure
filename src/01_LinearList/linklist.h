@@ -28,6 +28,8 @@ public:
     void append(const T &t);
     LinkList<T> &operator<<(const T &t) { append(t); return *this; }
     void removeAt(int i);
+    void removeAll(const T &t);
+    bool contains(const T &t);
     QString print();
 
 public:
@@ -150,6 +152,53 @@ void LinkList<T>::removeAt(int i)
         delete tmp2;
     }
     m_length--;
+}
+
+template<typename T>
+void LinkList<T>::removeAll(const T &t)
+{
+    LinkListNode *tmp1 = NULL;
+    LinkListNode *tmp2 = m_header;
+    int i = 0;
+    while (tmp2 != NULL)
+    {
+        if (tmp2->data == t)
+        {
+            if (i == 0)
+            {
+                m_header = tmp2->next;
+                delete tmp2;
+                m_length--;
+                tmp2 = m_header;
+            }
+            else
+            {
+                tmp1->next = tmp2->next;
+                delete tmp2;
+                m_length--;
+                tmp2 = tmp1->next;
+            }
+        }
+        else
+        {
+            tmp1 = tmp2;
+            tmp2 = tmp2->next;
+            i++;
+        }
+    }
+}
+
+template<typename T>
+bool LinkList<T>::contains(const T &t)
+{
+    LinkListNode *tmp = m_header;
+    while (tmp != NULL)
+    {
+        if (tmp->data == t)
+            return true;
+        tmp = tmp->next;
+    }
+    return false;
 }
 
 template<typename T>

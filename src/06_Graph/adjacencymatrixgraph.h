@@ -20,6 +20,8 @@ public:
     void clear();
     bool isVertexExist(int v);
     bool isArcExist(int v, int w);//边v -> w是否存在
+    bool isVertexConnected(int v, int w);//v 与 w 是否连通
+    bool isGraphConnected();//是否是连通图
     int firstAdjVex(int v);//返回v的第一个邻接顶点，若无返回-1
     int nextAdjVex(int v, int w);//返回v相对于w的第一个邻接顶点，若无返回-1
     int addVertex();//增加1个新的顶点，返回顶点标号，标号从0开始
@@ -32,7 +34,7 @@ public:
     void removeDArc(int v, int w);//删除有向边
     void removeUArc(int v, int w);//删除无向边
     void setValue(int v, int w, int value);//修改边的权值
-    int getValue(int v, int w);
+    int getValue(int v, int w);//获取边的权值，获取失败返回0
     void BFSTraverse();//广度优先搜索 Breadth-First-Search
     void DFSTraverse();//深度优先搜索 Depth-First-Search
     void print();

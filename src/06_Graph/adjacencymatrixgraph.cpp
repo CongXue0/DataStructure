@@ -69,6 +69,70 @@ bool AdjacencyMatrixGraph::isArcExist(int v, int w)
     return m_arc[v][w] > 0;
 }
 
+bool AdjacencyMatrixGraph::isVertexConnected(int v, int w)
+{
+    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0 || v == w || !isVertexExist(v) || !isVertexExist(w))
+        return false;
+    SeqList<int> list;
+    list.append(v);
+    int i, j, num = 1, len;
+    while (num > 0)//深度遍历
+    {
+        len = list.getLength();
+        i = len - num;
+        num = 0;
+        for (; i < len; i++)
+        {
+            for (j = firstAdjVex(list.at(i)); j >= 0; j = nextAdjVex(list.at(i), j))
+            {
+                if (j == w)//剪枝
+                    return true;
+                if (!list.contains(j))
+                {
+                    list.append(j);
+                    num++;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool AdjacencyMatrixGraph::isGraphConnected()
+{
+    if (m_verNum < 2)
+        return false;
+    SeqList<int> list;
+    int i, j, num = 0, len;
+    for (i = 0; i < m_capacity; i++)//选出一个起始顶点
+    {
+        if (m_vexs[i] > 0)
+        {
+            list.append(m_vexs[i]);
+            num = 1;
+            break;
+        }
+    }
+    while (num > 0)//深度遍历
+    {
+        len = list.getLength();
+        i = len - num;
+        num = 0;
+        for (; i < len; i++)
+        {
+            for (j = firstAdjVex(list.at(i)); j >= 0; j = nextAdjVex(list.at(i), j))
+            {
+                if (!list.contains(j))
+                {
+                    list.append(j);
+                    num++;
+                }
+            }
+        }
+    }
+    return list.getLength() == m_verNum;
+}
+
 int AdjacencyMatrixGraph::firstAdjVex(int v)
 {
     if (v >= m_capacity || v < 0)
@@ -327,13 +391,20 @@ void AdjacencyMatrixGraph::DFSTraverse()
 
 void AdjacencyMatrixGraph::print()
 {
+    QString line1;
     for (int i = 0; i < m_capacity; i++)
     {
-        QString line;
-        for (int j = 0; j < m_capacity; j++)
-            line.append(QString::number(m_arc[i][j]) + " ");
-        DEBUG<<line;
+        line1.append(QString::number(m_vexs[i]) + " ");
     }
+    DEBUG<<line1;
+    for (int i = 0; i < m_capacity; i++)
+    {
+        QString line2;
+        for (int j = 0; j < m_capacity; j++)
+            line2.append(QString::number(m_arc[i][j]) + " ");
+        DEBUG<<line2;
+    }
+
 }
 
 void AdjacencyMatrixGraph::BFS(AdjacencyMatrixGraph *g, int v)

@@ -25,7 +25,22 @@ void Chapter6_Part1::practice_000(QString input, QString &result)
 //    graph.BFSTraverse();
 //    DEBUG<<"--------------------";
 
-    graph.DFSTraverse();
+//    graph.DFSTraverse();
+
+    DEBUG<<graph.isVertexConnected(0, 7);
+    DEBUG<<graph.isVertexConnected(7, 6);
+    DEBUG<<graph.isVertexConnected(6, 9);
+    DEBUG<<graph.isVertexConnected(5, 4);
+    DEBUG<<graph.isVertexConnected(1, 2);
+    DEBUG<<graph.isVertexConnected(0, 8);
+    DEBUG<<graph.isVertexConnected(2, 8);
+    DEBUG<<graph.isVertexConnected(5, 8);
+    DEBUG<<graph.isVertexConnected(0, 0);
+    DEBUG<<"--------------------";
+
+    DEBUG<<graph.isGraphConnected();
+    graph.insertUArc(2, 8);
+    DEBUG<<graph.isGraphConnected();
 }
 
 /*
@@ -90,7 +105,7 @@ void Chapter6_Part1::practice_020(QString input, QString &result)
 }
 
 /*
-无向图最小生成树Prim（普里姆）算法
+无向连通图最小生成树 Prim（普里姆）算法
 */
 void Prim(AdjMGraph *g, AdjMGraph *t)
 {
@@ -110,7 +125,7 @@ void Prim(AdjMGraph *g, AdjMGraph *t)
         newlist.append(veslist.at(0));
         veslist.removeAt(0);
     }
-    while (veslist.getLength() > 0)
+    while (veslist.getLength() > 0)//从v属于newlist，w属于veslist，中选一条权值最小的边<v, w>加入图t，w加入newlist，veslist移除w
     {
         value = 0;
         for (i = 0; i < newlist.getLength(); i++)
@@ -136,21 +151,62 @@ void Chapter6_Part1::practice_021(QString input, QString &result)
 {
     Q_UNUSED(input);Q_UNUSED(result);
     AdjMGraph graph;
-    graph.addVertexs(10);
     LinkList<ARC> list;
-    list << ARC(0, 1) << ARC(0, 2) << ARC(0, 6) << ARC(0, 7) << ARC(6, 7) << ARC(1, 3) << ARC(2, 3) << ARC(5, 1) <<
-        ARC(5, 9) << ARC(9, 3) << ARC(3, 4) << ARC(2, 4) << ARC(2, 8);
+    graph.addVertexs(9);
+    list << ARC(0, 1, 1) << ARC(0, 2, 10) << ARC(0, 6, 7) << ARC(0, 5, 6) << ARC(6, 5, 3) << ARC(1, 6, 4) <<
+        ARC(1, 3, 2) << ARC(3, 2, 4) << ARC(7, 6, 10) << ARC(7, 1, 11) << ARC(5, 8, 4) << ARC(2, 8, 3) <<
+        ARC(2, 5, 1) << ARC(6, 4, 7) << ARC(5, 4, 2);
     graph.insertUArcs(list);
     AdjMGraph t;
     Prim(&graph, &t);
     t.print();
 }
 
+/*
+无向连通图最小生成树 Kruskal（克鲁斯卡尔）算法
+*/
+void Kruskal(AdjMGraph *g, AdjMGraph *t)
+{
+    int i, j, min;
+    SeqList<ARC> list;
+    t->addVertexs(g->getVerNum());
+    for (i = 1; i < g->m_capacity; i++)
+    {
+        for (j = 0; j < i; j++)
+        {
+            if (g->m_arc[i][j] > 0)
+            {
+                list.append(ARC(i, j, g->m_arc[i][j]));
+            }
+        }
+    }
+    while (!t->isGraphConnected() && list.getLength() > 0)
+    {
+        for (i = 1, min = 0; i < list.getLength(); i++)//选出最小权值的边
+        {
+            if (list.at(i).val < list.at(min).val)
+            {
+                min = i;
+            }
+        }
+        if (!t->isVertexConnected(list.at(min).v, list.at(min).w))//两点不相通才插入
+        {
+            t->insertUArc(list.at(min).v, list.at(min).w, list.at(min).val);
+        }
+        list.removeAt(min);
+    }
+}
 void Chapter6_Part1::practice_022(QString input, QString &result)
 {
     Q_UNUSED(input);Q_UNUSED(result);
-
-
-
-
+    AdjMGraph graph;
+    LinkList<ARC> list;
+    graph.addVertexs(9);
+    list << ARC(0, 1, 1) << ARC(0, 2, 10) << ARC(0, 6, 7) << ARC(0, 5, 6) << ARC(6, 5, 3) << ARC(1, 6, 4) <<
+        ARC(1, 3, 2) << ARC(3, 2, 4) << ARC(7, 6, 10) << ARC(7, 1, 11) << ARC(5, 8, 4) << ARC(2, 8, 3) <<
+        ARC(2, 5, 1) << ARC(6, 4, 7) << ARC(5, 4, 2);
+    graph.insertUArcs(list);
+    AdjMGraph t;
+    Kruskal(&graph, &t);
+    t.print();
 }

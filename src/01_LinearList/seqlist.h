@@ -21,6 +21,7 @@ public:
     void append(const T &t);
     void removeAt(int i);
     void removeAll(const T &t);
+    bool contains(const T &t);
     QString print();
 
 private:
@@ -159,6 +160,17 @@ void SeqList<T>::removeAll(const T &t)
         }
     }
     m_length = m_length - num;
+}
+
+template<typename T>
+bool SeqList<T>::contains(const T &t)
+{
+    for (int i = 0; i < m_length; i++)
+    {
+        if (m_elem[i] == t)
+            return true;
+    }
+    return false;
 }
 
 template<typename T>
