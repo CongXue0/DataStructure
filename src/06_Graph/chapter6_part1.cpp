@@ -114,7 +114,7 @@ void Prim(AdjMGraph *g, AdjMGraph *t)
     SeqList<int> newlist;
     for (i = 0; i < g->m_capacity; i++)//生成点集
     {
-        if (g->m_vexs[i] != 0)
+        if (g->m_vexs[i] > 0)
         {
             veslist.append(i);
         }
@@ -209,4 +209,94 @@ void Chapter6_Part1::practice_022(QString input, QString &result)
     AdjMGraph t;
     Kruskal(&graph, &t);
     t.print();
+}
+
+/*
+单源最短路径 Dijkstra算法
+*/
+void Dijkstra(AdjMGraph *g, int v, int w, LinkList<int> &ret)
+{
+    int i, min;
+    SeqList<int> vlist, slist;
+    int *dist, *path;
+    dist = new int[g->getVerNum()];//记录从v出发到其他各顶点的最短路径长度
+    path = new int[g->getVerNum()];//path[i] 记录v到i最短路径上的倒数第二个顶点
+    for (i = 0; i < g->getVerNum(); i++)//生成点集，初始化 dist, path
+    {
+        vlist.append(i);
+        dist[i] = g->getValue(v, i);
+        path[i] = (dist[i] > 0 ? v : -1);
+    }
+    vlist.removeAll(v);
+    slist.append(v);
+
+    while (vlist.getLength() > 0)
+    {
+        for (i = 1, min = 0; i < vlist.getLength(); i++)//从vlist中选出距离v最短的点加入slist，并从vlist中去除
+        {
+            if ((dist[vlist.at(i)] < dist[vlist.at(min)] && dist[vlist.at(i)] > 0) || dist[vlist.at(min)] == 0)
+            {
+                min = i;
+            }
+        }
+        slist.append(vlist.at(min));
+        vlist.removeAt(min);
+        min = slist.at(slist.getLength() - 1);
+
+        for (i = 0; i < vlist.getLength(); i++)//最短路径长度修正
+        {
+            if (g->isArcExist(min, vlist.at(i)))
+            {
+                if (dist[vlist.at(i)] == 0)
+                {
+                    dist[vlist.at(i)] = dist[min] + g->getValue(min, vlist.at(i));
+                    path[vlist.at(i)] = min;
+                }
+                else
+                {
+                    if (dist[vlist.at(i)] > dist[min] + g->getValue(min, vlist.at(i)))
+                    {
+                        dist[vlist.at(i)] = dist[min] + g->getValue(min, vlist.at(i));
+                        path[vlist.at(i)] = min;
+                    }
+                }
+            }
+        }
+    }
+
+    ret.insert(0, w);
+    while (path[w] >= 0)
+    {
+        ret.insert(0, path[w]);
+        w = path[w];
+    }
+    delete dist;
+    delete path;
+}
+void Chapter6_Part1::practice_023(QString input, QString &result)
+{
+    Q_UNUSED(input);Q_UNUSED(result);
+    AdjMGraph graph;
+    LinkList<ARC> list;
+    graph.addVertexs(9);
+    list << ARC(0, 1, 1) << ARC(0, 2, 10) << ARC(0, 6, 7) << ARC(0, 5, 6) << ARC(6, 5, 3) << ARC(1, 6, 4) <<
+        ARC(1, 3, 2) << ARC(3, 2, 4) << ARC(7, 6, 10) << ARC(7, 1, 11) << ARC(5, 8, 4) << ARC(2, 8, 3) <<
+        ARC(2, 5, 1) << ARC(6, 4, 7) << ARC(5, 4, 2);
+    graph.insertUArcs(list);
+
+    LinkList<int> ret;
+    Dijkstra(&graph, 4, 3, ret);
+    DEBUG<<"4 -> 3: "<<ret.print();
+    ret.clear();
+    Dijkstra(&graph, 0, 6, ret);
+    DEBUG<<"0 -> 6: "<<ret.print();
+    ret.clear();
+    Dijkstra(&graph, 5, 7, ret);
+    DEBUG<<"5 -> 7: "<<ret.print();
+    ret.clear();
+    Dijkstra(&graph, 0, 2, ret);
+    DEBUG<<"0 -> 2: "<<ret.print();
+    ret.clear();
+    Dijkstra(&graph, 6, 8, ret);
+    DEBUG<<"6 -> 8: "<<ret.print();
 }

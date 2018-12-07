@@ -12,6 +12,7 @@ public:
     static void practice_020(QString input, QString &result);
     static void practice_021(QString input, QString &result);
     static void practice_022(QString input, QString &result);
+    static void practice_023(QString input, QString &result);
 
 };
 
