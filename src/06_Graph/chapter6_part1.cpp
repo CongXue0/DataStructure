@@ -3,13 +3,13 @@
 #include "src/utils/tool.h"
 #include "src/02_StackAndQueue/linkqueue.h"
 #include "src/01_LinearList/seqlist.h"
+#include "src/utils/virtualio.h"
 
 /*
 邻接矩阵demo
 */
-void Chapter6_Part1::practice_000(QString input, QString &result)
+void Chapter6_Part1::practice_000()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     AdjMGraph graph;
     graph.addVertexs(10);
     LinkList<ARC> list;
@@ -87,9 +87,8 @@ int BFS_MIN_Distance(AdjMGraph *g, int v, int w)
     delete[] visited;
     return ret;
 }
-void Chapter6_Part1::practice_020(QString input, QString &result)
+void Chapter6_Part1::practice_020()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     AdjMGraph graph;
     graph.addVertexs(10);
     LinkList<ARC> list;
@@ -147,9 +146,8 @@ void Prim(AdjMGraph *g, AdjMGraph *t)
         veslist.removeAll(w);
     }
 }
-void Chapter6_Part1::practice_021(QString input, QString &result)
+void Chapter6_Part1::practice_021()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     AdjMGraph graph;
     LinkList<ARC> list;
     graph.addVertexs(9);
@@ -196,9 +194,8 @@ void Kruskal(AdjMGraph *g, AdjMGraph *t)
         list.removeAt(min);
     }
 }
-void Chapter6_Part1::practice_022(QString input, QString &result)
+void Chapter6_Part1::practice_022()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     AdjMGraph graph;
     LinkList<ARC> list;
     graph.addVertexs(9);
@@ -273,9 +270,8 @@ void Dijkstra(AdjMGraph *g, int v, int w, LinkList<int> &ret)
     delete dist;
     delete path;
 }
-void Chapter6_Part1::practice_023(QString input, QString &result)
+void Chapter6_Part1::practice_023()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     AdjMGraph graph;
     LinkList<ARC> list;
     graph.addVertexs(9);
@@ -299,4 +295,14 @@ void Chapter6_Part1::practice_023(QString input, QString &result)
     ret.clear();
     Dijkstra(&graph, 6, 8, ret);
     DEBUG<<"6 -> 8: "<<ret.print();
+}
+
+void Chapter6_Part1::practice_024()
+{
+    int a, b;
+    char str[100];
+    VIO::scanf("%d %d", &a, &b);
+    VIO::printf("a = %03d, b = %05d\n", a, b);
+    VIO::scanf("%s", str);
+    VIO::printf("str:%s\n", str);
 }

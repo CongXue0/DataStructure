@@ -9,6 +9,7 @@
 #include "src/02_StackAndQueue/chapter2_part1.h"
 #include "src/04_Tree/chapter4_part1.h"
 #include "src/06_Graph/chapter6_part1.h"
+#include "src/utils/virtualio.h"
 
 void Widget::loadQuestion()
 {
@@ -35,6 +36,7 @@ void Widget::loadQuestion()
     m_bank.addQuestion(5, Question("Prim算法", Chapter6_Part1::practice_021, 3, "王道"));
     m_bank.addQuestion(5, Question("Kruskal算法", Chapter6_Part1::practice_022, 3, "王道"));
     m_bank.addQuestion(5, Question("Dijkstra算法", Chapter6_Part1::practice_023, 4, "王道"));
+    m_bank.addQuestion(5, Question("test", Chapter6_Part1::practice_024, 4, "王道"));
 
     m_bank.addQuestion(7, Question("二分查找demo", Chapter8_Part1::practice_000, 1, "王道"));
 
@@ -125,8 +127,10 @@ void Widget::slot_pushButton_exec_clicked()
     }
 
     MyDebug::clear();
-    QString result;
-    m_bank.execSolution(ui->comboBox_chapter->currentIndex(), ui->comboBox_question->currentIndex(), ui->textEdit_input->toPlainText(), result);
-    result = MyDebug::infoPop();
+    QString input = ui->textEdit_input->toPlainText();
+    VIO::clearInput();
+    VIO::setInput(input);
+    m_bank.execSolution(ui->comboBox_chapter->currentIndex(), ui->comboBox_question->currentIndex());
+    QString result = MyDebug::infoPop();
     ui->textEdit_result->setText(result);
 }

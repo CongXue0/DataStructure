@@ -40,7 +40,8 @@ SOURCES += main.cpp \
     src/02_StackAndQueue/chapter2_part1.cpp \
     src/04_Tree/chapter4_part1.cpp \
     src/06_Graph/adjacencymatrixgraph.cpp \
-    src/06_Graph/chapter6_part1.cpp
+    src/06_Graph/chapter6_part1.cpp \
+    src/utils/virtualio.cpp
 
 HEADERS  += widget.h \
     src/utils/tool.h \
@@ -68,6 +69,7 @@ HEADERS  += widget.h \
     src/04_Tree/threadbinarytree.h \
     src/06_Graph/adjacencymatrixgraph.h \
     src/06_Graph/chapter6_part1.h \
-    src/06_Graph/graph.h
+    src/06_Graph/graph.h \
+    src/utils/virtualio.h
 
 FORMS    += widget.ui

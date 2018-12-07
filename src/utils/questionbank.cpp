@@ -38,7 +38,7 @@ QString QuestionBank::getQuestionDescription(int chapterIndex, int questionIndex
     return m_list[chapterIndex][questionIndex].getDescription();
 }
 
-void QuestionBank::execSolution(int chapterIndex, int questionIndex, QString input, QString &result)
+void QuestionBank::execSolution(int chapterIndex, int questionIndex)
 {
     if (chapterIndex < 0)
         chapterIndex = 0;
@@ -47,13 +47,11 @@ void QuestionBank::execSolution(int chapterIndex, int questionIndex, QString inp
     int count = m_list[chapterIndex].count();
     if (count == 0)
     {
-        result = "";
         return;
     }
     if (questionIndex < 0)
         questionIndex = 0;
     if (questionIndex > count - 1)
         questionIndex = count - 1;
-    result = "";
-    m_list[chapterIndex][questionIndex].exec(input, result);
+    m_list[chapterIndex][questionIndex].exec();
 }

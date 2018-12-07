@@ -13,10 +13,7 @@ public:
     void addQuestion(int chapterIndex, Question question);
     int getQuestionCount(int chapterIndex);
     QString getQuestionDescription(int chapterIndex, int questionIndex);
-    void execSolution(int chapterIndex, int questionIndex, QString input, QString &result);
-signals:
-
-public slots:
+    void execSolution(int chapterIndex, int questionIndex);
 
 private:
     QList<Question> m_list[MAX_CHAPTER_NUM];

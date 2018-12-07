@@ -8,7 +8,7 @@ class Chapter8_Part1
 public:
     Chapter8_Part1() = delete;
 
-    static void practice_000(QString input, QString &result);
+    static void practice_000();
 
 };
 

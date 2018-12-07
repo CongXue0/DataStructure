@@ -2,13 +2,13 @@
 #include "src/09_Sorting/sorting.h"
 #include "src/utils/tool.h"
 #include <QDateTime>
+#include "src/utils/virtualio.h"
 
 /*
 排序demo
 */
-void Chapter9_Part1::practice_000(QString input, QString &result)
+void Chapter9_Part1::practice_000()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     const int len = 10000000;
     int *arr = new int[len];
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
@@ -125,19 +125,18 @@ int searchRight(int arr[], int low, int high,  const int &key)//二分之右
     }
     return high;
 }
-void Chapter9_Part1::practice_100(QString input, QString &result)
+void Chapter9_Part1::practice_100()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     int i, j;
     int size, count, left, right;
     int *arr = NULL;
-    scanf("%d %d", &size, &count);
+    VIO::scanf("%d %d", &size, &count);
     if (size > 0)
         arr = new int[size];
 
     for (i = 0; i < size; i++)
     {
-        scanf("%d", arr + i);
+        VIO::scanf("%d", arr + i);
     }
 
     if (arr != NULL)
@@ -145,15 +144,15 @@ void Chapter9_Part1::practice_100(QString input, QString &result)
         Sorting::mergeSort<int>(arr, 0, size - 1);
     for (i = 0; i < count; i++)
     {
-        scanf("%d %d", &left, &right);
+        VIO::scanf("%d %d", &left, &right);
         if (size <= 0)
             printf("0\n");
         else
         {
             //i1 = searchLeft(arr, 0, size - 1, left);
             //i2 = searchRight(arr, 0, size - 1, right);
-            //printf("%d\n", i2 - i1);
-            printf("%d\n", searchRight(arr, 0, size - 1, right) - searchLeft(arr, 0, size - 1, left));
+            //VIO::printf("%d\n", i2 - i1);
+            VIO::printf("%d\n", searchRight(arr, 0, size - 1, right) - searchLeft(arr, 0, size - 1, left));
         }
     }
     if (arr != NULL)

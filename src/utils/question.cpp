@@ -6,7 +6,7 @@ Question::Question()
     m_func = NULL;
 }
 
-Question::Question(QString description, void (*func)(QString, QString &), int level, QString source)
+Question::Question(QString description, void (*func)(), int level, QString source)
 {
     m_description = description;
     m_func = func;
@@ -28,19 +28,15 @@ QString Question::getDescription()
     return m_description;
 }
 
-void Question::setFunc(void (*func)(QString, QString &))
+void Question::setFunc(void (*func)())
 {
     m_func = func;
 }
 
-void Question::exec(QString input, QString &result)
+void Question::exec()
 {
     if (m_func != NULL)
     {
-        m_func(input, result);
-    }
-    else
-    {
-        result = "";
+        m_func();
     }
 }

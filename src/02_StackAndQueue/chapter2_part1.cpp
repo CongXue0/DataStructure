@@ -8,9 +8,8 @@
 /*
 栈与队列demo
 */
-void Chapter2_Part1::practice_000(QString input, QString &result)
+void Chapter2_Part1::practice_000()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
 //    SeqStack<int> stack;
     LinkStack<int> stack;
     stack.push(1);
@@ -58,9 +57,8 @@ void convert(SeqStack<char>& stack, unsigned long long num, int base)
         num = num / base;
     }
 }
-void Chapter2_Part1::practice_001(QString input, QString &result)
+void Chapter2_Part1::practice_001()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     SeqStack<char> stack;
     unsigned long long num = 123;
     convert(stack, num, 16);
@@ -114,9 +112,8 @@ bool nearestMatch(const char exp[], int low, int high)
         return false;
     }
 }
-void Chapter2_Part1::practice_002(QString input, QString &result)
+void Chapter2_Part1::practice_002()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     char str[500] = "{(4+5)-<3, 4>}&&{456-876}+<3, 90>";
     DEBUG<<nearestMatch(str, 0, 100);
 }
@@ -159,9 +156,8 @@ bool isStackShuffle(int arrA[], int arrB[], int len)
     }
     return (pt == -1);
 }
-void Chapter2_Part1::practice_003(QString input, QString &result)
+void Chapter2_Part1::practice_003()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     //右边为栈顶
     int arrA[5] = {5, 4, 3, 2, 1};
     int arrB[5] = {3, 4, 2, 5, 1};
@@ -313,9 +309,8 @@ int suffixExpression_calc(char *expression)
     }
     return stack.top();
 }
-void Chapter2_Part1::practice_004(QString input, QString &result)
+void Chapter2_Part1::practice_004()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
 //    char *expression1 = "(1 - 4) * 8 + 29 / ((5 - 2) * 3)";
     char *expression1 = "-1 * 20 + 100";
     char buffer[50];

@@ -4,10 +4,8 @@
 /*
 二叉树demo
 */
-void Chapter4_Part1::practice_000(QString input, QString &result)
+void Chapter4_Part1::practice_000()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
-
 //    BinaryTree<int> bt1;
 //    bt1.insert(20);
 //    bt1.insert(15);

@@ -23,7 +23,6 @@ private slots:
 
 private:
     Ui::Widget *ui;
-
     QuestionBank m_bank;
 
 };

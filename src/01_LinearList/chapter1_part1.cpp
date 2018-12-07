@@ -3,13 +3,13 @@
 #include "src/01_LinearList/seqlist.h"
 #include "src/01_LinearList/linklist.h"
 #include "src/01_LinearList/doublelinklist.h"
+#include "src/utils/virtualio.h"
 
 /*
 链表demo
 */
-void Chapter1_Part1::practice_000(QString input, QString &result)
+void Chapter1_Part1::practice_000()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
 //    SeqList<int> list;
 //    list.insert(0, 1);
 //    list.insert(0, -1);
@@ -27,9 +27,8 @@ void Chapter1_Part1::practice_000(QString input, QString &result)
 /*
 双向链表demo
 */
-void Chapter1_Part1::practice_001(QString input, QString &result)
+void Chapter1_Part1::practice_001()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     DoubleLinkList<int> list;
     list.append(-1);
     list.append(-2);
@@ -64,9 +63,8 @@ void reverseArr(int arr[], int low, int high)
         low++, high--;
     }
 }
-void Chapter1_Part1::practice_002(QString input, QString &result)
+void Chapter1_Part1::practice_002()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     int arr[20];
     Tool::createRandArr(arr, 20, 0, 200);
     DEBUG<<Tool::printArr(arr, 0, 19);
@@ -101,9 +99,8 @@ void removeAllFromArr(int arr[], int low, int high, int s, int t, int &len)
     }
     len -= num;
 }
-void Chapter1_Part1::practice_003(QString input, QString &result)
+void Chapter1_Part1::practice_003()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     int len = 20;
     int arr[20];
     Tool::createRandArr(arr, len, 0, 100);
@@ -146,9 +143,8 @@ void exchangeArr(int arr[], int low, int mid, int high)//交换[low,mid-1] [mid,
         tmp1++, tmp2--;
     }
 }
-void Chapter1_Part1::practice_004(QString input, QString &result)
+void Chapter1_Part1::practice_004()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     const int len = 20;
     int arr[len];
     Tool::createRandArr(arr, len, 0, 100);
@@ -192,9 +188,8 @@ int searchMainElem(int arr[], int low, int high)
     else
         return -1;
 }
-void Chapter1_Part1::practice_005(QString input, QString &result)
+void Chapter1_Part1::practice_005()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     int arr[11] = {1, 5, 5, 0, 10, 5, 5, 99, 4, 5, 5};
     DEBUG<<"main elem:"<<searchMainElem(arr, 0, 10);
 }
@@ -202,12 +197,9 @@ void Chapter1_Part1::practice_005(QString input, QString &result)
 /*
 逆位序输入n个元素的值，建立单链表list
 */
-void Chapter1_Part1::practice_050(QString input, QString &result)
+void Chapter1_Part1::practice_050()
 {
-    if (input.isEmpty())
-    {
-        input = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
-    }
+    QString input = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
     QStringList strList = input.split('\n');
 
     LinkList<int> list;
@@ -221,9 +213,8 @@ void Chapter1_Part1::practice_050(QString input, QString &result)
 /*
 已知顺序表 La 和 Lb 的元素递增排列，归并 La 和 Lb 到 Lc，使其也为递增排列
 */
-void Chapter1_Part1::practice_051(QString input, QString &result)
+void Chapter1_Part1::practice_051()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     SeqList<int> lista;
     lista.append(-20);
     lista.append(30);
@@ -314,10 +305,10 @@ void printZumaStr()
 {
     for (int i = 0; i < zumaLen; i++)
     {
-        //printf("%c", str[i]);
-        putchar(zumaStr[i]);
+//        VIO::printf("%c", str[i]);
+        VIO::putchar(zumaStr[i]);
     }
-    putchar('\n');
+    VIO::putchar('\n');
 }
 inline void zumaMemcpy(void *dst, void *src, int size)
 {
@@ -384,12 +375,11 @@ void shootBead(int pos, char ch)//射击珠子
         zumaLen++;
     }
 }
-void Chapter1_Part1::practice_052(QString input, QString &result)
+void Chapter1_Part1::practice_052()
 {
-    Q_UNUSED(input);Q_UNUSED(result);
     int opNum, pos, i;
     char ch;
-    scanf("%s", zumaStr);
+    VIO::scanf("%s", zumaStr);
     zumaLen = strlen(zumaStr);
     if (zumaStr[0] >= '0' && zumaStr[1] <= '9')
     {
@@ -404,20 +394,20 @@ void Chapter1_Part1::practice_052(QString input, QString &result)
     }
     else
     {
-        scanf("%d", &opNum);
+        VIO::scanf("%d", &opNum);
     }
     for (i = 0; i < opNum; i++)
     {
-        scanf("%d %c", &pos, &ch);
+        VIO::scanf("%d %c", &pos, &ch);
         shootBead(pos, ch);
         if (zumaLen > 0)
         {
-            printf("%s\n", zumaStr);
+            VIO::printf("%s\n", zumaStr);
             //printStr();
         }
         else
         {
-            printf("-\n");
+            VIO::printf("-\n");
         }
     }
     //system("pause");
