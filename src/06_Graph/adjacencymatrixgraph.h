@@ -24,6 +24,8 @@ public:
     bool isGraphConnected();//是否是连通图
     int firstAdjVex(int v);//返回v的第一个邻接顶点，若无返回-1
     int nextAdjVex(int v, int w);//返回v相对于w的第一个邻接顶点，若无返回-1
+    int inDegree(int v);//返回v的入度
+    int outDegree(int v);//返回v的出度
     int addVertex();//增加1个新的顶点，返回顶点标号，标号从0开始
     void addVertexs(int num);//增加num个新的顶点
     void removeVertex(int v);//删除一个顶点

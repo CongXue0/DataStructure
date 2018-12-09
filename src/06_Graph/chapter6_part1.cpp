@@ -4,6 +4,7 @@
 #include "src/02_StackAndQueue/linkqueue.h"
 #include "src/01_LinearList/seqlist.h"
 #include "src/utils/virtualio.h"
+#include "src/02_StackAndQueue/seqstack.h"
 
 /*
 邻接矩阵demo
@@ -389,4 +390,53 @@ void Chapter6_Part1::practice_024()
     ret.clear();
     Dijkstra(&graph, 6, 8, ret);
     DEBUG<<"6 -> 8: "<<ret.print();
+}
+
+/*
+拓扑排序
+*/
+void TopologicalSort(AdjMGraph *g, LinkList<int> &ret)
+{
+    int i, v = 0;
+    const int verNum = g->getVerNum();
+    int *indegree = new int[verNum];//入度表，保存各个顶点的入度
+    for (i = 0; i < verNum; i++)
+    {
+        indegree[i] = g->inDegree(i);
+    }
+    while (v >= 0)
+    {
+        for (i = 0, v = -1; i < verNum; i++)//选出第一个入度为0的顶点
+        {
+            if (indegree[i] == 0)
+            {
+                v = i;
+                break;
+            }
+        }
+        if (v >= 0)
+        {
+            ret.append(v);
+            indegree[v] = -1;//入度表中移除顶点v
+            for (i = g->firstAdjVex(v); i >= 0; i = g->nextAdjVex(v, i))//所有已v关联的顶点入度减一
+            {
+                indegree[i]--;
+            }
+        }
+    }
+    delete[] indegree;
+}
+void Chapter6_Part1::practice_025()
+{
+    AdjMGraph graph;
+    LinkList<ARC> list;
+    graph.addVertexs(15);
+    list << ARC(0, 1, 1) << ARC(0, 2, 1) << ARC(1, 8, 1) << ARC(1, 3, 1) << ARC(2, 3, 1) << ARC(2, 4, 1) <<
+        ARC(8, 9, 1) << ARC(8, 5, 1) << ARC(3, 5, 1) << ARC(3, 6, 1) << ARC(9, 10, 1) << ARC(5, 7, 1) <<
+        ARC(7, 10, 1) << ARC(10, 12, 1) << ARC(7, 11, 1) << ARC(11, 13, 1) << ARC(12, 13, 1) << ARC(13, 14, 1);
+    graph.insertDArcs(list);
+
+    LinkList<int> ret;
+    TopologicalSort(&graph, ret);
+    DEBUG<<ret.print();
 }

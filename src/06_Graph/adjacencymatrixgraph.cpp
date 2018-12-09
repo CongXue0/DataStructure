@@ -161,6 +161,32 @@ int AdjacencyMatrixGraph::nextAdjVex(int v, int w)
     return -1;
 }
 
+int AdjacencyMatrixGraph::inDegree(int v)
+{
+    int num = 0;
+    for (int i = 0; i < m_capacity; i++)
+    {
+        if (m_arc[i][v] > 0)
+        {
+            num++;
+        }
+    }
+    return num;
+}
+
+int AdjacencyMatrixGraph::outDegree(int v)
+{
+    int num = 0;
+    for (int i = 0; i < m_capacity; i++)
+    {
+        if (m_arc[v][i] > 0)
+        {
+            num++;
+        }
+    }
+    return num;
+}
+
 int AdjacencyMatrixGraph::addVertex()
 {
     int pos;
@@ -181,7 +207,10 @@ int AdjacencyMatrixGraph::addVertex()
         {
             arc[i] = new int[m_capacity];
             memset(arc[i], 0x00, m_capacity * sizeof(int));
-            memcpy(arc[i], m_arc[i], len * sizeof(int));
+            if (i < len)
+            {
+                memcpy(arc[i], m_arc[i], len * sizeof(int));
+            }
         }
         delete[] m_vexs;
         for (int i = 0; i < len; i++)
@@ -221,7 +250,10 @@ void AdjacencyMatrixGraph::addVertexs(int num)
             {
                 arc[i] = new int[m_capacity];
                 memset(arc[i], 0x00, m_capacity * sizeof(int));
-                memcpy(arc[i], m_arc[i], len * sizeof(int));
+                if (i < len)
+                {
+                    memcpy(arc[i], m_arc[i], len * sizeof(int));
+                }
             }
             delete[] m_vexs;
             for (int i = 0; i < len; i++)
