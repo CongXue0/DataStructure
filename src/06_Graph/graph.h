@@ -1,7 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#define INFINITY 0x7FFFFFFF
+#define ARC_INFINITY 0x40000000
 
 //v -> w
 class ARC

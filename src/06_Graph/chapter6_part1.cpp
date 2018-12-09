@@ -168,11 +168,11 @@ void Kruskal(AdjMGraph *g, AdjMGraph *t)
     int i, j, min;
     SeqList<ARC> list;
     t->addVertexs(g->getVerNum());
-    for (i = 1; i < g->m_capacity; i++)
+    for (i = 1; i < g->getCapacity(); i++)
     {
         for (j = 0; j < i; j++)
         {
-            if (g->m_arc[i][j] > 0)
+            if (g->getValue(i, j) > 0)
             {
                 list.append(ARC(i, j, g->m_arc[i][j]));
             }
@@ -213,8 +213,8 @@ void Chapter6_Part1::practice_022()
 */
 void Dijkstra(AdjMGraph *g, int v, int w, LinkList<int> &ret)
 {
-    int i, min;
-    SeqList<int> vlist, slist;
+    int i, min, tmp;
+    SeqList<int> vlist;
     int *dist, *path;
     dist = new int[g->getVerNum()];//记录从v出发到其他各顶点的最短路径长度
     path = new int[g->getVerNum()];//path[i] 记录v到i最短路径上的倒数第二个顶点
@@ -225,20 +225,19 @@ void Dijkstra(AdjMGraph *g, int v, int w, LinkList<int> &ret)
         path[i] = (dist[i] > 0 ? v : -1);
     }
     vlist.removeAll(v);
-    slist.append(v);
 
     while (vlist.getLength() > 0)
     {
-        for (i = 1, min = 0; i < vlist.getLength(); i++)//从vlist中选出距离v最短的点加入slist，并从vlist中去除
+        for (i = 1, min = 0; i < vlist.getLength(); i++)//从vlist中选出距离v最短的点，并从vlist中去除
         {
             if ((dist[vlist.at(i)] < dist[vlist.at(min)] && dist[vlist.at(i)] > 0) || dist[vlist.at(min)] == 0)
             {
                 min = i;
             }
         }
-        slist.append(vlist.at(min));
+        tmp = vlist.at(min);
         vlist.removeAt(min);
-        min = slist.at(slist.getLength() - 1);
+        min = tmp;
 
         for (i = 0; i < vlist.getLength(); i++)//最短路径长度修正
         {
@@ -262,10 +261,10 @@ void Dijkstra(AdjMGraph *g, int v, int w, LinkList<int> &ret)
     }
 
     ret.insert(0, w);
-    while (path[w] >= 0)
+    while (v != w)
     {
-        ret.insert(0, path[w]);
         w = path[w];
+        ret.insert(0, w);
     }
     delete dist;
     delete path;
@@ -297,12 +296,97 @@ void Chapter6_Part1::practice_023()
     DEBUG<<"6 -> 8: "<<ret.print();
 }
 
+/*
+单源最短路径 Floyd算法
+*/
+void Floyd(AdjMGraph *g, int v, int w, LinkList<int> &ret)
+{
+    int i, j, k;
+    const int verNum = g->getVerNum();
+    int **dist, **path;
+    dist = new int *[verNum];//dist[i][j]记录从 i -> j 的最短路径长度
+    path = new int *[verNum];//path[i][j]记录从 i -> j 的最短路径上j的前驱顶点
+    for (i = 0; i < verNum; i++)
+    {
+        dist[i] = new int[verNum];
+        path[i] = new int[verNum];
+    }
+    for (i = 0; i < verNum; i++)//初始化 dist, path
+    {
+        for (j = 0; j < verNum; j++)
+        {
+            dist[i][j] = g->getValue(i, j);
+            path[i][j] = (dist[i][j] > 0 ? i : -1);
+        }
+    }
+
+    for (i = 0; i < verNum; i++)
+    {
+        for (j = 0; j < verNum; j++)
+        {
+            for (k = 0; k < verNum; k++)
+            {
+                if (j != k)//最短路径长度修正
+                {
+                    if (dist[j][k] == 0)
+                    {
+                        if (dist[j][i] > 0 && dist[i][k] > 0)
+                        {
+                            dist[j][k] = dist[j][i] + dist[i][k];
+                            path[j][k] = path[i][k];
+                        }
+                    }
+                    else
+                    {
+                        if (dist[j][i] > 0 && dist[i][k] > 0 && dist[j][k] > dist[j][i] + dist[i][k])
+                        {
+                            dist[j][k] = dist[j][i] + dist[i][k];
+                            path[j][k] = path[i][k];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ret.insert(0, w);
+    while (v != w)
+    {
+        w = path[v][w];
+        ret.insert(0, w);
+    }
+
+    for (i = 0; i < verNum; i++)
+    {
+        delete[] dist[i];
+        delete[] path[i];
+    }
+    delete[] dist;
+    delete[] path;
+}
 void Chapter6_Part1::practice_024()
 {
-    int a, b;
-    char str[100];
-    VIO::scanf("%d %d", &a, &b);
-    VIO::printf("a = %03d, b = %05d\n", a, b);
-    VIO::scanf("%s", str);
-    VIO::printf("str:%s\n", str);
+    AdjMGraph graph;
+    LinkList<ARC> list;
+    graph.addVertexs(9);
+    list << ARC(0, 1, 1) << ARC(0, 2, 10) << ARC(0, 6, 7) << ARC(0, 5, 6) << ARC(6, 5, 3) << ARC(1, 6, 4) <<
+        ARC(1, 3, 2) << ARC(3, 2, 4) << ARC(7, 6, 10) << ARC(7, 1, 11) << ARC(5, 8, 4) << ARC(2, 8, 3) <<
+        ARC(2, 5, 1) << ARC(6, 4, 7) << ARC(5, 4, 2);
+    graph.insertUArcs(list);
+
+    LinkList<int> ret;
+    Dijkstra(&graph, 4, 3, ret);
+    DEBUG<<"4 -> 3: "<<ret.print();
+    ret.clear();
+    Dijkstra(&graph, 0, 6, ret);
+    DEBUG<<"0 -> 6: "<<ret.print();
+    ret.clear();
+    Dijkstra(&graph, 5, 7, ret);
+    DEBUG<<"5 -> 7: "<<ret.print();
+    ret.clear();
+    Dijkstra(&graph, 0, 2, ret);
+    DEBUG<<"0 -> 2: "<<ret.print();
+    ret.clear();
+    Dijkstra(&graph, 6, 8, ret);
+    DEBUG<<"6 -> 8: "<<ret.print();
 }

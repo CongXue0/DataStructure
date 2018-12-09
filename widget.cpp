@@ -36,7 +36,7 @@ void Widget::loadQuestion()
     m_bank.addQuestion(5, Question("Prim算法", Chapter6_Part1::practice_021, 3, "王道"));
     m_bank.addQuestion(5, Question("Kruskal算法", Chapter6_Part1::practice_022, 3, "王道"));
     m_bank.addQuestion(5, Question("Dijkstra算法", Chapter6_Part1::practice_023, 4, "王道"));
-    m_bank.addQuestion(5, Question("test", Chapter6_Part1::practice_024, 4, "王道"));
+    m_bank.addQuestion(5, Question("Floyd算法", Chapter6_Part1::practice_024, 4, "王道"));
 
     m_bank.addQuestion(7, Question("二分查找demo", Chapter8_Part1::practice_000, 1, "王道"));
 
