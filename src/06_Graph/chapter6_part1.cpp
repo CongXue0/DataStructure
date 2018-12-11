@@ -5,6 +5,7 @@
 #include "src/01_LinearList/seqlist.h"
 #include "src/utils/virtualio.h"
 #include "src/02_StackAndQueue/seqstack.h"
+#include "src/02_StackAndQueue/seqqueue.h"
 
 /*
 邻接矩阵demo
@@ -397,30 +398,28 @@ void Chapter6_Part1::practice_024()
 */
 void TopologicalSort(AdjMGraph *g, LinkList<int> &ret)
 {
-    int i, v = 0;
+    int i, v;
+    SeqStack<int> stack;
     const int verNum = g->getVerNum();
     int *indegree = new int[verNum];//入度表，保存各个顶点的入度
     for (i = 0; i < verNum; i++)
     {
         indegree[i] = g->inDegree(i);
-    }
-    while (v >= 0)
-    {
-        for (i = 0, v = -1; i < verNum; i++)//选出第一个入度为0的顶点
+        if (indegree[i] == 0)//入度为0的顶点入栈
         {
-            if (indegree[i] == 0)
-            {
-                v = i;
-                break;
-            }
+            stack.push(i);
         }
-        if (v >= 0)
+    }
+    while (stack.getSize() > 0)
+    {
+        v = stack.pop();
+        ret.append(v);
+        for (i = g->firstAdjVex(v); i >= 0; i = g->nextAdjVex(v, i))//所有已v关联的顶点入度减一
         {
-            ret.append(v);
-            indegree[v] = -1;//入度表中移除顶点v
-            for (i = g->firstAdjVex(v); i >= 0; i = g->nextAdjVex(v, i))//所有已v关联的顶点入度减一
+            indegree[i]--;
+            if (indegree[i] == 0)//入度为0的顶点入栈
             {
-                indegree[i]--;
+                stack.push(i);
             }
         }
     }
@@ -438,5 +437,96 @@ void Chapter6_Part1::practice_025()
 
     LinkList<int> ret;
     TopologicalSort(&graph, ret);
+    DEBUG<<ret.print();
+}
+
+/*
+关键路径
+*/
+void CriticalPath(AdjMGraph *g, LinkList<int> &ret)
+{
+    int i, j, v, ete, lte;
+    const int verNum = g->getVerNum();
+    SeqStack<int> stack1, stack2;//stack1用作拓扑排序的辅助栈，stack2用于存储拓扑排序的序列
+    int *indegree;//入度表
+    int *etv, *ltv;//etc为事件最早发生时间表，ltv为事件最迟发生时间表
+    etv = new int[verNum];
+    ltv = new int[verNum];
+    memset(etv, 0x00, verNum * sizeof(int));
+    indegree = new int[verNum];
+    for (i = 0; i < verNum; i++)
+    {
+        indegree[i] = g->inDegree(i);
+        if (indegree[i] == 0)//入度为0的顶点入栈
+        {
+            stack1.push(i);
+        }
+    }
+
+    while (stack1.getSize() > 0)//通过拓扑排序算法构造事件最早发生时间表
+    {
+        v = stack1.pop();
+        stack2.push(v);//弹出的顶点加入拓扑排序的序列
+        for (i = g->firstAdjVex(v); i >= 0; i = g->nextAdjVex(v, i))//所有已v关联的顶点入度减一
+        {
+            indegree[i]--;
+            if (indegree[i] == 0)//入度为0的顶点入栈
+            {
+                stack1.push(i);
+            }
+            if (etv[i] < etv[v] + g->getValue(v, i))//修正事件最早发生时间
+            {
+                etv[i] = etv[v] + g->getValue(v, i);
+            }
+        }
+    }
+
+    for (i = 0; i < verNum; i++)
+    {
+        ltv[i] = etv[verNum - 1];
+    }
+    while (stack2.getSize() > 0)//构造事件最迟发生时间表
+    {
+        v = stack2.pop();
+        stack1.push(v);//保存之前的拓扑排序用于输出关键路径
+        for (i = g->firstAdjVex(v); i >= 0; i = g->nextAdjVex(v, i))
+        {
+            if (ltv[v] > ltv[i] - g->getValue(v, i))
+            {
+                ltv[v] = ltv[i] - g->getValue(v, i);
+            }
+        }
+    }
+
+    while (stack1.getSize() > 0)
+    {
+        v = stack1.pop();
+        for (i = g->firstAdjVex(v); i >= 0; i = g->nextAdjVex(v, i))
+        {
+            ete = etv[v];
+            lte = ltv[i] - g->getValue(v, i);
+            if (ete == lte)
+            {
+                if (ret.getLength() == 0)
+                    ret.append(v);
+                ret.append(i);
+            }
+        }
+    }
+
+    delete[] indegree;
+    delete[] etv;
+    delete[] ltv;
+}
+void Chapter6_Part1::practice_026()
+{
+    AdjMGraph graph;
+    LinkList<ARC> list;
+    graph.addVertexs(17);
+    list << ARC(0, 1, 5) << ARC(2, 3, 1) << ARC(3, 1, 2) << ARC(1, 4, 4) << ARC(4, 5, 6) << ARC(4, 6, 8) << ARC(6, 7, 2) << ARC(5, 9, 9) << ARC(5, 7, 3) << ARC(7, 8, 6) << ARC(9, 8, 4) << ARC(9, 10, 1) << ARC(10, 11, 7) << ARC(8, 11, 11) << ARC(11, 12, 10) << ARC(12, 15, 7) << ARC(8, 13, 20) << ARC(13, 14, 7) << ARC(14, 15, 2) << ARC(15, 16, 3);
+    graph.insertDArcs(list);
+
+    LinkList<int> ret;
+    CriticalPath(&graph, ret);
     DEBUG<<ret.print();
 }

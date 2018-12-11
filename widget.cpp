@@ -37,7 +37,8 @@ void Widget::loadQuestion()
     m_bank.addQuestion(5, Question("Kruskal算法", Chapter6_Part1::practice_022, 3, "王道"));
     m_bank.addQuestion(5, Question("Dijkstra算法", Chapter6_Part1::practice_023, 4, "王道"));
     m_bank.addQuestion(5, Question("Floyd算法", Chapter6_Part1::practice_024, 4, "王道"));
-    m_bank.addQuestion(5, Question("拓扑排序", Chapter6_Part1::practice_025, 3, "王道"));//
+    m_bank.addQuestion(5, Question("拓扑排序", Chapter6_Part1::practice_025, 3, "王道"));
+    m_bank.addQuestion(5, Question("关键路径", Chapter6_Part1::practice_026, 4, "王道"));
 
     m_bank.addQuestion(7, Question("二分查找demo", Chapter8_Part1::practice_000, 1, "王道"));
 
