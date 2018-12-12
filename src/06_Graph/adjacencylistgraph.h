@@ -15,9 +15,9 @@ public:
     public:
         ArcNode() : next(NULL) {}
         ArcNode(int _vex, int _val) : vex(_vex), val(_val), next(NULL) {}
-        int vex;
-        int val;
-        ArcNode *next;
+        int vex;//弧头顶点
+        int val;//权重
+        ArcNode *next;//弧尾相同的下一条弧
     };
     class VNode
     {
@@ -59,11 +59,11 @@ public:
     static void DFS(AdjacencyListGraph *g, int v);
 
 public:
-    VNode *m_adjList;
-    unsigned char *m_visited;
+    VNode *m_adjList;//顶点表
+    unsigned char *m_visited;//访问标记数组
     int m_verNum;//顶点数
     int m_arcNum;//弧数
-    int m_capacity;
+    int m_capacity;//顶点容量
 
 };
 

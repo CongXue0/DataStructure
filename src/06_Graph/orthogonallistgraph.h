@@ -1,17 +1,36 @@
-#ifndef ADJACENCYMATRIXGRAPH_H
-#define ADJACENCYMATRIXGRAPH_H
+#ifndef ORTHOGONALLISTGRAPH_H
+#define ORTHOGONALLISTGRAPH_H
 #include "graph.h"
 #include "src/01_LinearList/linklist.h"
 
-class AdjacencyMatrixGraph;
-typedef AdjacencyMatrixGraph AdjMGraph;
+class OrthogonalListGraph;
+typedef OrthogonalListGraph OrtLGraph;
 
-//邻接矩阵图
-class AdjacencyMatrixGraph
+//十字链表图
+class OrthogonalListGraph
 {
 public:
-    AdjacencyMatrixGraph(int capacity = GRAPH_INIT_SIZE);
-    ~AdjacencyMatrixGraph();
+    class ArcNode
+    {
+    public:
+        ArcNode() : hlink(NULL), tlink(NULL) {}
+        ArcNode(int _headVex, int _tailVex, int _val) : headVex(_headVex), tailVex(_tailVex), val(_val), hlink(NULL), tlink(NULL) {}
+        int headVex;//弧头顶点
+        int tailVex;//弧尾顶顶啊
+        ArcNode *hlink;//指向弧头相同的弧
+        ArcNode *tlink;//指向弧尾相同的弧
+        int val;//权重
+    };
+    class VNode
+    {
+    public:
+        VNode() : firstin(NULL), firstout(NULL) {}
+        unsigned char en;//使能位 1顶点存在，0顶点不存在
+        ArcNode *firstin;//第一条弧头为该顶点的弧
+        ArcNode *firstout;//第一条弧尾为该顶点的弧
+    };
+    OrthogonalListGraph();
+    ~OrthogonalListGraph();
     int getVerNum();
     int getArcNum();
     int getCapacity();
@@ -39,12 +58,11 @@ public:
     void DFSTraverse();//深度优先搜索 Depth-First-Search
     void print();
 
-    static void BFS(AdjacencyMatrixGraph *g, int v);
-    static void DFS(AdjacencyMatrixGraph *g, int v);
+    static void BFS(OrthogonalListGraph *g, int v);
+    static void DFS(OrthogonalListGraph *g, int v);
 
 public:
-    unsigned char *m_vexs;//顶点表
-    int **m_arc;//二维数组表示的弧表
+    VNode *m_artList;//顶点表
     unsigned char *m_visited;//访问标记数组
     int m_verNum;//顶点数
     int m_arcNum;//弧数
@@ -52,4 +70,4 @@ public:
 
 };
 
-#endif // ADJACENCYMATRIXGRAPH_H
+#endif // ORTHOGONALLISTGRAPH_H

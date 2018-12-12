@@ -1,17 +1,36 @@
-#ifndef ADJACENCYMATRIXGRAPH_H
-#define ADJACENCYMATRIXGRAPH_H
+#ifndef ADJACENCYMULTILISTGRAPH_H
+#define ADJACENCYMULTILISTGRAPH_H
 #include "graph.h"
 #include "src/01_LinearList/linklist.h"
 
-class AdjacencyMatrixGraph;
-typedef AdjacencyMatrixGraph AdjMGraph;
+class AdjacencyMultilistGraph;
+typedef AdjacencyMultilistGraph AdjMulGraph;
 
-//邻接矩阵图
-class AdjacencyMatrixGraph
+/*
+邻接多重表图是无向图
+*/
+class AdjacencyMultilistGraph
 {
 public:
-    AdjacencyMatrixGraph(int capacity = GRAPH_INIT_SIZE);
-    ~AdjacencyMatrixGraph();
+    class ArcNode
+    {
+    public:
+        ArcNode() : ilink(NULL), jlink(NULL) {}
+        ArcNode(int _ivex, int _jvex, int _val) : ivex(_ivex), jvex(_jvex), val(_val), ilink(NULL), jlink(NULL) {}
+        int ivex, jvex;//弧的二个顶点
+        ArcNode *ilink;//指向包含有ivex顶点的一条弧
+        ArcNode *jlink;//指向包含有jvex顶点的一条弧
+        int val;//权重
+    };
+    class VNode
+    {
+    public:
+        VNode() : firstArc(NULL) {}
+        unsigned char en;//使能位 1顶点存在，0顶点不存在
+        ArcNode *firstArc;//指向包含有顶点的一条弧
+    };
+    AdjacencyMultilistGraph();
+    ~AdjacencyMultilistGraph();
     int getVerNum();
     int getArcNum();
     int getCapacity();
@@ -27,11 +46,8 @@ public:
     int addVertex();//增加1个新的顶点，返回顶点标号，标号从0开始
     void addVertexs(int num);//增加num个新的顶点
     void removeVertex(int v);//删除一个顶点
-    void insertDArc(int v, int w, int value = 1);//加入有向边 v -> w, value为权重
     void insertUArc(int v, int w, int value = 1);//加入无向边
-    void insertDArcs(LinkList<ARC> &arcList);//增加多个有向边
     void insertUArcs(LinkList<ARC> &arcList);//增加多个无向边
-    void removeDArc(int v, int w);//删除有向边
     void removeUArc(int v, int w);//删除无向边
     void setValue(int v, int w, int value);//修改边的权值
     int getValue(int v, int w);//获取边的权值，获取失败返回0
@@ -39,12 +55,11 @@ public:
     void DFSTraverse();//深度优先搜索 Depth-First-Search
     void print();
 
-    static void BFS(AdjacencyMatrixGraph *g, int v);
-    static void DFS(AdjacencyMatrixGraph *g, int v);
+    static void BFS(AdjacencyMultilistGraph *g, int v);
+    static void DFS(AdjacencyMultilistGraph *g, int v);
 
 public:
-    unsigned char *m_vexs;//顶点表
-    int **m_arc;//二维数组表示的弧表
+    VNode *m_artList;//顶点表
     unsigned char *m_visited;//访问标记数组
     int m_verNum;//顶点数
     int m_arcNum;//弧数
@@ -52,4 +67,4 @@ public:
 
 };
 
-#endif // ADJACENCYMATRIXGRAPH_H
+#endif // ADJACENCYMULTILISTGRAPH_H
