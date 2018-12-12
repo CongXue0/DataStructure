@@ -1,6 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#define GRAPH_INIT_SIZE 10
 #define ARC_INFINITY 0x40000000
 
 //v -> w

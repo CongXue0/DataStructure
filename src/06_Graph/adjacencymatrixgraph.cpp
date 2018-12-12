@@ -5,8 +5,8 @@
 
 AdjacencyMatrixGraph::AdjacencyMatrixGraph(int capacity)
 {
-    if (capacity < ADJMGRAPH_INIT_SIZE)
-        capacity = ADJMGRAPH_INIT_SIZE;
+    if (capacity < GRAPH_INIT_SIZE)
+        capacity = GRAPH_INIT_SIZE;
     m_capacity = capacity;
     m_vexs = new unsigned char[m_capacity];
     m_arc = new int *[m_capacity];
@@ -108,12 +108,12 @@ bool AdjacencyMatrixGraph::isGraphConnected()
     {
         if (m_vexs[i] > 0)
         {
-            list.append(m_vexs[i]);
+            list.append(i);
             num = 1;
             break;
         }
     }
-    while (num > 0)//深度遍历
+    while (num > 0)//广度遍历，每一层的顶点加入list
     {
         len = list.getLength();
         i = len - num;
@@ -163,6 +163,8 @@ int AdjacencyMatrixGraph::nextAdjVex(int v, int w)
 
 int AdjacencyMatrixGraph::inDegree(int v)
 {
+    if (v >= m_capacity || v < 0)
+        return 0;
     int num = 0;
     for (int i = 0; i < m_capacity; i++)
     {
@@ -176,6 +178,8 @@ int AdjacencyMatrixGraph::inDegree(int v)
 
 int AdjacencyMatrixGraph::outDegree(int v)
 {
+    if (v >= m_capacity || v < 0)
+        return 0;
     int num = 0;
     for (int i = 0; i < m_capacity; i++)
     {
@@ -279,18 +283,18 @@ void AdjacencyMatrixGraph::removeVertex(int v)
     {
         m_vexs[v] = 0;
         m_verNum--;
-    }
-    for (int i = 0; i < m_capacity; i++)
-    {
-        if (m_arc[i][v] > 0)
+        for (int i = 0; i < m_capacity; i++)
         {
-            m_arc[i][v] = 0;
-            m_arcNum--;
-        }
-        if (m_arc[v][i] > 0)
-        {
-            m_arc[v][i] = 0;
-            m_arcNum--;
+            if (m_arc[i][v] > 0)
+            {
+                m_arc[i][v] = 0;
+                m_arcNum--;
+            }
+            if (m_arc[v][i] > 0)
+            {
+                m_arc[v][i] = 0;
+                m_arcNum--;
+            }
         }
     }
 }
@@ -310,15 +314,11 @@ void AdjacencyMatrixGraph::insertUArc(int v, int w, int value)
 {
     if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0 || v == w || value < 1)
         return;
-    if (m_arc[v][w] == 0)
+    if (m_arc[v][w] == 0 && m_arc[w][v] == 0)
     {
         m_arc[v][w] = value;
-        m_arcNum++;
-    }
-    if (m_arc[w][v] == 0)
-    {
         m_arc[w][v] = value;
-        m_arcNum++;
+        m_arcNum += 2;
     }
 }
 
@@ -327,11 +327,7 @@ void AdjacencyMatrixGraph::insertDArcs(LinkList<ARC> &arcList)
     LinkList<ARC>::LinkListNode *header = arcList.m_header;
     while (header != NULL)
     {
-        if (m_arc[header->data.v][header->data.w] == 0)
-        {
-            m_arc[header->data.v][header->data.w] = header->data.val;
-            m_arcNum++;
-        }
+        insertDArc(header->data.v, header->data.w, header->data.val);
         header = header->next;
     }
 }
@@ -341,16 +337,7 @@ void AdjacencyMatrixGraph::insertUArcs(LinkList<ARC> &arcList)
     LinkList<ARC>::LinkListNode *header = arcList.m_header;
     while (header != NULL)
     {
-        if (m_arc[header->data.v][header->data.w] == 0)
-        {
-            m_arc[header->data.v][header->data.w] = header->data.val;
-            m_arcNum++;
-        }
-        if (m_arc[header->data.w][header->data.v] == 0)
-        {
-            m_arc[header->data.w][header->data.v] = header->data.val;
-            m_arcNum++;
-        }
+        insertUArc(header->data.v, header->data.w, header->data.val);
         header = header->next;
     }
 }
@@ -384,7 +371,9 @@ void AdjacencyMatrixGraph::removeUArc(int v, int w)
 
 void AdjacencyMatrixGraph::setValue(int v, int w, int value)
 {
-    if (isArcExist(v, w) && value > 0)
+    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0 || v == w || value < 1)
+        return;
+    if (m_arc[v][w] > 0)
     {
         m_arc[v][w] = value;
     }
@@ -392,7 +381,7 @@ void AdjacencyMatrixGraph::setValue(int v, int w, int value)
 
 int AdjacencyMatrixGraph::getValue(int v, int w)
 {
-    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0)
+    if (v >= m_capacity || v < 0 || w >= m_capacity || w < 0 || v == w)
         return 0;
     return m_arc[v][w];
 }
@@ -436,7 +425,6 @@ void AdjacencyMatrixGraph::print()
             line2.append(QString::number(m_arc[i][j]) + " ");
         DEBUG<<line2;
     }
-
 }
 
 void AdjacencyMatrixGraph::BFS(AdjacencyMatrixGraph *g, int v)

@@ -1,17 +1,33 @@
-#ifndef ADJACENCYMATRIXGRAPH_H
-#define ADJACENCYMATRIXGRAPH_H
+#ifndef ADJACENCYLISTGRAPH_H
+#define ADJACENCYLISTGRAPH_H
 #include "graph.h"
 #include "src/01_LinearList/linklist.h"
 
-class AdjacencyMatrixGraph;
-typedef AdjacencyMatrixGraph AdjMGraph;
+class AdjacencyListGraph;
+typedef AdjacencyListGraph AdjLGraph;
 
-//邻接矩阵图
-class AdjacencyMatrixGraph
+//邻接表图
+class AdjacencyListGraph
 {
 public:
-    AdjacencyMatrixGraph(int capacity = GRAPH_INIT_SIZE);
-    ~AdjacencyMatrixGraph();
+    class ArcNode
+    {
+    public:
+        ArcNode() : next(NULL) {}
+        ArcNode(int _vex, int _val) : vex(_vex), val(_val), next(NULL) {}
+        int vex;
+        int val;
+        ArcNode *next;
+    };
+    class VNode
+    {
+    public:
+        VNode() : first(NULL) {}
+        unsigned char en;//使能位 1顶点存在，0顶点不存在
+        ArcNode *first;
+    };
+    AdjacencyListGraph(int capacity = GRAPH_INIT_SIZE);
+    ~AdjacencyListGraph();
     int getVerNum();
     int getArcNum();
     int getCapacity();
@@ -39,12 +55,11 @@ public:
     void DFSTraverse();//深度优先搜索 Depth-First-Search
     void print();
 
-    static void BFS(AdjacencyMatrixGraph *g, int v);
-    static void DFS(AdjacencyMatrixGraph *g, int v);
+    static void BFS(AdjacencyListGraph *g, int v);
+    static void DFS(AdjacencyListGraph *g, int v);
 
 public:
-    unsigned char *m_vexs;
-    int **m_arc;
+    VNode *m_adjList;
     unsigned char *m_visited;
     int m_verNum;//顶点数
     int m_arcNum;//弧数
@@ -52,4 +67,4 @@ public:
 
 };
 
-#endif // ADJACENCYMATRIXGRAPH_H
+#endif // ADJACENCYLISTGRAPH_H

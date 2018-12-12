@@ -6,6 +6,7 @@
 #include "src/utils/virtualio.h"
 #include "src/02_StackAndQueue/seqstack.h"
 #include "src/02_StackAndQueue/seqqueue.h"
+#include "src/06_Graph/adjacencylistgraph.h"
 
 /*
 邻接矩阵demo
@@ -14,35 +15,127 @@ void Chapter6_Part1::practice_000()
 {
     AdjMGraph graph;
     graph.addVertexs(10);
-    LinkList<ARC> list;
-    list << ARC(0, 1) << ARC(0, 2) << ARC(0, 6) << ARC(0, 7) << ARC(6, 7) << ARC(1, 3) << ARC(2, 3) << ARC(5, 1) <<
-        ARC(5, 9) << ARC(9, 3) << ARC(3, 4) << ARC(2, 4);
-    graph.insertUArcs(list);
-//    DEBUG<<"--------------------";
-//    graph.print();
+    graph.insertUArc(0, 1, 2);
+    graph.insertDArc(7, 0, 3);
+    LinkList<ARC> list1, list2;
+    list1 << ARC(0, 3, 1) << ARC(3, 5, 2) << ARC(5, 6, 3) << ARC(2, 9, 3);
+    graph.insertUArcs(list1);
+    list2 << ARC(6, 7, 7) << ARC(7, 8, 5) << ARC(1, 8, 1) << ARC(1, 2, 5) << ARC(4, 3, 1) << ARC(4, 2, 4);
+    graph.insertDArcs(list2);
 
     DEBUG<<"VerNum:"<<graph.getVerNum();
     DEBUG<<"ArcNum:"<<graph.getArcNum();
+    graph.print();
 
-//    graph.BFSTraverse();
-//    DEBUG<<"--------------------";
+    DEBUG<<"----------BFSTraverse----------";
+    graph.BFSTraverse();
+    DEBUG<<"----------DFSTraverse----------";
+    graph.DFSTraverse();
 
-//    graph.DFSTraverse();
-
-    DEBUG<<graph.isVertexConnected(0, 7);
-    DEBUG<<graph.isVertexConnected(7, 6);
-    DEBUG<<graph.isVertexConnected(6, 9);
-    DEBUG<<graph.isVertexConnected(5, 4);
-    DEBUG<<graph.isVertexConnected(1, 2);
-    DEBUG<<graph.isVertexConnected(0, 8);
-    DEBUG<<graph.isVertexConnected(2, 8);
-    DEBUG<<graph.isVertexConnected(5, 8);
-    DEBUG<<graph.isVertexConnected(0, 0);
     DEBUG<<"--------------------";
+    int v, w;
+    v = 0, w = 3;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 0, w = 7;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 1, w = 6;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 0, w = 9;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 9, w = 0;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 4, w = 8;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 0, w = 0;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 2, w = 1;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 6, w = 9;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 7, w = 9;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
 
-    DEBUG<<graph.isGraphConnected();
-    graph.insertUArc(2, 8);
-    DEBUG<<graph.isGraphConnected();
+    graph.addVertexs(2);
+    graph.insertUArc(6, 11, 1);
+    graph.insertUArc(11, 7, 2);
+    graph.insertDArc(1, 10, 1);
+    graph.insertDArc(10, 2, 5);
+    graph.insertDArc(9, 10, 2);
+    DEBUG<<"VerNum:"<<graph.getVerNum();
+    DEBUG<<"ArcNum:"<<graph.getArcNum();
+    graph.print();
+
+    DEBUG<<"--------------------";
+    DEBUG<<"isGraphConnected: "<<graph.isGraphConnected();
+    LinkList<ARC> list3;
+    list3 << ARC(7, 6, 7) << ARC(0, 7, 3) << ARC(8, 7, 5) << ARC(8, 1, 1) << ARC(3, 4, 1) << ARC(2, 4, 4) << ARC(2, 1, 5) << ARC(10, 1, 1) << ARC(2, 10, 5) << ARC(10, 9, 2);
+    graph.insertDArcs(list3);
+    DEBUG<<"isGraphConnected: "<<graph.isGraphConnected();
+}
+
+/*
+邻接表demo
+*/
+void Chapter6_Part1::practice_001()
+{
+    AdjLGraph graph;
+    graph.addVertexs(10);
+    graph.insertUArc(0, 1, 2);
+    graph.insertDArc(7, 0, 3);
+    LinkList<ARC> list1, list2;
+    list1 << ARC(0, 3, 1) << ARC(3, 5, 2) << ARC(5, 6, 3) << ARC(2, 9, 3);
+    graph.insertUArcs(list1);
+    list2 << ARC(6, 7, 7) << ARC(7, 8, 5) << ARC(1, 8, 1) << ARC(1, 2, 5) << ARC(4, 3, 1) << ARC(4, 2, 4);
+    graph.insertDArcs(list2);
+
+    DEBUG<<"VerNum:"<<graph.getVerNum();
+    DEBUG<<"ArcNum:"<<graph.getArcNum();
+    graph.print();
+
+    DEBUG<<"----------BFSTraverse----------";
+    graph.BFSTraverse();
+    DEBUG<<"----------DFSTraverse----------";
+    graph.DFSTraverse();
+
+    DEBUG<<"--------------------";
+    int v, w;
+    v = 0, w = 3;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 0, w = 7;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 1, w = 6;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 0, w = 9;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 9, w = 0;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 4, w = 8;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 0, w = 0;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 2, w = 1;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 6, w = 9;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+    v = 7, w = 9;
+    DEBUG<<QString("%1-->%2: ").arg(v).arg(w)<<graph.isVertexConnected(v, w);
+
+    graph.addVertexs(2);
+    graph.insertUArc(6, 11, 1);
+    graph.insertUArc(11, 7, 2);
+    graph.insertDArc(1, 10, 1);
+    graph.insertDArc(10, 2, 5);
+    graph.insertDArc(9, 10, 2);
+    DEBUG<<"VerNum:"<<graph.getVerNum();
+    DEBUG<<"ArcNum:"<<graph.getArcNum();
+    graph.print();
+
+    DEBUG<<"--------------------";
+    DEBUG<<"isGraphConnected: "<<graph.isGraphConnected();
+    LinkList<ARC> list3;
+    list3 << ARC(7, 6, 7) << ARC(0, 7, 3) << ARC(8, 7, 5) << ARC(8, 1, 1) << ARC(3, 4, 1) << ARC(2, 4, 4) << ARC(2, 1, 5) << ARC(10, 1, 1) << ARC(2, 10, 5) << ARC(10, 9, 2);
+    graph.insertDArcs(list3);
+    DEBUG<<"isGraphConnected: "<<graph.isGraphConnected();
 }
 
 /*

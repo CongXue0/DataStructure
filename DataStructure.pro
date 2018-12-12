@@ -41,7 +41,8 @@ SOURCES += main.cpp \
     src/04_Tree/chapter4_part1.cpp \
     src/06_Graph/adjacencymatrixgraph.cpp \
     src/06_Graph/chapter6_part1.cpp \
-    src/utils/virtualio.cpp
+    src/utils/virtualio.cpp \
+    src/06_Graph/adjacencylistgraph.cpp
 
 HEADERS  += widget.h \
     src/utils/tool.h \
@@ -70,6 +71,7 @@ HEADERS  += widget.h \
     src/06_Graph/adjacencymatrixgraph.h \
     src/06_Graph/chapter6_part1.h \
     src/06_Graph/graph.h \
-    src/utils/virtualio.h
+    src/utils/virtualio.h \
+    src/06_Graph/adjacencylistgraph.h
 
 FORMS    += widget.ui
