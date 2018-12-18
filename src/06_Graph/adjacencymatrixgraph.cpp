@@ -324,21 +324,21 @@ void AdjacencyMatrixGraph::insertUArc(int v, int w, int value)
 
 void AdjacencyMatrixGraph::insertDArcs(LinkList<ARC> &arcList)
 {
-    LinkList<ARC>::LinkListNode *header = arcList.m_header;
-    while (header != NULL)
+    LinkList<ARC>::LinkListNode *head = arcList.m_head;
+    while (head != NULL)
     {
-        insertDArc(header->data.v, header->data.w, header->data.val);
-        header = header->next;
+        insertDArc(head->data.v, head->data.w, head->data.val);
+        head = head->next;
     }
 }
 
 void AdjacencyMatrixGraph::insertUArcs(LinkList<ARC> &arcList)
 {
-    LinkList<ARC>::LinkListNode *header = arcList.m_header;
-    while (header != NULL)
+    LinkList<ARC>::LinkListNode *head = arcList.m_head;
+    while (head != NULL)
     {
-        insertUArc(header->data.v, header->data.w, header->data.val);
-        header = header->next;
+        insertUArc(head->data.v, head->data.w, head->data.val);
+        head = head->next;
     }
 }
 

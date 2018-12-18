@@ -32,7 +32,7 @@ public:
     QString print();
 
 private:
-    DoubleLinkListNode *m_header;
+    DoubleLinkListNode *m_head;
     int m_length;
 
 };
@@ -40,7 +40,7 @@ private:
 template<typename T>
 DoubleLinkList<T>::DoubleLinkList()
 {
-    m_header = NULL;
+    m_head = NULL;
     m_length = 0;
 }
 
@@ -62,11 +62,11 @@ void DoubleLinkList<T>::clear()
     DoubleLinkListNode *tmp;
     for (int i = 0; i < m_length; i++)
     {
-        tmp = m_header;
-        m_header = m_header->next;
+        tmp = m_head;
+        m_head = m_head->next;
         delete tmp;
     }
-    m_header = NULL;
+    m_head = NULL;
     m_length = 0;
 }
 
@@ -74,7 +74,7 @@ template<typename T>
 const T &DoubleLinkList<T>::at(int i) const
 {
     assert(i >= 0 && i < m_length);
-    DoubleLinkListNode *tmp = m_header;
+    DoubleLinkListNode *tmp = m_head;
     for (int j = 0; j < i; j++)
         tmp = tmp->next;
     return tmp->data;
@@ -84,7 +84,7 @@ template<typename T>
 T &DoubleLinkList<T>::operator[](int i)
 {
     assert(i >= 0 && i < m_length);
-    DoubleLinkListNode *tmp = m_header;
+    DoubleLinkListNode *tmp = m_head;
     for (int j = 0; j < i; j++)
         tmp = tmp->next;
     return tmp->data;
@@ -101,11 +101,11 @@ void DoubleLinkList<T>::insert(int i, const T &t)
     {
         node->prior = node;
         node->next = node;
-        m_header = node;
+        m_head = node;
     }
     else
     {
-        DoubleLinkListNode *tmp = m_header;
+        DoubleLinkListNode *tmp = m_head;
         for (int j = 0; j < i; j++)//找到插入位置
             tmp = tmp->next;
         node->prior = tmp->prior;
@@ -125,14 +125,14 @@ void DoubleLinkList<T>::append(const T &t)
     {
         node->prior = node;
         node->next = node;
-        m_header = node;
+        m_head = node;
     }
     else
     {
-        node->prior = m_header->prior;
-        node->next = m_header;
-        m_header->prior->next = node;
-        m_header->prior = node;
+        node->prior = m_head->prior;
+        node->next = m_head;
+        m_head->prior->next = node;
+        m_head->prior = node;
     }
     m_length++;
 }
@@ -144,12 +144,12 @@ void DoubleLinkList<T>::removeAt(int i)
         return;
     if (m_length == 1)
     {
-        delete m_header;
-        m_header = NULL;
+        delete m_head;
+        m_head = NULL;
     }
     else
     {
-        DoubleLinkListNode *tmp = m_header;
+        DoubleLinkListNode *tmp = m_head;
         for (int j = 0; j < i; j++)//找到插入位置
             tmp = tmp->next;
         tmp->prior->next = tmp->next;
@@ -163,7 +163,7 @@ template<typename T>
 QString DoubleLinkList<T>::print()
 {
     QString info;
-    DoubleLinkListNode *tmp = m_header;
+    DoubleLinkListNode *tmp = m_head;
     for (int i = 0; i < m_length; i++)
     {
         info.append(QString::number(tmp->data) + " ");

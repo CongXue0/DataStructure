@@ -33,14 +33,14 @@ public:
     QString print();
 
 public:
-    LinkListNode *m_header;
+    LinkListNode *m_head;
     int m_length;
 };
 
 template<typename T>
 LinkList<T>::LinkList()
 {
-    m_header = NULL;
+    m_head = NULL;
     m_length = 0;
 }
 
@@ -60,10 +60,10 @@ template<typename T>
 void LinkList<T>::clear()
 {
     LinkListNode *tmp;
-    while (m_header != NULL)
+    while (m_head != NULL)
     {
-        tmp = m_header;
-        m_header = m_header->next;
+        tmp = m_head;
+        m_head = m_head->next;
         delete tmp;
     }
     m_length = 0;
@@ -73,7 +73,7 @@ template<typename T>
 const T &LinkList<T>::at(int i) const
 {
     assert(i >= 0 && i < m_length);
-    LinkListNode *tmp = m_header;
+    LinkListNode *tmp = m_head;
     for (int j = 0; j < i; j++)
         tmp = tmp->next;
     return tmp->data;
@@ -83,7 +83,7 @@ template<typename T>
 T &LinkList<T>::operator[](int i)
 {
     assert(i >= 0 && i < m_length);
-    LinkListNode *tmp = m_header;
+    LinkListNode *tmp = m_head;
     for (int j = 0; j < i; j++)
         tmp = tmp->next;
     return tmp->data;
@@ -98,12 +98,12 @@ void LinkList<T>::insert(int i, const T &t)
     node->data = t;
     if (i == 0)
     {
-        node->next = m_header;
-        m_header = node;
+        node->next = m_head;
+        m_head = node;
     }
     else
     {
-        LinkListNode *tmp = m_header;
+        LinkListNode *tmp = m_head;
         for (int j = 0; j < i - 1; j++)//找到插入位置的前驱
             tmp = tmp->next;
         node->next = tmp->next;
@@ -118,13 +118,13 @@ void LinkList<T>::append(const T &t)
     LinkListNode *node = new LinkListNode();
     node->data = t;
     node->next = NULL;
-    if (m_header == NULL)
+    if (m_head == NULL)
     {
-        m_header = node;
+        m_head = node;
     }
     else
     {
-        LinkListNode *tmp = m_header;
+        LinkListNode *tmp = m_head;
         while (tmp->next != NULL)
             tmp = tmp->next;
         tmp->next = node;
@@ -137,10 +137,10 @@ void LinkList<T>::removeAt(int i)
 {
     if (i < 0 || i >= m_length)
         return;
-    LinkListNode *tmp1 = m_header;
+    LinkListNode *tmp1 = m_head;
     if (i == 0)
     {
-        m_header = tmp1->next;
+        m_head = tmp1->next;
         delete tmp1;
     }
     else
@@ -158,7 +158,7 @@ template<typename T>
 void LinkList<T>::removeAll(const T &t)
 {
     LinkListNode *tmp1 = NULL;
-    LinkListNode *tmp2 = m_header;
+    LinkListNode *tmp2 = m_head;
     int i = 0;
     while (tmp2 != NULL)
     {
@@ -166,10 +166,10 @@ void LinkList<T>::removeAll(const T &t)
         {
             if (i == 0)
             {
-                m_header = tmp2->next;
+                m_head = tmp2->next;
                 delete tmp2;
                 m_length--;
-                tmp2 = m_header;
+                tmp2 = m_head;
             }
             else
             {
@@ -191,7 +191,7 @@ void LinkList<T>::removeAll(const T &t)
 template<typename T>
 bool LinkList<T>::contains(const T &t)
 {
-    LinkListNode *tmp = m_header;
+    LinkListNode *tmp = m_head;
     while (tmp != NULL)
     {
         if (tmp->data == t)
@@ -205,7 +205,7 @@ template<typename T>
 QString LinkList<T>::print()
 {
     QString info;
-    LinkListNode *tmp = m_header;
+    LinkListNode *tmp = m_head;
     for (int i = 0; i < m_length; i++)
     {
         info.append(QString::number(tmp->data) + " ");

@@ -9,6 +9,7 @@ public:
     Chapter4_Part1() = delete;
 
     static void practice_000();
+    static void practice_001();
 
 };
 

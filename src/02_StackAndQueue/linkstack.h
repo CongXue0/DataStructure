@@ -30,7 +30,7 @@ public:
     QString print();
 
 private:
-    LinkStackNode *m_header;
+    LinkStackNode *m_head;
     int m_size;
 
 };
@@ -38,7 +38,7 @@ private:
 template <typename T>
 LinkStack<T>::LinkStack()
 {
-    m_header = NULL;
+    m_head = NULL;
     m_size = 0;
 }
 
@@ -60,11 +60,11 @@ void LinkStack<T>::clear()
     LinkStackNode *tmp;
     for (int i = 0; i < m_size; i++)
     {
-        tmp = m_header;
-        m_header = m_header->next;
+        tmp = m_head;
+        m_head = m_head->next;
         delete tmp;
     }
-    m_header = NULL;
+    m_head = NULL;
     m_size = 0;
 }
 
@@ -72,7 +72,7 @@ template<typename T>
 T &LinkStack<T>::top()
 {
     assert(m_size > 0);
-    return m_header->prior->data;
+    return m_head->prior->data;
 }
 
 template<typename T>
@@ -84,14 +84,14 @@ void LinkStack<T>::push(const T &t)
     {
         node->prior = node;
         node->next = node;
-        m_header = node;
+        m_head = node;
     }
     else
     {
-        node->prior = m_header->prior;
-        node->next = m_header;
-        m_header->prior->next = node;
-        m_header->prior = node;
+        node->prior = m_head->prior;
+        node->next = m_head;
+        m_head->prior->next = node;
+        m_head->prior = node;
     }
     m_size++;
 }
@@ -103,13 +103,13 @@ T LinkStack<T>::pop()
     T tmpData;
     if (m_size == 1)
     {
-        tmpData = m_header->data;
-        delete m_header;
-        m_header = NULL;
+        tmpData = m_head->data;
+        delete m_head;
+        m_head = NULL;
     }
     else
     {
-        LinkStackNode *tmp = m_header->prior;
+        LinkStackNode *tmp = m_head->prior;
         tmp->prior->next = tmp->next;
         tmp->next->prior = tmp->prior;
         tmpData = tmp->data;
@@ -123,7 +123,7 @@ template<typename T>
 QString LinkStack<T>::print()
 {
     QString info;
-    LinkStackNode *tmp = m_header;
+    LinkStackNode *tmp = m_head;
     for (int i = 0; i < m_size; i++)
     {
         info.append(QString::number(tmp->data) + " ");
