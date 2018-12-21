@@ -31,6 +31,7 @@ public:
     void preOrderTrav();//先序遍历
     void inOrderTrav();//中序遍历
     void postOrderTrav();//后序遍历
+    void print();
 
     static void deleteTree(BinaryTree<T>::BinaryTreeNode *root);
     static void copyTree(BinaryTree<T>::BinaryTreeNode *&dstRoot, const BinaryTree<T>::BinaryTreeNode *srcRoot);
@@ -286,6 +287,92 @@ void BinaryTree<T>::postOrderTrav()
             }
         }
     }
+}
+
+template <typename T>
+void BinaryTree<T>::print()
+{
+    QString info = "\n";
+    LinkStack<BinaryTreeNode *> nodeStack;
+    LinkStack<int> levelStack;
+    BinaryTreeNode *node = m_root;
+    int curLevel = 0, i;
+    int endArr[1024] = {0};//保存各深度的节点是否到达末尾
+    endArr[0] = 1;
+    while (nodeStack.getSize() > 0 || node != NULL)
+    {
+        if (node != NULL)
+        {
+            if (curLevel == 0)//根节点
+            {
+                if (is_char<T>())
+                {
+                    info.append(QString(node->data) + "\n");
+                }
+                else
+                {
+                    info.append(QString::number(node->data) + "\n");
+                }
+            }
+            else
+            {
+                for (i = 1; i <= curLevel; i++)//打印出一行
+                {
+                    if (i == curLevel)
+                    {
+                        if (endArr[i] == 0)
+                        {
+                            info.append("├── ");
+                        }
+                        else
+                        {
+                            info.append("└── ");
+                        }
+                    }
+                    else
+                    {
+                        if (endArr[i] == 0)
+                        {
+                            info.append("│   ");
+                        }
+                        else
+                        {
+                            info.append("    ");
+                        }
+                    }
+                }
+                if (is_char<T>())
+                {
+                    info.append(QString(node->data) + "\n");
+                }
+                else
+                {
+                    info.append(QString::number(node->data) + "\n");
+                }
+            }
+            nodeStack.push(node);
+            levelStack.push(curLevel);
+            curLevel++;
+            if (node->rchild == NULL)//判断是不是最后一颗树
+            {
+                endArr[curLevel] = 1;
+            }
+            else
+            {
+                endArr[curLevel] = 0;
+            }
+            node = node->lchild;
+        }
+        else
+        {
+            node = nodeStack.pop();
+            curLevel = levelStack.pop();
+            node = node->rchild;
+            curLevel++;
+            endArr[curLevel] = 1;
+        }
+    }
+    DEBUG << info;
 }
 
 template <typename T>

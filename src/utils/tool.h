@@ -15,6 +15,41 @@
 
 #define MAX_CHAPTER_NUM 12
 
+/* 类型判断器 */
+template<typename T1, typename T2>
+struct is_same
+{
+    operator bool()
+    {
+        return false;
+    }
+};
+template<typename T1>
+struct is_same<T1, T1>
+{
+    operator bool()
+    {
+        return true;
+    }
+};
+
+template <typename T>
+struct is_char
+{
+    operator bool()
+    {
+        return false;
+    }
+};
+template <>
+struct is_char<char>
+{
+    operator bool()
+    {
+        return true;
+    }
+};
+
 class Tool
 {
 public:

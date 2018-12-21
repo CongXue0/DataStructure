@@ -85,5 +85,27 @@ void Chapter4_Part1::practice_001()
     DEBUG<<"tbt1 size:"<<tbt1.getSize();
     DEBUG<<"tbt1 depth:"<<tbt1.depth();
     tbt1.inOrderTrav();
+}
 
+/*
+二叉树层级打印
+*/
+void Chapter4_Part1::practice_002()
+{
+    BinaryTree<int> bt1;
+
+    bt1.insert(1, 11);
+    bt1.insert(2, 2);
+    bt1.insert(3, 3);
+    bt1.insert(4, 5);
+    bt1.insert(5, 6);
+    bt1.insert(7, 7);
+    bt1.insert(11, 9);
+    bt1.insert(15, 8);
+    DEBUG<<"bt1 size:"<<bt1.getSize();
+    DEBUG<<"bt1 depth:"<<bt1.depth();
+    bt1.inOrderTrav();
+
+    DEBUG<<"--------------------";
+    bt1.print();
 }
