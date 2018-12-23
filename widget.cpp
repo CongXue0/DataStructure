@@ -31,7 +31,8 @@ void Widget::loadQuestion()
 
     m_bank.addQuestion(3, Question("二叉树demo", Chapter4_Part1::practice_000, 3, "扫地僧"));
     m_bank.addQuestion(3, Question("线索二叉树demo", Chapter4_Part1::practice_001, 3, "大话"));
-    m_bank.addQuestion(3, Question("二叉树层级打印", Chapter4_Part1::practice_002, 3, "大话"));
+    m_bank.addQuestion(3, Question("二叉树层级打印", Chapter4_Part1::practice_002, 3, "无"));
+    m_bank.addQuestion(3, Question("平衡二叉树demo", Chapter4_Part1::practice_003, 4, "王道"));
 
     m_bank.addQuestion(5, Question("邻接矩阵demo", Chapter6_Part1::practice_000, 4, "王道"));
     m_bank.addQuestion(5, Question("邻接表demo", Chapter6_Part1::practice_001, 4, "王道"));

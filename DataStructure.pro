@@ -76,6 +76,7 @@ HEADERS  += widget.h \
     src/utils/virtualio.h \
     src/06_Graph/adjacencylistgraph.h \
     src/06_Graph/orthogonallistgraph.h \
-    src/06_Graph/adjacencymultilistgraph.h
+    src/06_Graph/adjacencymultilistgraph.h \
+    src/04_Tree/balancedbinarytree.h
 
 FORMS    += widget.ui

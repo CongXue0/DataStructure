@@ -1,6 +1,8 @@
 #include "chapter4_part1.h"
 #include "src/04_Tree/binarytree.h"
 #include "src/04_Tree/threadbinarytree.h"
+#include "src/04_Tree/balancedbinarytree.h"
+#include "src/09_Sorting/sorting.h"
 
 /*
 二叉树demo
@@ -108,4 +110,64 @@ void Chapter4_Part1::practice_002()
 
     DEBUG<<"--------------------";
     bt1.print();
+}
+
+/*
+平衡二叉树demo
+*/
+void Chapter4_Part1::practice_003()
+{
+    AVLTree<int> t1;
+//    const int len = 100;
+//    int arr[len];
+//    Tool::createRandArr(arr, len, 1, 1000);
+//    DEBUG<<Tool::printArr<int>(arr, 0, len - 1);
+
+//    for (int i = 0; i < len; i++)
+//    {
+//        t1.append(arr[i]);
+//    }
+//    t1.print();
+//    DEBUG<<"t1 size:"<<t1.getSize();
+
+//    Sorting::bubbleSort<int>(arr, 0, len - 1);
+//    DEBUG<<Tool::printArr<int>(arr, 0, len - 1);
+//    t1.inOrderTrav();
+
+    //10 9 7 10 2 2 8 5 3 6 6 5 7 6 2 2 2 3 3 5
+    int a;
+    t1.append(10);
+    t1.append(9);
+    t1.append(7);
+    t1.append(10);
+    t1.append(2);
+    t1.append(2);
+    t1.append(8);
+    t1.append(5);
+    t1.append(3);
+    t1.append(6);
+    t1.append(6);
+    t1.append(6);
+    t1.append(7);
+    t1.append(6);
+    t1.append(2);
+    t1.append(2);
+    t1.append(2);
+    t1.append(3);
+    t1.append(3);
+    t1.append(5);
+    t1.print();
+    t1.inOrderTrav();
+    a = 2;
+    DEBUG<<"conatins "<<a<<":"<<t1.contains(a);
+    a = 0;
+    DEBUG<<"conatins "<<a<<":"<<t1.contains(a);
+    a = 2;
+    DEBUG<<"conatins "<<a<<":"<<t1.contains(9);
+
+    t1.remove(7);
+    t1.remove(9);
+    t1.remove(3);
+    t1.print();
+    t1.inOrderTrav();
 }

@@ -11,6 +11,7 @@ public:
     static void practice_000();
     static void practice_001();
     static void practice_002();
+    static void practice_003();
 
 };
 

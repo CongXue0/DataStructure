@@ -36,7 +36,7 @@ public:
     static void deleteTree(BinaryTree<T>::BinaryTreeNode *root);
     static void copyTree(BinaryTree<T>::BinaryTreeNode *&dstRoot, const BinaryTree<T>::BinaryTreeNode *srcRoot);
     static int depth(BinaryTree<T>::BinaryTreeNode *root);
-    static int countLeaf(BinaryTree<T>::BinaryTreeNode *node);
+//    static int countLeaf(BinaryTree<T>::BinaryTreeNode *node);
     static void insert(BinaryTree<T>::BinaryTreeNode *&node , const T &t);//有序插入t
     static BinaryTree<T>::BinaryTreeNode *locate(BinaryTree<T>::BinaryTreeNode *node, int curPos, int pos);//定位结点
     static void preOrderTrav_R(BinaryTree<T>::BinaryTreeNode *node);//先序遍历
@@ -71,6 +71,7 @@ template <typename T>
 void BinaryTree<T>::clear()
 {
     BinaryTree<T>::deleteTree(m_root);
+    m_root = NULL;
     m_size = 0;
 }
 
@@ -83,28 +84,8 @@ int BinaryTree<T>::depth()
 template <typename T>
 int BinaryTree<T>::leafCount()
 {
-    return BinaryTree<T>::countLeaf(m_root);
-}
-
-template <typename T>
-void BinaryTree<T>::deleteTree(BinaryTree<T>::BinaryTreeNode *root)
-{
-    if (root == NULL)
-        return;
-    deleteTree(root->lchild);
-    deleteTree(root->rchild);
-    delete root;
-}
-
-template <typename T>
-void BinaryTree<T>::copyTree(BinaryTree<T>::BinaryTreeNode *&dstRoot, const BinaryTree<T>::BinaryTreeNode *srcRoot)
-{
-    if (srcRoot != NULL)
-    {
-        dstRoot = new BinaryTreeNode(srcRoot->data);
-        copyTree(dstRoot->lchild, srcRoot->lchild);
-        copyTree(dstRoot->rchild, srcRoot->rchild);
-    }
+    return (m_size > 0 ? m_size + 1 : 0);
+//    return BinaryTree<T>::countLeaf(m_root);
 }
 
 template <typename T>
@@ -292,10 +273,10 @@ void BinaryTree<T>::postOrderTrav()
 template <typename T>
 void BinaryTree<T>::print()
 {
-    QString info = "\n";
+    QString info = "\n", direction;
     LinkStack<BinaryTreeNode *> nodeStack;
     LinkStack<int> levelStack;
-    BinaryTreeNode *node = m_root;
+    BinaryTreeNode *node = m_root, *parent;
     int curLevel = 0, i;
     int endArr[1024] = {0};//保存各深度的节点是否到达末尾
     endArr[0] = 1;
@@ -341,13 +322,14 @@ void BinaryTree<T>::print()
                         }
                     }
                 }
+                direction = (parent->lchild == node ? "l " : "r ");
                 if (is_char<T>())
                 {
-                    info.append(QString(node->data) + "\n");
+                    info.append(direction + QString(node->data) + "\n");
                 }
                 else
                 {
-                    info.append(QString::number(node->data) + "\n");
+                    info.append(direction + QString::number(node->data) + "\n");
                 }
             }
             nodeStack.push(node);
@@ -361,18 +343,47 @@ void BinaryTree<T>::print()
             {
                 endArr[curLevel] = 0;
             }
+            parent = node;
             node = node->lchild;
         }
         else
         {
             node = nodeStack.pop();
             curLevel = levelStack.pop();
+            parent = node;
             node = node->rchild;
             curLevel++;
             endArr[curLevel] = 1;
         }
     }
-    DEBUG << info;
+//    DEBUG << info;
+    QStringList list = info.split('\n');
+    for (i = 0; i < list.count(); i++)
+    {
+        if (!list.at(i).isEmpty())
+            DEBUG << list.at(i);
+    }
+}
+
+template <typename T>
+void BinaryTree<T>::deleteTree(BinaryTree<T>::BinaryTreeNode *root)
+{
+    if (root == NULL)
+        return;
+    deleteTree(root->lchild);
+    deleteTree(root->rchild);
+    delete root;
+}
+
+template <typename T>
+void BinaryTree<T>::copyTree(BinaryTree<T>::BinaryTreeNode *&dstRoot, const BinaryTree<T>::BinaryTreeNode *srcRoot)
+{
+    if (srcRoot != NULL)
+    {
+        dstRoot = new BinaryTreeNode(srcRoot->data);
+        copyTree(dstRoot->lchild, srcRoot->lchild);
+        copyTree(dstRoot->rchild, srcRoot->rchild);
+    }
 }
 
 template <typename T>
@@ -385,15 +396,15 @@ int BinaryTree<T>::depth(BinaryTree<T>::BinaryTreeNode *root)
     return 1 + (depLeft > depRight ? depLeft : depRight);
 }
 
-template <typename T>
-int BinaryTree<T>::countLeaf(BinaryTree<T>::BinaryTreeNode *node)
-{
-    if (node == NULL)
-        return 0;
-    if (node->lchild == NULL && node->rchild == NULL)
-        return 1;
-    return countLeaf(node->lchild) + countLeaf(node->rchild);
-}
+//template <typename T>
+//int BinaryTree<T>::countLeaf(BinaryTree<T>::BinaryTreeNode *node)
+//{
+//    if (node == NULL)
+//        return 0;
+//    if (node->lchild == NULL && node->rchild == NULL)
+//        return 1;
+//    return countLeaf(node->lchild) + countLeaf(node->rchild);
+//}
 
 template <typename T>
 void BinaryTree<T>::insert(BinaryTree<T>::BinaryTreeNode *&node , const T &t)

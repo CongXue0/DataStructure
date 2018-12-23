@@ -127,7 +127,7 @@ int searchRight(int arr[], int low, int high,  const int &key)//二分之右
 }
 void Chapter9_Part1::practice_100()
 {
-    int i, j;
+    int i;
     int size, count, left, right;
     int *arr = NULL;
     VIO::scanf("%d %d", &size, &count);
