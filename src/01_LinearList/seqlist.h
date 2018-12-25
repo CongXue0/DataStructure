@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <QString>
 
-#define SEQLIST_INIT_SIZE 100
+#define SEQLIST_INIT_SIZE 40
 
 template <typename T>
 class SeqList

@@ -10,9 +10,6 @@ public:
     template <typename T>
     static int binarySearch(T arr[], int low, int high,  const T &key);//二分查找
 
-
-
-
 };
 
 template <typename T>

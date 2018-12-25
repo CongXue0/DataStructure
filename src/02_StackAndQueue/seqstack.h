@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <QString>
 
-#define SEQSTACK_INIT_SIZE 100
+#define SEQSTACK_INIT_SIZE 40
 
 template <typename T>
 class SeqStack

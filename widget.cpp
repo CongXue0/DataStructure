@@ -44,7 +44,7 @@ void Widget::loadQuestion()
     m_bank.addQuestion(5, Question("拓扑排序", Chapter6_Part1::practice_025, 3, "王道"));
     m_bank.addQuestion(5, Question("关键路径", Chapter6_Part1::practice_026, 4, "王道"));
 
-    m_bank.addQuestion(7, Question("二分查找demo", Chapter8_Part1::practice_000, 1, "王道"));
+    m_bank.addQuestion(7, Question("哈希表demo", Chapter8_Part1::practice_000, 3, "王道"));
 
     m_bank.addQuestion(8, Question("排序demo", Chapter9_Part1::practice_000, 1, "王道"));
     m_bank.addQuestion(8, Question("范围查询(Range)", Chapter9_Part1::practice_000, 4, "邓俊辉"));
