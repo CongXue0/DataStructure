@@ -17,9 +17,9 @@ public:
         ArcNode(int _headVex, int _tailVex, int _val) : headVex(_headVex), tailVex(_tailVex), val(_val), hlink(NULL), tlink(NULL) {}
         int headVex;//弧头顶点
         int tailVex;//弧尾顶顶啊
+        int val;//权重
         ArcNode *hlink;//指向弧头相同的弧
         ArcNode *tlink;//指向弧尾相同的弧
-        int val;//权重
     };
     class VNode
     {

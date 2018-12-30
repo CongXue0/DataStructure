@@ -273,12 +273,15 @@ void BinaryTree<T>::postOrderTrav()
 template <typename T>
 void BinaryTree<T>::print()
 {
-    QString info = "\n", direction;
+    QString start;
     LinkStack<BinaryTreeNode *> nodeStack;
     LinkStack<int> levelStack;
     BinaryTreeNode *node = m_root, *parent;
     int curLevel = 0, i;
-    int endArr[1024] = {0};//保存各深度的节点是否到达末尾
+    int len = (m_size < 256 ? 256 : m_size);
+    int *endArr = new int[len];//保存各深度的节点是否到达末尾
+    for (i = 0; i < len; i++)
+        endArr[i] = 0;
     endArr[0] = 1;
     while (nodeStack.getSize() > 0 || node != NULL)
     {
@@ -286,51 +289,37 @@ void BinaryTree<T>::print()
         {
             if (curLevel == 0)//根节点
             {
-                if (is_char<T>())
-                {
-                    info.append(QString(node->data) + "\n");
-                }
-                else
-                {
-                    info.append(QString::number(node->data) + "\n");
-                }
+                DEBUG << node->data;
             }
             else
             {
+                start.clear();
                 for (i = 1; i <= curLevel; i++)//打印出一行
                 {
                     if (i == curLevel)
                     {
                         if (endArr[i] == 0)
                         {
-                            info.append("├── ");
+                            start.append("├── ");
                         }
                         else
                         {
-                            info.append("└── ");
+                            start.append("└── ");
                         }
                     }
                     else
                     {
                         if (endArr[i] == 0)
                         {
-                            info.append("│   ");
+                            start.append("│   ");
                         }
                         else
                         {
-                            info.append("    ");
+                            start.append("    ");
                         }
                     }
                 }
-                direction = (parent->lchild == node ? "l " : "r ");
-                if (is_char<T>())
-                {
-                    info.append(direction + QString(node->data) + "\n");
-                }
-                else
-                {
-                    info.append(direction + QString::number(node->data) + "\n");
-                }
+                DEBUG << start << (parent->lchild == node ? "l " : "r ") << node->data;
             }
             nodeStack.push(node);
             levelStack.push(curLevel);
@@ -356,13 +345,7 @@ void BinaryTree<T>::print()
             endArr[curLevel] = 1;
         }
     }
-//    DEBUG << info;
-    QStringList list = info.split('\n');
-    for (i = 0; i < list.count(); i++)
-    {
-        if (!list.at(i).isEmpty())
-            DEBUG << list.at(i);
-    }
+    delete[] endArr;
 }
 
 template <typename T>

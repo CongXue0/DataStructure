@@ -40,7 +40,7 @@ int VirtualIO::scanf(const char *format, ...)
     return 0;
 }
 
-int VirtualIO::printf(const char *format, ...)
+void VirtualIO::printf(const char *format, ...)
 {
     QString str;
     va_list args;
@@ -63,7 +63,7 @@ int VirtualIO::printf(const char *format, ...)
     }
 }
 
-int VirtualIO::putchar(int ch)
+void VirtualIO::putchar(int ch)
 {
     if (ch == '\n')
     {

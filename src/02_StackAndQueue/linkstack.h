@@ -11,11 +11,8 @@ public:
     class LinkStackNode
     {
     public:
-        LinkStackNode()
-        {
-            prior = NULL;
-            next = NULL;
-        }
+        LinkStackNode() : prior(NULL), next(NULL) {}
+        LinkStackNode(const T &_data) : data(_data) , prior(NULL), next(NULL) {}
         T data;
         LinkStackNode *prior;
         LinkStackNode *next;
@@ -26,10 +23,11 @@ public:
     void clear();
     T &top();
     void push(const T &t);
+    void insert(int i, const T &t);
     T pop();
     QString print();
 
-private:
+public:
     LinkStackNode *m_head;
     int m_size;
 
@@ -92,6 +90,31 @@ void LinkStack<T>::push(const T &t)
         node->next = m_head;
         m_head->prior->next = node;
         m_head->prior = node;
+    }
+    m_size++;
+}
+
+template<typename T>
+void LinkStack<T>::insert(int i, const T &t)
+{
+    if (i < 0 || i > m_size)
+        return;
+    LinkStackNode *node = new LinkStackNode(t);
+    if (m_size == 0)
+    {
+        node->prior = node;
+        node->next = node;
+        m_head = node;
+    }
+    else
+    {
+        LinkStackNode *tmp = m_head;
+        for (int j = 0; j < i; j++)//找到插入位置
+            tmp = tmp->next;
+        node->prior = tmp->prior;
+        node->next = tmp;
+        tmp->prior->next = node;
+        tmp->prior = node;
     }
     m_size++;
 }

@@ -538,7 +538,7 @@ void Chapter6_Part1::practice_025()
 */
 void CriticalPath(AdjMGraph *g, LinkList<int> &ret)
 {
-    int i, j, v, ete, lte;
+    int i, v, ete, lte;
     const int verNum = g->getVerNum();
     SeqStack<int> stack1, stack2;//stack1用作拓扑排序的辅助栈，stack2用于存储拓扑排序的序列
     int *indegree;//入度表

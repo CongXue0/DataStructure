@@ -18,9 +18,9 @@ public:
         ArcNode() : ilink(NULL), jlink(NULL) {}
         ArcNode(int _ivex, int _jvex, int _val) : ivex(_ivex), jvex(_jvex), val(_val), ilink(NULL), jlink(NULL) {}
         int ivex, jvex;//弧的二个顶点
+        int val;//权重
         ArcNode *ilink;//指向包含有ivex顶点的一条弧
         ArcNode *jlink;//指向包含有jvex顶点的一条弧
-        int val;//权重
     };
     class VNode
     {

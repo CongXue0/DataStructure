@@ -12,8 +12,8 @@ public:
     static void setInput(QString input);
     static void clearInput();
     static int scanf(const char *format, ...);
-    static int printf(const char *format, ...);
-    static int putchar(int ch);
+    static void printf(const char *format, ...);
+    static void putchar(int ch);
 
 private:
     static QStringList m_inputList;

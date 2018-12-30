@@ -15,12 +15,14 @@ public:
     int getSize();
     int getCapacity();
     void clear();
-    T &top();
+    T &top(int i = 1);//返回栈顶倒数第几个结点
+    void expand();
     void push(const T &t);
+    void insert(int i, const T &t);
     T pop();
     QString print();
 
-private:
+public:
     T *m_elem;
     int m_size;
     int m_capacity;
@@ -68,10 +70,24 @@ void SeqStack<T>::clear()
 }
 
 template<typename T>
-T &SeqStack<T>::top()
+T &SeqStack<T>::top(int i)
 {
-    assert(m_size > 0);
-    return m_elem[m_size - 1];
+    assert(m_size > 0 && i > 0 && i <= m_size);
+    return m_elem[m_size - i];
+}
+
+template<typename T>
+void SeqStack<T>::expand()
+{
+    m_capacity = m_capacity * 2;
+    T *tmp = new T[m_capacity];
+    if (m_elem != NULL)
+    {
+        for (int i = 0; i < m_size; i++)
+            tmp[i] = m_elem[i];
+        delete[] m_elem;
+    }
+    m_elem = tmp;
 }
 
 template<typename T>
@@ -79,17 +95,27 @@ void SeqStack<T>::push(const T &t)
 {
     if (m_size >= m_capacity)
     {
-        m_capacity = m_capacity * 2;
-        T *tmp = new T[m_capacity];
-        if (m_elem != NULL)
-        {
-            for (int i = 0; i < m_size; i++)
-                tmp[i] = m_elem[i];
-            delete[] m_elem;
-        }
-        m_elem = tmp;
+        expand();
     }
     m_elem[m_size] = t;
+    m_size++;
+}
+
+template<typename T>
+void SeqStack<T>::insert(int i, const T &t)
+{
+    if (i < 0 || i > m_size)
+        return;
+    if (m_size >= m_capacity)
+    {
+        expand();
+    }
+    if (m_size > 0)
+    {
+        for (int j = m_size; j > i; j--)//元素后移
+            m_elem[j] = m_elem[j - 1];
+    }
+    m_elem[i] = t;
     m_size++;
 }
 

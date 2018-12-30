@@ -17,6 +17,7 @@ public:
     void clear();
     const T &at(int i) const;
     T &operator[](int i);
+    void expand();
     void insert(int i, const T &t);
     void append(const T &t);
     void removeAt(int i);
@@ -24,7 +25,7 @@ public:
     bool contains(const T &t);
     QString print();
 
-private:
+public:
     T *m_elem;
     int m_length;
     int m_capacity;
@@ -86,21 +87,27 @@ T &SeqList<T>::operator[](int i)
 }
 
 template<typename T>
+void SeqList<T>::expand()
+{
+    m_capacity = m_capacity * 2;
+    T *tmp = new T[m_capacity];
+    if (m_elem != NULL)
+    {
+        for (int j = 0; j < m_length; j++)
+            tmp[j] = m_elem[j];
+        delete[] m_elem;
+    }
+    m_elem = tmp;
+}
+
+template<typename T>
 void SeqList<T>::insert(int i, const T &t)
 {
     if (i < 0 || i > m_length)
         return;
     if (m_length >= m_capacity)
     {
-        m_capacity = m_capacity * 2;
-        T *tmp = new T[m_capacity];
-        if (m_elem != NULL)
-        {
-            for (int j = 0; j < m_length; j++)
-                tmp[j] = m_elem[j];
-            delete[] m_elem;
-        }
-        m_elem = tmp;
+        expand();
     }
     if (m_length > 0)
     {
@@ -116,15 +123,7 @@ void SeqList<T>::append(const T &t)
 {
     if (m_length >= m_capacity)
     {
-        m_capacity = m_capacity * 2;
-        T *tmp = new T[m_capacity];
-        if (m_elem != NULL)
-        {
-            for (int j = 0; j < m_length; j++)
-                tmp[j] = m_elem[j];
-            delete[] m_elem;
-        }
-        m_elem = tmp;
+        expand();
     }
     m_elem[m_length] = t;
     m_length++;

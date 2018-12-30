@@ -11,10 +11,8 @@ public:
     class LinkListNode
     {
     public:
-        LinkListNode()
-        {
-            next = NULL;
-        }
+        LinkListNode() : next(NULL) {}
+        LinkListNode(const T &t) : data(t) , next(NULL) {}
         T data;
         LinkListNode *next;
     };
@@ -94,8 +92,7 @@ void LinkList<T>::insert(int i, const T &t)
 {
     if (i < 0 || i > m_length)
         return;
-    LinkListNode *node = new LinkListNode();
-    node->data = t;
+    LinkListNode *node = new LinkListNode(t);
     if (i == 0)
     {
         node->next = m_head;
@@ -115,9 +112,7 @@ void LinkList<T>::insert(int i, const T &t)
 template<typename T>
 void LinkList<T>::append(const T &t)
 {
-    LinkListNode *node = new LinkListNode();
-    node->data = t;
-    node->next = NULL;
+    LinkListNode *node = new LinkListNode(t);
     if (m_head == NULL)
     {
         m_head = node;

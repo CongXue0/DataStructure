@@ -11,11 +11,8 @@ public:
     class DoubleLinkListNode
     {
     public:
-        DoubleLinkListNode()
-        {
-            prior = NULL;
-            next = NULL;
-        }
+        DoubleLinkListNode() : prior(NULL), next(NULL) {}
+        DoubleLinkListNode(const T &t) : data(t), prior(NULL), next(NULL) {}
         T data;
         DoubleLinkListNode *prior;
         DoubleLinkListNode *next;
@@ -31,7 +28,7 @@ public:
     void removeAt(int i);
     QString print();
 
-private:
+public:
     DoubleLinkListNode *m_head;
     int m_length;
 
@@ -95,8 +92,7 @@ void DoubleLinkList<T>::insert(int i, const T &t)
 {
     if (i < 0 || i > m_length)
         return;
-    DoubleLinkListNode *node = new DoubleLinkListNode();
-    node->data = t;
+    DoubleLinkListNode *node = new DoubleLinkListNode(t);
     if (m_length == 0)
     {
         node->prior = node;
@@ -119,8 +115,7 @@ void DoubleLinkList<T>::insert(int i, const T &t)
 template<typename T>
 void DoubleLinkList<T>::append(const T &t)
 {
-    DoubleLinkListNode *node = new DoubleLinkListNode();
-    node->data = t;
+    DoubleLinkListNode *node = new DoubleLinkListNode(t);
     if (m_length == 0)
     {
         node->prior = node;

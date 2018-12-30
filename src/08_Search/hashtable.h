@@ -50,7 +50,7 @@ public:
 
 };
 
-template <class Key, class T>
+template <typename Key, typename T>
 class HashTable
 {
 public:
@@ -58,7 +58,7 @@ public:
     {
     public:
         HashTableNode() : next(NULL) {}
-        HashTableNode(Key _key, T _data) : key(_key), data(_data), next(NULL) {}
+        HashTableNode(const Key &_key, const T &_data) : key(_key), data(_data), next(NULL) {}
         Key key;
         T data;
         HashTableNode *next;//key冲突时，存放在下一个结点
@@ -81,7 +81,7 @@ public:
     int m_capacity;
 };
 
-template <class Key, class T>
+template <typename Key, typename T>
 HashTable<Key, T>::HashTable()
 {
     m_size = 0;
@@ -91,29 +91,29 @@ HashTable<Key, T>::HashTable()
         m_elem[i] = NULL;
 }
 
-template <class Key, class T>
+template <typename Key, typename T>
 HashTable<Key, T>::~HashTable()
 {
     clear();
     delete m_elem;
 }
 
-template <class Key, class T>
+template <typename Key, typename T>
 int HashTable<Key, T>::getSize()
 {
     return m_size;
 }
 
-template <class Key, class T>
+template <typename Key, typename T>
 int HashTable<Key, T>::getCapacity()
 {
     return m_capacity;
 }
 
-template <class Key, class T>
+template <typename Key, typename T>
 void HashTable<Key, T>::clear()
 {
-    int i, j;
+    int i;
     HashTableNode *tmp;
     for (i = 0; i < m_capacity; i++)
     {
@@ -127,7 +127,7 @@ void HashTable<Key, T>::clear()
     m_size = 0;
 }
 
-template <class Key, class T>
+template <typename Key, typename T>
 const T &HashTable<Key, T>::value(const Key &key) const
 {
     unsigned int index = HashCalc::hash(key) % m_capacity;
@@ -141,7 +141,7 @@ const T &HashTable<Key, T>::value(const Key &key) const
     assert(tmp != NULL);
 }
 
-template <class Key, class T>
+template <typename Key, typename T>
 T &HashTable<Key, T>::operator[](const Key &key)
 {
     unsigned int index = HashCalc::hash(key) % m_capacity;
@@ -155,7 +155,7 @@ T &HashTable<Key, T>::operator[](const Key &key)
     assert(tmp != NULL);
 }
 
-template <class Key, class T>
+template <typename Key, typename T>
 void HashTable<Key, T>::insert(const Key &key, const T &t)
 {
     if (m_size >= m_capacity)//扩容
@@ -223,7 +223,7 @@ void HashTable<Key, T>::insert(const Key &key, const T &t)
     m_size++;
 }
 
-template <class Key, class T>
+template <typename Key, typename T>
 void HashTable<Key, T>::remove(const Key &key)
 {
     unsigned int index = HashCalc::hash(key) % m_capacity;
@@ -254,7 +254,7 @@ void HashTable<Key, T>::remove(const Key &key)
     }
 }
 
-template <class Key, class T>
+template <typename Key, typename T>
 bool HashTable<Key, T>::contains(const Key &key)
 {
     unsigned int index = HashCalc::hash(key) % m_capacity;
@@ -268,7 +268,7 @@ bool HashTable<Key, T>::contains(const Key &key)
     return false;
 }
 
-template <class Key, class T>
+template <typename Key, typename T>
 void HashTable<Key, T>::print()
 {
     QString info;

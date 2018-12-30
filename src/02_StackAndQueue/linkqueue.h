@@ -11,11 +11,8 @@ public:
     class LinkQueueNode
     {
     public:
-        LinkQueueNode()
-        {
-            prior = NULL;
-            next = NULL;
-        }
+        LinkQueueNode() : prior(NULL), next(NULL) {}
+        LinkQueueNode(const T &t) : data(t), prior(NULL), next(NULL) {}
         T data;
         LinkQueueNode *prior;
         LinkQueueNode *next;
@@ -26,10 +23,11 @@ public:
     void clear();
     T &head();
     void enqueue(const T &t);
+    void insert(int i, const T &t);
     T dequeue();
     QString print();
 
-private:
+public:
     LinkQueueNode *m_head;
     int m_size;
 
@@ -92,6 +90,31 @@ void LinkQueue<T>::enqueue(const T &t)
         node->next = m_head;
         m_head->prior->next = node;
         m_head->prior = node;
+    }
+    m_size++;
+}
+
+template <typename T>
+void LinkQueue<T>::insert(int i, const T &t)
+{
+    if (i < 0 || i > m_size)
+        return;
+    LinkQueueNode *node = new LinkQueueNode(t);
+    if (m_size == 0)
+    {
+        node->prior = node;
+        node->next = node;
+        m_head = node;
+    }
+    else
+    {
+        LinkQueueNode *tmp = m_head;
+        for (int j = 0; j < i; j++)//找到插入位置
+            tmp = tmp->next;
+        node->prior = tmp->prior;
+        node->next = tmp;
+        tmp->prior->next = node;
+        tmp->prior = node;
     }
     m_size++;
 }

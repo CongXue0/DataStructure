@@ -176,7 +176,7 @@ void Chapter2_Part1::practice_003()
             ，若栈顶优先级高，栈顶出栈，符号进栈，默认左括号优先级最低
         右括号 将栈顶符号弹出，直到匹配到左括号
 */
-void infixToSuffixExpression_transform(char *source, char *destination)//中缀转后缀表达式
+void infixToSuffixExpression_transform(const char *source, char *destination)//中缀转后缀表达式
 {
     int len = strlen(source);
     char ch, tmp;
@@ -312,14 +312,14 @@ int suffixExpression_calc(char *expression)
 void Chapter2_Part1::practice_004()
 {
 //    char *expression1 = "(1 - 4) * 8 + 29 / ((5 - 2) * 3)";
-    char *expression1 = "-1 * 20 + 100";
+    const char *expression1 = "-1 * 20 + 100";
     char buffer[50];
     infixToSuffixExpression_transform(expression1 , buffer);
     DEBUG<<"expression1:"<<expression1;
     DEBUG<<"expression1 tran:"<<buffer;
     DEBUG<<"结果为: "<<suffixExpression_calc(buffer);
 
-    char *expression2 = "1+2*(66/(2*3))+7";
+    const char *expression2 = "1+2*(66/(2*3))+7";
     infixToSuffixExpression_transform(expression2, buffer);
     DEBUG<<"expression2:"<<expression2;
     DEBUG<<"expression2 tran:"<<buffer;

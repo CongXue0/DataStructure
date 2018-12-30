@@ -17,6 +17,10 @@ template <typename T>
 class BalancedBinaryTree
 {
 public:
+    enum DIRECTION
+    {
+        MID, LEFT, RIGHT
+    };
     enum ROTATE
     {
         LL, LR, RR, RL
@@ -40,7 +44,7 @@ public:
     BalancedBinaryTree<T>::BalancedBinaryTreeNode *root();
     void append(const T &t);//往集合中添加元素t
     void remove(const T &t);//删除等于t的元素
-    void balance(BalancedBinaryTree<T>::BalancedBinaryTreeNode *root, BalancedBinaryTree<T>::BalancedBinaryTreeNode **pchild, int mode);//平衡化，pchild为root的引用
+    void rotate(BalancedBinaryTree<T>::BalancedBinaryTreeNode *root, BalancedBinaryTree<T>::BalancedBinaryTreeNode **pchild, int mode);//对root做旋转操作，pchild为root的引用
     bool contains(const T &t);//查找一个元素，存在返回true，不存在返回false
     void levelOrderTrav();//层次遍历
     void preOrderTrav();//先序遍历
@@ -51,7 +55,6 @@ public:
     static void deleteTree(BalancedBinaryTree<T>::BalancedBinaryTreeNode *root);
     static void copyTree(BalancedBinaryTree<T>::BalancedBinaryTreeNode *&dstRoot, const BalancedBinaryTree<T>::BalancedBinaryTreeNode *srcRoot);
     static int depth(BalancedBinaryTree<T>::BalancedBinaryTreeNode *root);
-    static BalancedBinaryTree<T>::BalancedBinaryTreeNode *locate(BalancedBinaryTree<T>::BalancedBinaryTreeNode *node, int curPos, int pos);//定位结点
     static void preOrderTrav_R(BalancedBinaryTree<T>::BalancedBinaryTreeNode *node);//先序遍历
     static void inOrderTrav_R(BalancedBinaryTree<T>::BalancedBinaryTreeNode *node);//中序遍历
     static void postOrderTrav_R(BalancedBinaryTree<T>::BalancedBinaryTreeNode *node);//后序遍历
@@ -91,7 +94,7 @@ void BalancedBinaryTree<T>::clear()
 template <typename T>
 int BalancedBinaryTree<T>::depth()
 {
-    return BalancedBinaryTree::depth(m_root);
+    return BalancedBinaryTree<T>::depth(m_root);
 }
 
 template <typename T>
@@ -111,6 +114,8 @@ typename BalancedBinaryTree<T>::BalancedBinaryTreeNode *BalancedBinaryTree<T>::r
     1. 先找到要插入的位置插入元素
     2. 自下而上更新路径上结点的bf平衡因子，直到找到第一颗需要旋转的树的结点进行旋转操作
         ，或者更新完路径上所有平衡因子
+    3. 当前结点的平衡被改变，当左子树深度与右子树深度的差值绝对值大于1时需要做旋转。
+        当左子树深度增长1：（1）增长方向来源于左子树的左孩子，对当前结点使用LL操作。（2）增长方向来源于左子树的右孩子，对当前结点使用LR操作。
 */
 template <typename T>
 void BalancedBinaryTree<T>::append(const T &t)
@@ -121,13 +126,17 @@ void BalancedBinaryTree<T>::append(const T &t)
         m_size++;
         return;
     }
-    SeqStack<BalancedBinaryTreeNode *> stack;//保存从根结点到插入结点路径的栈
+    SeqStack<BalancedBinaryTreeNode *> nodeStack;//保存从根结点到插入结点路径的栈
+    SeqStack<DIRECTION> direStack;//保存从根结点到插入结点路径方向的栈
+    DIRECTION lastDire;
     BalancedBinaryTreeNode *tmp = m_root, *tmp2;
     BalancedBinaryTreeNode **p;
     bool isIncreaseHeight = true;
+
+    direStack.push(MID);
     while (tmp != NULL)//查找要插入的结点和路径
     {
-        stack.push(tmp);
+        nodeStack.push(tmp);
         if (t == tmp->data)
         {
             return;
@@ -135,113 +144,96 @@ void BalancedBinaryTree<T>::append(const T &t)
         else if (t < tmp->data)
         {
             tmp = tmp->lchild;
+            direStack.push(LEFT);
         }
         else if (t > tmp->data)
         {
             tmp = tmp->rchild;
+            direStack.push(RIGHT);
         }
     }
-    tmp = stack.top();
-    if (t < tmp->data)
+    tmp = nodeStack.top();
+    if (direStack.top() == LEFT)
     {
         tmp->lchild = new BalancedBinaryTreeNode(t);
+        nodeStack.push(tmp->lchild);
     }
     else
     {
         tmp->rchild = new BalancedBinaryTreeNode(t);
+        nodeStack.push(tmp->rchild);
     }
-    while (isIncreaseHeight && stack.getSize() > 0)//重新平衡二叉树
+    m_size++;
+    while (isIncreaseHeight && nodeStack.getSize() > 1)//重新平衡二叉树
     {
-        tmp = stack.pop();
-        switch (tmp->bf)
+        tmp = nodeStack.pop();//增长结点
+        tmp2 = nodeStack.top();//父节点
+        switch (tmp2->bf)
         {
         case 1:
-            if (t < tmp->data)
+            if (direStack.top(1) == LEFT)
             {
-                if (stack.getSize() > 0)
+                p = (direStack.top(2) == MID ? &m_root : (direStack.top(2) == LEFT ? &nodeStack.top(2)->lchild : &nodeStack.top(2)->rchild));//父节点的引用
+                if (lastDire == LEFT)//LL
                 {
-                    tmp2 = stack.pop();
-                    if (t < tmp2->data)
-                    {
-                        p = &tmp2->lchild;
-                    }
-                    else
-                    {
-                        p = &tmp2->rchild;
-                    }
+                    rotate(tmp2, p, LL);
                 }
-                else
-                    p = &m_root;
-                if (t < tmp->lchild->data)//LL
+                else//LR
                 {
-                    balance(tmp, p, LL);
-                }
-                else if (t > tmp->lchild->data)//LR
-                {
-                    balance(tmp, p, LR);
+                    rotate(tmp2, p, LR);
                 }
             }
             else
             {
-                tmp->bf = 0;
+                tmp2->bf = 0;
             }
             isIncreaseHeight = false;
             break;
         case 0:
-            if (t < tmp->data)
+            if (direStack.top(1) == LEFT)
             {
-                tmp->bf = 1;
+                tmp2->bf = 1;
             }
             else
             {
-                tmp->bf = -1;
+                tmp2->bf = -1;
             }
             break;
         case -1:
-            if (t < tmp->data)
+            if (direStack.top(1) == LEFT)
             {
-                tmp->bf = 0;
+                tmp2->bf = 0;
             }
             else
             {
-                if (stack.getSize() > 0)
+                p = (direStack.top(2) == MID ? &m_root : (direStack.top(2) == LEFT ? &nodeStack.top(2)->lchild : &nodeStack.top(2)->rchild));//父节点的引用
+                if (lastDire == LEFT)//RL
                 {
-                    tmp2 = stack.pop();
-                    if (t < tmp2->data)
-                    {
-                        p = &tmp2->lchild;
-                    }
-                    else
-                    {
-                        p = &tmp2->rchild;
-                    }
+                    rotate(tmp2, p, RL);
                 }
-                else
-                    p = &m_root;
-                if (t < tmp->rchild->data)//RL
+                else//RR
                 {
-                    balance(tmp, p, RL);
-                }
-                else if (t > tmp->rchild->data)//RR
-                {
-                    balance(tmp, p, RR);
+                    rotate(tmp2, p, RR);
                 }
             }
             isIncreaseHeight = false;
             break;
         }
+        lastDire = direStack.pop();
     }
-    m_size++;
 }
 
 /*
 删除元素：
-    当删除的结点为叶子结点或左右子树有一个为NULL时可以直接删除，当删除的结点左右子树都不为空时。
+    1. 当删除的结点为叶子结点或左右子树有一个为NULL时可以直接删除，当删除的结点左右子树都不为空时。
         如果左子树深度>=右子树深度，
         从左子树中找到最大的元素结点给删除的结点元素赋值，之后删除左子树最大的那个结点；
         如果左子树深度<右子树深度，
         从右子树中找到最大的元素结点给删除的结点元素赋值，之后删除右子树最大的那个结点。
-    结点删除后需要重新平衡删除结点路径上的树。
+    2. 结点删除后需要重新平衡删除结点路径上的树。
+    3. 从删除路径上更新结点的平衡因子，如果新的平衡因子的绝对值大于1意味着平衡被打破需要做旋转。
+        当前结点的平衡因子为2（左子树比右子树长2）需要做旋转：（1）左子树的平衡因子为1或0，对当前结点使用LL操作。（2）左子树的平衡因子为-1，对当前结点使用LR操作。
+        当前结点的平衡因子为-2（右子树比左子树长2）需要做旋转：（1）右子树的平衡因子为-1或0，对当前结点使用RR操作。（2）左子树的平衡因子为1，对当前结点使用RL操作。
 */
 template <typename T>
 void BalancedBinaryTree<T>::remove(const T &t)
@@ -256,13 +248,17 @@ void BalancedBinaryTree<T>::remove(const T &t)
         }
         return;
     }
-    SeqStack<BalancedBinaryTreeNode *> stack;//保存从根结点到删除结点路径的栈
-    BalancedBinaryTreeNode *tmp = m_root, *tmp2, *tmp3;
+    SeqStack<BalancedBinaryTreeNode *> nodeStack;//保存从根结点到删除结点路径的栈
+    SeqStack<DIRECTION> direStack;//保存从根结点到插入结点路径方向的栈
+    DIRECTION lastDire;
+    BalancedBinaryTreeNode *tmp = m_root, *tmp2;
     BalancedBinaryTreeNode **p;
-    bool isDecreaseHeight = true, fromLeft;
+    bool isDecreaseHeight = true;
+
+    direStack.push(MID);
     while (tmp != NULL)//查找要删除的结点和路径
     {
-        stack.push(tmp);
+        nodeStack.push(tmp);
         if (t == tmp->data)
         {
             break;
@@ -270,15 +266,17 @@ void BalancedBinaryTree<T>::remove(const T &t)
         else if (t < tmp->data)
         {
             tmp = tmp->lchild;
+            direStack.push(LEFT);
         }
         else if (t > tmp->data)
         {
             tmp = tmp->rchild;
+            direStack.push(RIGHT);
         }
     }
     if (tmp == NULL)
         return;
-    tmp = stack.top();
+    tmp = nodeStack.top();
     if (tmp->lchild != NULL && tmp->rchild != NULL)//删除的结点左右孩子结点都不为空时，重定删除位置
     {
         switch (tmp->bf)
@@ -286,171 +284,122 @@ void BalancedBinaryTree<T>::remove(const T &t)
         case 1://平衡因子为1或0时，从左子树中找最大的元素与删除元素做交换
         case 0:
             tmp2 = tmp->lchild;
+            direStack.push(LEFT);
             while (tmp2 != NULL)
             {
-                stack.push(tmp2);
+                nodeStack.push(tmp2);
                 tmp2 = tmp2->rchild;
+                direStack.push(RIGHT);
             }
+            direStack.pop();
             break;
         case -1://平衡因子为-1时，从右子树中找最小的元素与删除元素做交换
             tmp2 = tmp->rchild;
+            direStack.push(RIGHT);
             while (tmp2 != NULL)
             {
-                stack.push(tmp2);
+                nodeStack.push(tmp2);
                 tmp2 = tmp2->lchild;
+                direStack.push(LEFT);
             }
+            direStack.pop();
             break;
         }
-        tmp2 = stack.top();
+        tmp2 = nodeStack.top();
         tmp->data = tmp2->data;
     }
 
-    tmp = stack.pop();
-    tmp2 = stack.top();
-    if (tmp->lchild == NULL && tmp->rchild == NULL)//删除结点
+    tmp = nodeStack.pop();//待删除结点
+    lastDire = direStack.pop();
+    if (lastDire == MID)
     {
-        if (tmp2->lchild == tmp)
+        m_root = (tmp->lchild != NULL ? tmp->lchild : tmp->rchild);
+    }
+    else
+    {
+        tmp2 = nodeStack.top();//父结点
+        if (lastDire == LEFT)
         {
-            tmp2->lchild = NULL;
-            fromLeft = true;
+            tmp2->lchild = (tmp->lchild != NULL ? tmp->lchild : tmp->rchild);
         }
         else
         {
-            tmp2->rchild = NULL;
-            fromLeft = false;
+            tmp2->rchild = (tmp->lchild != NULL ? tmp->lchild : tmp->rchild);
         }
-        delete tmp;
     }
-    else if (tmp->lchild != NULL && tmp->rchild == NULL)
-    {
-        if (tmp2->lchild == tmp)
-        {
-            tmp2->lchild = tmp->lchild;
-            fromLeft = true;
-        }
-        else
-        {
-            tmp2->rchild = tmp->lchild;
-            fromLeft = false;
-        }
-        delete tmp;
-    }
-    else if (tmp->lchild == NULL && tmp->rchild != NULL)
-    {
-        if (tmp2->lchild == tmp)
-        {
-            tmp2->lchild = tmp->rchild;
-            fromLeft = true;
-        }
-        else
-        {
-            tmp2->rchild = tmp->rchild;
-            fromLeft = false;
-        }
-        delete tmp;
-    }
+    delete tmp;
+    m_size--;
 
-    while (isDecreaseHeight && stack.getSize() > 0)//重新平衡二叉树
+    while (isDecreaseHeight && nodeStack.getSize() > 0)//重新平衡二叉树
     {
-        tmp = stack.pop();
-        switch (tmp->bf)
+        tmp2 = nodeStack.pop();
+        switch (tmp2->bf)
         {
         case 1:
-            if (fromLeft)
+            if (lastDire == LEFT)
             {
-                tmp->bf = 0;
-                if (stack.getSize() > 0)
-                {
-                    fromLeft = stack.top()->lchild == tmp;
-                }
+                tmp2->bf = 0;
+                lastDire = direStack.pop();
             }
             else
             {
-                if (stack.getSize() > 0)
-                {
-                    tmp3 = stack.pop();
-                    if (tmp3->lchild == tmp)
-                    {
-                        p = &tmp3->lchild;
-                    }
-                    else
-                    {
-                        p = &tmp3->rchild;
-                    }
-                }
-                else
-                    p = &m_root;
-                tmp2 = tmp->lchild;
-                switch (tmp2->bf)
+                lastDire = direStack.pop();
+                p = (lastDire == MID ? &m_root : (lastDire == LEFT ? &nodeStack.top()->lchild : &nodeStack.top()->rchild));//tmp2的引用
+                tmp = tmp2->lchild;
+                switch (tmp->bf)
                 {
                 case 1:
                 case 0:
-                    balance(tmp, p, LL);
+                    rotate(tmp2, p, LL);
                     break;
                 case -1:
-                    balance(tmp, p, LR);
+                    rotate(tmp2, p, LR);
                     break;
                 }
                 isDecreaseHeight = false;
             }
             break;
         case 0:
-            if (fromLeft)
+            if (lastDire == LEFT)
             {
-                tmp->bf = -1;
+                tmp2->bf = -1;
             }
             else
             {
-                tmp->bf = 1;
+                tmp2->bf = 1;
             }
             isDecreaseHeight = false;
             break;
         case -1:
-            if (fromLeft)
+            if (lastDire == LEFT)
             {
-                if (stack.getSize() > 0)
-                {
-                    tmp3 = stack.pop();
-                    if (tmp3->lchild == tmp)
-                    {
-                        p = &tmp3->lchild;
-                    }
-                    else
-                    {
-                        p = &tmp3->rchild;
-                    }
-                }
-                else
-                    p = &m_root;
-                tmp2 = tmp->rchild;
-                switch (tmp2->bf)
+                lastDire = direStack.pop();
+                p = (lastDire == MID ? &m_root : (lastDire == LEFT ? &nodeStack.top()->lchild : &nodeStack.top()->rchild));//tmp2的引用
+                tmp = tmp2->rchild;
+                switch (tmp->bf)
                 {
                 case -1:
                 case 0:
-                    balance(tmp, p, RR);
+                    rotate(tmp2, p, RR);
                     break;
                 case 1:
-                    balance(tmp, p, RL);
+                    rotate(tmp2, p, RL);
                     break;
                 }
                 isDecreaseHeight = false;
             }
             else
             {
-                tmp->bf = 0;
-                if (stack.getSize() > 0)
-                {
-                    fromLeft = stack.top()->lchild == tmp;
-                }
+                tmp2->bf = 0;
+                lastDire = direStack.pop();
             }
             break;
         }
     }
-    m_size--;
 }
 
 template <typename T>
-void BalancedBinaryTree<T>::balance(BalancedBinaryTree<T>::BalancedBinaryTreeNode *root, BalancedBinaryTree<T>::BalancedBinaryTreeNode **pchild, int mode)
+void BalancedBinaryTree<T>::rotate(BalancedBinaryTree<T>::BalancedBinaryTreeNode *root, BalancedBinaryTree<T>::BalancedBinaryTreeNode **pchild, int mode)
 {
     BalancedBinaryTreeNode *tmp, *tmp2;
     switch (mode)
@@ -591,12 +540,15 @@ void BalancedBinaryTree<T>::postOrderTrav()
 template <typename T>
 void BalancedBinaryTree<T>::print()
 {
-    QString info = "\n", direction;
+    QString start;
     LinkStack<BalancedBinaryTreeNode *> nodeStack;
     LinkStack<int> levelStack;
     BalancedBinaryTreeNode *node = m_root, *parent;
     int curLevel = 0, i;
-    int endArr[1024] = {0};//保存各深度的节点是否到达末尾
+    int len = (m_size < 256 ? 256 : m_size);
+    int *endArr = new int[len];//保存各深度的节点是否到达末尾
+    for (i = 0; i < len; i++)
+        endArr[i] = 0;
     endArr[0] = 1;
     while (nodeStack.getSize() > 0 || node != NULL)
     {
@@ -604,51 +556,37 @@ void BalancedBinaryTree<T>::print()
         {
             if (curLevel == 0)//根节点
             {
-                if (is_char<T>())
-                {
-                    info.append(QString("%1 ").arg(node->bf) + QString(node->data) + "\n");
-                }
-                else
-                {
-                    info.append(QString("%1 ").arg(node->bf) + QString::number(node->data) + "\n");
-                }
+                DEBUG << node->bf << " " << node->data;
             }
             else
             {
+                start.clear();
                 for (i = 1; i <= curLevel; i++)//打印出一行
                 {
                     if (i == curLevel)
                     {
                         if (endArr[i] == 0)
                         {
-                            info.append("├── ");
+                            start.append("├── ");
                         }
                         else
                         {
-                            info.append("└── ");
+                            start.append("└── ");
                         }
                     }
                     else
                     {
                         if (endArr[i] == 0)
                         {
-                            info.append("│   ");
+                            start.append("│   ");
                         }
                         else
                         {
-                            info.append("    ");
+                            start.append("    ");
                         }
                     }
                 }
-                direction = (parent->lchild == node ? "l " : "r ");
-                if (is_char<T>())
-                {
-                    info.append(direction + QString("%1 ").arg(node->bf) + QString(node->data) + "\n");
-                }
-                else
-                {
-                    info.append(direction + QString("%1 ").arg(node->bf) + QString::number(node->data) + "\n");
-                }
+                DEBUG << start << (parent->lchild == node ? "l " : "r ") << node->bf << " " << node->data;
             }
             nodeStack.push(node);
             levelStack.push(curLevel);
@@ -674,13 +612,7 @@ void BalancedBinaryTree<T>::print()
             endArr[curLevel] = 1;
         }
     }
-//    DEBUG << info;
-    QStringList list = info.split('\n');
-    for (i = 0; i < list.count(); i++)
-    {
-        if (!list.at(i).isEmpty())
-            DEBUG << list.at(i);
-    }
+    delete[] endArr;
 }
 
 template <typename T>
@@ -713,22 +645,6 @@ int BalancedBinaryTree<T>::depth(BalancedBinaryTree<T>::BalancedBinaryTreeNode *
     int depLeft = depth(root->lchild);
     int depRight = depth(root->rchild);
     return 1 + (depLeft > depRight ? depLeft : depRight);
-}
-
-template <typename T>
-typename BalancedBinaryTree<T>::BalancedBinaryTreeNode *BalancedBinaryTree<T>::locate(BalancedBinaryTree<T>::BalancedBinaryTreeNode *node, int curPos, int pos)
-{
-    if (pos == 0 || node == NULL || pos < curPos)
-        return NULL;
-    if (pos == curPos)
-        return node;
-    BalancedBinaryTreeNode *p;
-    p = locate(node->lchild, curPos * 2, pos);
-    if (p == NULL)
-    {
-        p = locate(node->rchild, curPos * 2 + 1, pos);
-    }
-    return p;
 }
 
 template <typename T>

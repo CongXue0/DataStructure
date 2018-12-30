@@ -78,6 +78,7 @@ HEADERS  += widget.h \
     src/06_Graph/orthogonallistgraph.h \
     src/06_Graph/adjacencymultilistgraph.h \
     src/04_Tree/balancedbinarytree.h \
-    src/08_Search/hashtable.h
+    src/08_Search/hashtable.h \
+    src/08_Search/redblacktree.h
 
 FORMS    += widget.ui
