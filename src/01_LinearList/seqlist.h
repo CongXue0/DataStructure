@@ -109,11 +109,8 @@ void SeqList<T>::insert(int i, const T &t)
     {
         expand();
     }
-    if (m_length > 0)
-    {
-        for (int j = m_length; j > i; j--)//元素后移
-            m_elem[j] = m_elem[j - 1];
-    }
+    for (int j = m_length; j > i; j--)//元素后移
+        m_elem[j] = m_elem[j - 1];
     m_elem[i] = t;
     m_length++;
 }

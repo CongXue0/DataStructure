@@ -110,11 +110,8 @@ void SeqStack<T>::insert(int i, const T &t)
     {
         expand();
     }
-    if (m_size > 0)
-    {
-        for (int j = m_size; j > i; j--)//元素后移
-            m_elem[j] = m_elem[j - 1];
-    }
+    for (int j = m_size; j > i; j--)//元素后移
+        m_elem[j] = m_elem[j - 1];
     m_elem[i] = t;
     m_size++;
 }

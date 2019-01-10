@@ -3,6 +3,12 @@
 
 #include <QString>
 #include <qglobal.h>
+#include "src/03_String/mystring.h"
+
+//#define DEBUG qDebug() << QString("%1 %2:%3 ").arg(QString(__FILE__).split('\\').last()).arg(__FUNCTION__).arg(__LINE__)
+#define DEBUG MyDebug::info() << QString("%1 %2:%3 ").arg(QString(__FILE__).split('\\').last()).arg(__FUNCTION__).arg(__LINE__)
+
+class String;
 
 class MyDebug
 {
@@ -13,6 +19,7 @@ public:
     ~MyDebug();
 
     static MyDebug info();
+    static void setDebugFlag(bool save);
     static void clear();
     static QString infoPop();
 
@@ -34,8 +41,10 @@ public:
     inline MyDebug &operator<<(const QStringRef &t) { m_line.append(t); return *this; }
     inline MyDebug &operator<<(QLatin1String t) { m_line.append(t); return *this; }
     inline MyDebug &operator<<(const QByteArray & t) { m_line.append(QString(t)); return *this; }
+    inline MyDebug &operator<<(const String &t) { m_line.append(t.data()); return *this; }
 
 private:
+    static bool m_saveDebug;
     static QString m_line;
     static QString m_info;
 

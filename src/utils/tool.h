@@ -10,8 +10,6 @@
 
 #define BOOLSTR(a) ((a == true) ? "true" : "false")
 #define TIMEFORMAT ("yyyy-MM-dd hh:mm:ss")
-//#define DEBUG qDebug() << QString("%1 %2:%3 ").arg(QString(__FILE__).split('\\').last()).arg(__FUNCTION__).arg(__LINE__)
-#define DEBUG MyDebug::info() << QString("%1 %2:%3 ").arg(QString(__FILE__).split('\\').last()).arg(__FUNCTION__).arg(__LINE__)
 
 #define MAX_CHAPTER_NUM 12
 

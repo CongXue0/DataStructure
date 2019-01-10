@@ -3,6 +3,9 @@
 
 #include <assert.h>
 #include <QString>
+#include <QDebug>
+
+#define LINKLIST_CONS_DEBUG 0
 
 template <typename T>
 class LinkList
@@ -17,7 +20,10 @@ public:
         LinkListNode *next;
     };
     LinkList();
+    LinkList(const LinkList &list);
     ~LinkList();
+    LinkList &operator=(const LinkList &list);
+    LinkList &operator=(LinkList &&list);
     int getLength();
     void clear();
     const T &at(int i) const;
@@ -38,14 +44,67 @@ public:
 template<typename T>
 LinkList<T>::LinkList()
 {
+#if LINKLIST_CONS_DEBUG == 1
+    qDebug() << "LinkList gouzao 1 null";
+#endif
     m_head = NULL;
     m_length = 0;
 }
 
 template<typename T>
+LinkList<T>::LinkList(const LinkList &list)
+{
+#if LINKLIST_CONS_DEBUG == 1
+    qDebug() << "LinkList gouzao 2 copy";
+#endif
+    LinkListNode **p = &m_head;
+    LinkListNode *tmp = list.m_head;
+    while (tmp != NULL)
+    {
+        *p = new LinkListNode(tmp->data);
+        p = &((*p)->next);
+        tmp = tmp->next;
+    }
+    m_length = list.m_length;
+}
+
+template<typename T>
 LinkList<T>::~LinkList()
 {
+#if LINKLIST_CONS_DEBUG == 1
+    qDebug() << "LinkList ~";
+#endif
     clear();
+}
+
+template<typename T>
+LinkList<T> &LinkList<T>::operator=(const LinkList<T> &list)
+{
+#if LINKLIST_CONS_DEBUG == 1
+    qDebug() << "LinkList fuzhi 1";
+#endif
+    clear();
+    LinkListNode **p = &m_head;
+    LinkListNode *tmp = list.m_head;
+    while (tmp != NULL)
+    {
+        *p = new LinkListNode(tmp->data);
+        p = &((*p)->next);
+    }
+    m_length = list.m_length;
+}
+
+template<typename T>
+LinkList<T> &LinkList<T>::operator=(LinkList<T> &&list)
+{
+#if LINKLIST_CONS_DEBUG == 1
+    qDebug() << "LinkList fuzhi 2 move";
+#endif
+    clear();
+    m_head = list.m_head;
+    m_length = list.m_length;
+    list.m_head = NULL;
+    list.m_length = 0;
 }
 
 template<typename T>

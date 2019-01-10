@@ -44,7 +44,10 @@ SOURCES += main.cpp \
     src/utils/virtualio.cpp \
     src/06_Graph/adjacencylistgraph.cpp \
     src/06_Graph/orthogonallistgraph.cpp \
-    src/06_Graph/adjacencymultilistgraph.cpp
+    src/06_Graph/adjacencymultilistgraph.cpp \
+    src/03_String/mystring.cpp \
+    src/03_String/chapter3_part1.cpp \
+    src/03_String/mystringlist.cpp
 
 HEADERS  += widget.h \
     src/utils/tool.h \
@@ -79,6 +82,9 @@ HEADERS  += widget.h \
     src/06_Graph/adjacencymultilistgraph.h \
     src/04_Tree/balancedbinarytree.h \
     src/08_Search/hashtable.h \
-    src/08_Search/redblacktree.h
+    src/08_Search/redblacktree.h \
+    src/03_String/mystring.h \
+    src/03_String/chapter3_part1.h \
+    src/03_String/mystringlist.h
 
 FORMS    += widget.ui
