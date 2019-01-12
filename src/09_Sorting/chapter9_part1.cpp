@@ -30,6 +30,40 @@ void Chapter9_Part1::practice_000()
 }
 
 /*
+直接插入排序demo
+*/
+void Chapter9_Part1::practice_001()
+{
+    const int len = 100000;
+    int *arr = new int[len];
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+    Tool::createRandArr(arr, len, -10 * len, 10 * len);
+//    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+    Sorting::insertSort<int>(arr, 0, len - 1);
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+//    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    delete arr;
+}
+
+/*
+希尔排序demo
+*/
+void Chapter9_Part1::practice_002()
+{
+    const int len = 10000000;
+    int *arr = new int[len];
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+    Tool::createRandArr(arr, len, -10 * len, 10 * len);
+//    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+    Sorting::shellSort<int>(arr, 0, len - 1);
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+//    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    delete arr;
+}
+
+/*
 描述
     数轴上有n个点，对于任一闭区间 [a, b]，试计算落在其内的点数。
 
