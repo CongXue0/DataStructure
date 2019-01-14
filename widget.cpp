@@ -57,6 +57,7 @@ void Widget::loadQuestion()
     m_bank.addQuestion(8, Question("直接插入排序demo", Chapter9_Part1::practice_001, 2, "大话"));
     m_bank.addQuestion(8, Question("希尔排序demo", Chapter9_Part1::practice_002, 2, "大话"));
     m_bank.addQuestion(8, Question("堆排序demo", Chapter9_Part1::practice_003, 3, "大话"));
+    m_bank.addQuestion(8, Question("快速排序demo", Chapter9_Part1::practice_004, 3, "大话"));
     m_bank.addQuestion(8, Question("范围查询(Range)", Chapter9_Part1::practice_000, 4, "邓俊辉"));
 }
 

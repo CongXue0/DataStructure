@@ -8,17 +8,23 @@ class Sorting
 public:
     Sorting() = delete;
 
+    /* 以下为时间复杂度为O(n2)的算法 */
     template <typename T>
     static void selectSort(T arr[], int low, int high);//简单选择排序
+
     template <typename T>
     static void bubbleSort(T arr[], int low, int high);//冒泡排序
+
     template <typename T>
     static void insertSort(T arr[], int low, int high);//直接插入排序
 
+    /* 以下为时间复杂度为O(nlogn)的算法 */
     template <typename T>
     static void shellSort(T arr[], int low, int high);//希尔排序
+
     template <typename T>
     static void quickSort(T arr[], int low, int high);//快速排序
+
     template <typename T>
     static void merge(T arr[], int low, int mid, int high);//合并
     template <typename T>
@@ -33,6 +39,7 @@ public:
 
 /*
 简单选择排序：
+    简单选择排序是不稳定的排序算法
     扫面整个序列选出一个最小值与第一个元素交换，序列规模减一，再重复上两步操作直到排序完成
 */
 template <typename T>
@@ -57,8 +64,11 @@ void Sorting::selectSort(T arr[], int low, int high)
     }
 }
 
+/*
+冒泡排序是稳定的排序算法
+*/
 template <typename T>
-void Sorting::bubbleSort(T arr[], int low, int high)//冒泡排序
+void Sorting::bubbleSort(T arr[], int low, int high)
 {
     int i, j;
     bool exchange = true;
@@ -92,6 +102,7 @@ void Sorting::bubbleSort(T arr[], int low, int high)//冒泡排序
 
 /*
 直接插入排序：
+    直接插入排序是稳定的排序算法
     将第一个元素视为一个已排序好的线性表，线性表之后的一个元素作为要插入的元素，将元素保持顺序插入线性表，
         线性表规模加1，重复之前步骤，直到排序完成
 */
@@ -116,6 +127,9 @@ void Sorting::insertSort(T arr[], int low, int high)
 希尔排序是最早的突破O(n2)算法复杂度限制的排序算法
 希尔排序是不稳定的排序算法
 增量序列的最后一个增量值得是1才行
+希尔排序过程：
+    将相差increment个增量的所有元素，视为一个子序列，对所有的子序列做插入排序，之后increment增量缩减，
+        重新对所有子序列做插入排序，直到增量缩减为0
 */
 template <typename T>
 void Sorting::shellSort(T arr[], int low, int high)
@@ -137,28 +151,39 @@ void Sorting::shellSort(T arr[], int low, int high)
     }
 }
 
+/*
+快速排序：
+    快速排序是不稳定的排序算法
+快速排序过程：
+    选取第一个有元素值作为中间值tmp，不断的将小于中间值tmp的元素移入左边，大于中间值tmp的元素移入右边，
+        直到中间值左边的元素都小于等于tmp，中间值右边的元素都大于等于tmp，这样一个序列就被分为了两个子序列，
+        对两个子序列再重复上述步骤，直到排序完成
+*/
 template <typename T>
 void Sorting::quickSort(T arr[], int low, int high)
 {
     if (low >= high)
         return;
     int lo = low, hi = high;
-    T tmp = arr[lo];				//选出中间值
+    T tmp = arr[lo]; //选出中间值
     while (lo != hi)
     {
-        while (lo < hi && arr[hi] >= tmp)
+        while (lo < hi && arr[hi] >= tmp)//从右往左找到第一个小于中间值的元素移入lo位置
             hi--;
         arr[lo] = arr[hi];
-        while (lo < hi && arr[lo] <= tmp)
+        while (lo < hi && arr[lo] <= tmp)//从左往右找到第一个大于中间值的元素移入hi位置
             lo++;
         arr[hi] = arr[lo];
     }
-    arr[lo] = tmp;
-    quickSort(arr, low, lo - 1);
-    quickSort(arr, lo + 1, high);
+    arr[lo] = tmp;//将中间数填入
+    quickSort(arr, low, lo - 1);//左子序列做快排
+    quickSort(arr, lo + 1, high);//右子序列做快排
 }
 
-
+/*
+归并排序：
+    归并排序是稳定的排序算法
+*/
 template <typename T>
 void Sorting::merge(T arr[], int low, int mid, int high)
 {
@@ -214,6 +239,7 @@ void Sorting::mergeSort(T arr[], int low, int high)//归并排序
 
 /*
 堆排序：
+    堆排序是不稳定的排序算法
     堆排序是利用堆数据结构进行排序的算法，堆是一颗完全二叉树，结点的标号是连续的
 大顶堆：
     所有节点均大于等于两颗子树中的最大值
