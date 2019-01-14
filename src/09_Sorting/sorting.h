@@ -39,6 +39,9 @@ public:
     template <typename T>
     static void countSort(T arr[], int low, int high);//计数排序
 
+    template <typename T>
+    static void bucketSort(T arr[], int low, int high);//桶排序
+
 };
 
 /*
@@ -259,7 +262,7 @@ void Sorting::mergeSort(T arr[], int low, int high)//归并排序
     5. 调整完成后，再次输出最大元素，调整大顶堆，循环往复，直到输出所有元素，数组排序完成
 */
 template <typename T>
-void Sorting::heapAdjust(T arr[], int i, int len)
+void Sorting::heapAdjust(T arr[], int i, int len)//i 为待排序的堆的堆顶，len 为堆的元素个数
 {
     int j;
     T tmp;
@@ -301,6 +304,7 @@ void Sorting::heapSort(T arr[], int low, int high)//堆排序
 /*
 计数排序：
     计数排序的输入为 n 个 0 到 k 之间的整数，时间复杂度为O(n + k)
+    计数排序是稳定的排序算法
 计数排序过程：
     1. 备份排序数组到copyArr，并查找到最大元素maxElem
     2. 创建统计数组countArr，元素个数为maxElem + 1，并初始化为0
@@ -351,6 +355,47 @@ void Sorting::countSort(T arr[], int low, int high)
 
     delete[] copyArr;
     delete[] countArr;
+}
+
+/*
+桶排序：
+    桶排序的输入为 n 个 0 到 k 之间的整数，时间复杂度为O(n + k)
+    由于操作次数比计数排序少，效率要比计数排序更高，所占空间也比计数排序少
+    桶排序是稳定的排序算法
+计数排序过程：
+    1. 在排序数组查找到最大元素maxElem，创建桶数组buckets，元素个数为maxElem + 1，并初始化为0
+    2. 以元素的值作为索引在桶数组对应的位置使值加一 buckets[arr[i]]++; ，用来表示当前位置的元素的个数
+    3. 遍历桶，根据桶的序号输出元素的值
+*/
+template <typename T>
+void Sorting::bucketSort(T arr[], int low, int high)
+{
+    int i, j;
+    T *buckets;//桶数组
+    T maxElem;
+    for (i = low + 1, j = low; i <= high; i++)
+    {
+        if (arr[i] > arr[j])
+            j = i;
+    }
+    maxElem = arr[j];
+    buckets = new T[maxElem + 1];
+    for (i = 0; i <= maxElem; i++)//初始化桶
+        buckets[i] = 0;
+
+    for (i = low; i <= high; i++)//对所有元素做计数
+        buckets[arr[i]]++;
+
+    for (i = 0, j = low; i <= maxElem; i++)//遍历整个桶数组
+    {
+        while (buckets[i] > 0)//桶内个数大于0表示该元素的个数
+        {
+            buckets[i]--;
+            arr[j] = i;
+            j++;
+        }
+    }
+    delete[] buckets;
 }
 
 #endif // SORTING_H

@@ -118,6 +118,24 @@ void Chapter9_Part1::practice_005()
 }
 
 /*
+桶排序demo
+*/
+void Chapter9_Part1::practice_006()
+{
+    const int len = 10000000;
+    int *arr = new int[len];
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+    Tool::createRandArr(arr, len, 0, len / 100);
+//    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+    Sorting::bucketSort<int>(arr, 0, len - 1);
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+//    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    DEBUG<<Tool::checkArr(arr, 0, len - 1);
+    delete[] arr;
+}
+
+/*
 描述
     数轴上有n个点，对于任一闭区间 [a, b]，试计算落在其内的点数。
 
