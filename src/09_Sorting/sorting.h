@@ -35,6 +35,10 @@ public:
     template <typename T>
     static void heapSort(T arr[], int low, int high);//堆排序
 
+    /* 非比较排序算法 */
+    template <typename T>
+    static void countSort(T arr[], int low, int high);//计数排序
+
 };
 
 /*
@@ -292,6 +296,61 @@ void Sorting::heapSort(T arr[], int low, int high)//堆排序
 
         heapAdjust(pArr, 0, i);
     }
+}
+
+/*
+计数排序：
+    计数排序的输入为 n 个 0 到 k 之间的整数，时间复杂度为O(n + k)
+计数排序过程：
+    1. 备份排序数组到copyArr，并查找到最大元素maxElem
+    2. 创建统计数组countArr，元素个数为maxElem + 1，并初始化为0
+    3. 以元素的值作为索引在统计数组对应的位置使值加一 countArr[copyArr[i]]++; ，从位置1开始，
+        每一个统计数组的值都加上前一个值，用来表示当前位置的元素（包含自身）有多少个<=的元素。
+    4. 从末尾向前遍历拷贝数组，通过数组的值和统计数组来计算元素排序后的位置 tmp = copyArr[i]; index = countArr[tmp] - 1; ，
+        之后将元素存入排序数组 pArr[index] = tmp; ，统计数组对应的位置的值减一 countArr[tmp]--;
+        这一步是为了使相同值的元素排在当前元素的左边，由于元素是从右向左遍历，相同值之间的顺序不会改变，使得算法稳定。
+*/
+#define COUNTSORT_MAXNUM 1000000
+template <typename T>
+void Sorting::countSort(T arr[], int low, int high)
+{
+    T *pArr = arr + low;
+    int len = high - low + 1, i, index;
+    T tmp, maxElem;
+    T *copyArr = new T[len];//备份数组
+    T *countArr;//统计数组
+    for (i = 0, index = -1; i < len; i++)
+    {
+        copyArr[i] = pArr[i];
+        if (index == -1)//计算最大元素
+            index = i;
+        else
+        {
+            if (pArr[i] > pArr[index])
+                index = i;
+        }
+    }
+    maxElem = pArr[index];
+    countArr = new T[maxElem + 1];
+    for (i = 0; i <= maxElem; i++)//初始化统计数组
+        countArr[i] = 0;
+
+    //统计每个元素出现的次数
+    for (i = 0; i < len; i++)
+        countArr[copyArr[i]]++;
+    for (i = 1; i <= maxElem; i++)
+        countArr[i] += countArr[i - 1];
+
+    for (i = len - 1; i >= 0; i--)//从后往前遍历是为了排序的稳定性
+    {
+        tmp = copyArr[i];//当前待排序的元素
+        index = countArr[tmp] - 1;//根据统计数组，计算得元素排序后位置
+        pArr[index] = tmp;//元素填入排序数组
+        countArr[tmp]--;//待排序的元素的统计次数减一，用于将重复元素放在其左边
+    }
+
+    delete[] copyArr;
+    delete[] countArr;
 }
 
 #endif // SORTING_H
