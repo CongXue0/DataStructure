@@ -65,6 +65,8 @@ public:
     static void createRandArr(int arr[], int len, int left, int right);//生成随机数组
     template<typename T>
     static QString printArr(T arr[], int low, int high);
+    template<typename T>
+    static bool checkArr(T arr[], int low, int high);
 
 };
 
@@ -77,6 +79,17 @@ QString Tool::printArr(T arr[], int low, int high)
         result.append(QString::number(arr[i]) + " ");
     }
     return result;
+}
+
+template<typename T>
+bool Tool::checkArr(T arr[], int low, int high)
+{
+    for (int i = low; i < high; i++)
+    {
+        if (arr[i] > arr[i + 1])
+            return false;
+    }
+    return true;
 }
 
 #endif // TOOL_H

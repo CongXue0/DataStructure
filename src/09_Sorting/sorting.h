@@ -24,6 +24,11 @@ public:
     template <typename T>
     static void mergeSort(T arr[], int low, int high);//归并排序
 
+    template <typename T>
+    static void heapAdjust(T arr[], int s, int m);
+    template <typename T>
+    static void heapSort(T arr[], int low, int high);//堆排序
+
 };
 
 /*
@@ -204,6 +209,62 @@ void Sorting::mergeSort(T arr[], int low, int high)//归并排序
         mergeSort(arr, low, mid);
         mergeSort(arr, mid + 1, high);
         merge(arr, low, mid, high);//合并两个序列
+    }
+}
+
+/*
+堆排序：
+    堆排序是利用堆数据结构进行排序的算法，堆是一颗完全二叉树，结点的标号是连续的
+大顶堆：
+    所有节点均大于等于两颗子树中的最大值
+大顶堆：
+    所有节点均小于等于两颗子树中的最小值
+排序步骤：
+    1. 先选取堆的最后一个结点的父结点最为初始位置，假设数组从0下标开始，则初始下标的计算方式为 len / 2 - 1
+    2. 从初始下标 i 开始构建大顶堆，将 i 结点与左右子树做比较，如果左右子树中较大者大于i结点，则将其值交换，
+        i指向交换的子树标号，重新比较，否则停止交换
+    3. 每一次交换完成 i--
+    4. 大顶堆构造完成后，接着就是输出元素，将大顶堆堆顶arr[0] 与 堆尾arr[len - 1] 元素交换，最大值已经产生，
+        数组长度减一，从堆顶重新调整大顶堆
+    5. 调整完成后，再次输出最大元素，调整大顶堆，循环往复，直到输出所有元素，数组排序完成
+*/
+template <typename T>
+void Sorting::heapAdjust(T arr[], int i, int len)
+{
+    int j;
+    T tmp;
+    tmp = arr[i];//将 i 视为要排序的堆顶序号，将堆顶结点备份出来
+    for (j = 2 * i + 1; j < len; j = 2 * j + 1)
+    {
+        if (j + 1 < len && arr[j] < arr[j + 1])//从左右子树中选取较大的结点
+            j++;
+        if (arr[j] > tmp)//如果子树的值大于父结点，则将子树赋给父结点，更新备份结点的插入位置，否则跳出循环
+        {
+            arr[i] = arr[j];
+            i = j;
+        }
+        else
+            break;
+    }
+    arr[i] = tmp;//将初始堆顶结点插入到第一个>=的位置（将比较路径上的结点视为一个顺序表）
+}
+
+template <typename T>
+void Sorting::heapSort(T arr[], int low, int high)//堆排序
+{
+    T *pArr = arr + low;
+    int len = high - low + 1, i;
+    T tmp;
+    for (i = len / 2 - 1; i >= 0; i--)
+        heapAdjust(pArr, i, len);//构建大顶堆
+
+    for (i = len - 1; i > 0; i--)
+    {
+        tmp = pArr[0];//堆顶元素与末尾元素交换，
+        pArr[0] = pArr[i];
+        pArr[i] = tmp;
+
+        heapAdjust(pArr, 0, i);
     }
 }
 

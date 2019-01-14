@@ -9,7 +9,7 @@
 */
 void Chapter9_Part1::practice_000()
 {
-    const int len = 10000000;
+    const int len = 10000;
     int *arr = new int[len];
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
     Tool::createRandArr(arr, len, 0, 10000);
@@ -24,7 +24,7 @@ void Chapter9_Part1::practice_000()
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
 //    DEBUG<<Tool::printArr<int>(arr, 0, len - 1);
 
-    delete arr;
+    delete[] arr;
 
     //    DEBUG<<Tool::printArr<int>(arr, 0, 9);
 }
@@ -34,7 +34,7 @@ void Chapter9_Part1::practice_000()
 */
 void Chapter9_Part1::practice_001()
 {
-    const int len = 100000;
+    const int len = 10000;
     int *arr = new int[len];
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
     Tool::createRandArr(arr, len, -10 * len, 10 * len);
@@ -43,7 +43,7 @@ void Chapter9_Part1::practice_001()
     Sorting::insertSort<int>(arr, 0, len - 1);
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
 //    DEBUG<<Tool::printArr(arr, 0, len - 1);
-    delete arr;
+    delete[] arr;
 }
 
 /*
@@ -55,12 +55,30 @@ void Chapter9_Part1::practice_002()
     int *arr = new int[len];
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
     Tool::createRandArr(arr, len, -10 * len, 10 * len);
-//    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    DEBUG<<Tool::printArr(arr, 0, len - 1);
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
     Sorting::shellSort<int>(arr, 0, len - 1);
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    delete[] arr;
+}
+
+/*
+堆排序demo
+*/
+void Chapter9_Part1::practice_003()
+{
+    const int len = 10000000;
+    int *arr = new int[len];
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+    Tool::createRandArr(arr, len, -10 * len, 10 * len);
 //    DEBUG<<Tool::printArr(arr, 0, len - 1);
-    delete arr;
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+    Sorting::heapSort<int>(arr, 0, len - 1);
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+//    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    DEBUG<<Tool::checkArr(arr, 0, len - 1);
+    delete[] arr;
 }
 
 /*
