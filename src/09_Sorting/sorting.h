@@ -42,6 +42,9 @@ public:
     template <typename T>
     static void bucketSort(T arr[], int low, int high);//桶排序
 
+    template <typename T>
+    static void radixSort(T arr[], int low, int high);//基数排序
+
 };
 
 /*
@@ -303,8 +306,9 @@ void Sorting::heapSort(T arr[], int low, int high)//堆排序
 
 /*
 计数排序：
-    计数排序的输入为 n 个 0 到 k 之间的整数，时间复杂度为O(n + k)
     计数排序是稳定的排序算法
+    计数排序的输入为 n 个 0 到 k 之间的整数，时间复杂度为O(n + k)，
+        计数排序的输入数据的最大值不易过大，一般应小于1000000，过大会导致占用大量内存
 计数排序过程：
     1. 备份排序数组到copyArr，并查找到最大元素maxElem
     2. 创建统计数组countArr，元素个数为maxElem + 1，并初始化为0
@@ -314,32 +318,27 @@ void Sorting::heapSort(T arr[], int low, int high)//堆排序
         之后将元素存入排序数组 pArr[index] = tmp; ，统计数组对应的位置的值减一 countArr[tmp]--;
         这一步是为了使相同值的元素排在当前元素的左边，由于元素是从右向左遍历，相同值之间的顺序不会改变，使得算法稳定。
 */
-#define COUNTSORT_MAXNUM 1000000
 template <typename T>
 void Sorting::countSort(T arr[], int low, int high)
 {
     T *pArr = arr + low;
-    int len = high - low + 1, i, index;
-    T tmp, maxElem;
+    int len = high - low + 1, i, j;
+    T /*tmp, */maxElem;
     T *copyArr = new T[len];//备份数组
     T *countArr;//统计数组
-    for (i = 0, index = -1; i < len; i++)
-    {
+    for (i = 0; i < len; i++)//备份数组
         copyArr[i] = pArr[i];
-        if (index == -1)//计算最大元素
-            index = i;
-        else
-        {
-            if (pArr[i] > pArr[index])
-                index = i;
-        }
+    for (i = 1, j = 0; i < len; i++)//查找最大值
+    {
+        if (copyArr[i] > copyArr[j])
+            j = i;
     }
-    maxElem = pArr[index];
+    maxElem = pArr[j];
     countArr = new T[maxElem + 1];
     for (i = 0; i <= maxElem; i++)//初始化统计数组
         countArr[i] = 0;
 
-    //统计每个元素出现的次数
+    //统计每个元素出现的次数，再统计元素值到0之间的元素个数
     for (i = 0; i < len; i++)
         countArr[copyArr[i]]++;
     for (i = 1; i <= maxElem; i++)
@@ -347,10 +346,13 @@ void Sorting::countSort(T arr[], int low, int high)
 
     for (i = len - 1; i >= 0; i--)//从后往前遍历是为了排序的稳定性
     {
-        tmp = copyArr[i];//当前待排序的元素
-        index = countArr[tmp] - 1;//根据统计数组，计算得元素排序后位置
-        pArr[index] = tmp;//元素填入排序数组
-        countArr[tmp]--;//待排序的元素的统计次数减一，用于将重复元素放在其左边
+//        tmp = copyArr[i];//当前待排序的元素
+//        j = countArr[tmp] - 1;//根据统计数组，计算得元素排序后位置
+//        pArr[j] = tmp;//元素填入排序数组
+//        countArr[tmp]--;//待排序的元素的统计次数减一，用于将重复元素放在其左边
+
+        //简便写法
+        pArr[(countArr[copyArr[i]]--) - 1] = copyArr[i];
     }
 
     delete[] copyArr;
@@ -359,9 +361,9 @@ void Sorting::countSort(T arr[], int low, int high)
 
 /*
 桶排序：
-    桶排序的输入为 n 个 0 到 k 之间的整数，时间复杂度为O(n + k)
-    由于操作次数比计数排序少，效率要比计数排序更高，所占空间也比计数排序少
     桶排序是稳定的排序算法
+    桶排序的输入为 n 个 0 到 k 之间的整数，时间复杂度为O(n + k)，和计数排序一样，输入数据的最大值也不能过大
+    由于操作次数比计数排序少，效率要比计数排序更高，所占空间也比计数排序少
 计数排序过程：
     1. 在排序数组查找到最大元素maxElem，创建桶数组buckets，元素个数为maxElem + 1，并初始化为0
     2. 以元素的值作为索引在桶数组对应的位置使值加一 buckets[arr[i]]++; ，用来表示当前位置的元素的个数
@@ -388,14 +390,72 @@ void Sorting::bucketSort(T arr[], int low, int high)
 
     for (i = 0, j = low; i <= maxElem; i++)//遍历整个桶数组
     {
-        while (buckets[i] > 0)//桶内个数大于0表示该元素的个数
-        {
-            buckets[i]--;
-            arr[j] = i;
-            j++;
-        }
+//        while (buckets[i] > 0)//桶内个数大于0表示该元素的个数
+//        {
+//            buckets[i]--;
+//            arr[j] = i;
+//            j++;
+//        }
+
+        //简便写法
+        while ((buckets[i]--) > 0)//桶内个数大于0表示该元素的个数
+            arr[j++] = i;
     }
     delete[] buckets;
+}
+
+/*
+基数排序：
+    基数排序是稳定的排序算法
+    基数排序结合了计数排序和桶排序各自的优点，桶排序的输入为 n 个 0 到 k 之间的整数，时间复杂度为O(r * n)，r为k的最高位位数，
+        和计数排序 桶排序不同，输入数据的最大值可以很大
+基数排序过程：
+    1. 基数排序的桶数组的大小和选取的进制数有关，这里选用的是10进制排序，所以桶的大小是10
+    2. 从个位到最高位，将所有元素按照当前的位数上的对应的值放入对应的桶中，然后对桶数组进行计数排序，
+        这样就算出了根据位上的值进行排序后的结果，直到排序完最高位为止，排序完成
+*/
+template <typename T>
+void Sorting::radixSort(T arr[], int low, int high)
+{
+    T *pArr = arr + low;
+    int len = high - low + 1, exp, i, j;
+    T /*tmp, */maxElem;
+    T buckets[10];//桶数组
+    T *copyArr = new T[len];//备份数组
+
+    for (i = 1, j = 0; i < len; i++)//查找最大值
+    {
+        if (pArr[i] > pArr[j])
+            j = i;
+    }
+    maxElem = arr[j];
+
+    for (exp = 1; maxElem / exp > 0; exp *= 10)
+    {
+        for (i = 0; i < 10; i++)//桶数组初始化
+            buckets[i] = 0;
+        for (i = 0; i < len; i++)//排序数组备份
+            copyArr[i] = pArr[i];
+
+        //统计每个元素出现的次数，再统计元素值到0之间的元素个数
+        for (i = 0; i < len; i++)
+            buckets[(copyArr[i] / exp) % 10]++;
+        for (i = 1; i < 10; i++)
+            buckets[i] += buckets[i - 1];
+
+        for (i = len - 1; i >= 0; i--)
+        {
+//            tmp = copyArr[i];
+//            j = buckets[(tmp / exp) % 10] - 1;
+//            pArr[j] = tmp;
+//            buckets[(tmp / exp) % 10]--;
+
+            //简便写法
+            pArr[(buckets[(copyArr[i] / exp) % 10]--) - 1] = copyArr[i];
+        }
+    }
+
+    delete[] copyArr;
 }
 
 #endif // SORTING_H
