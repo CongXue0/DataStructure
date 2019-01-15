@@ -142,7 +142,7 @@ void Chapter9_Part1::practice_007()
 {
     const int len = 10000000;
     int *arr = new int[len];
-    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+//    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
     Tool::createRandArr(arr, len, 0, len * 10);
 //    DEBUG<<Tool::printArr(arr, 0, len - 1);
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
@@ -150,7 +150,429 @@ void Chapter9_Part1::practice_007()
     DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
 //    DEBUG<<Tool::printArr(arr, 0, len - 1);
     DEBUG<<Tool::checkArr(arr, 0, len - 1);
+
+    Tool::createRandArr(arr, len, 0, len * 10);
+//    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+    Sorting::radixSort2<int>(arr, 0, len - 1);
+    DEBUG<<QDateTime::currentDateTime().toString(TIMEFORMAT);
+//    DEBUG<<Tool::printArr(arr, 0, len - 1);
+    DEBUG<<Tool::checkArr(arr, 0, len - 1);
+
     delete[] arr;
+}
+
+/*
+O(n2)排序算法统计
+Debug统计：
+"chapter9_part1.cpp practice_050:171 排序元素个数：30000, 统计次数：10"
+"chapter9_part1.cpp practice_050:238 重复元素较少的平均用时统计："
+"chapter9_part1.cpp practice_050:239 简单选择排序用时：1038 ms"
+"chapter9_part1.cpp practice_050:240 冒泡排序用时：2267 ms"
+"chapter9_part1.cpp practice_050:241 直接插入排序用时：530 ms"
+"chapter9_part1.cpp practice_050:242 重复元素较多的平均用时统计："
+"chapter9_part1.cpp practice_050:243 简单选择排序用时：1033 ms"
+"chapter9_part1.cpp practice_050:244 冒泡排序用时：2269 ms"
+"chapter9_part1.cpp practice_050:245 直接插入排序用时：528 ms"
+
+Release统计：
+"chapter9_part1.cpp practice_050:184 排序元素个数：30000, 统计次数：10"
+"chapter9_part1.cpp practice_050:251 重复元素较少的平均用时统计："
+"chapter9_part1.cpp practice_050:252 简单选择排序用时：928 ms"
+"chapter9_part1.cpp practice_050:253 冒泡排序用时：1298 ms"
+"chapter9_part1.cpp practice_050:254 直接插入排序用时：140 ms"
+"chapter9_part1.cpp practice_050:255 重复元素较多的平均用时统计："
+"chapter9_part1.cpp practice_050:256 简单选择排序用时：936 ms"
+"chapter9_part1.cpp practice_050:257 冒泡排序用时：1285 ms"
+"chapter9_part1.cpp practice_050:258 直接插入排序用时：133 ms"
+*/
+void Chapter9_Part1::practice_050()
+{
+    const int len = 30000;//排序元素个数
+    const int times = 10;//统计次数
+    int *arr, *copyArr;
+    quint64 countArr[3][2][100] = {0}, resultArr[3][2] = {0};
+    QDateTime start;
+    quint64 uTime;
+    arr = new int[len];
+    copyArr = new int[len];
+
+    DEBUG<<"排序元素个数："<<len<<", 统计次数："<<times;
+    for (int i = 0; i < times; i++)
+    {
+        DEBUG<<"重复元素较少的统计结果：";
+        Tool::createRandArr(arr, len, -len * 10, len * 10);
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::selectSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("简单选择排序用时：%1 ms").arg(uTime);
+        countArr[0][0][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::bubbleSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("冒泡排序用时：%1 ms").arg(uTime);
+        countArr[1][0][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::insertSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("直接插入排序用时：%1 ms").arg(uTime);
+        countArr[2][0][i] = uTime;
+
+        DEBUG<<"重复元素较多的统计结果：";
+        Tool::createRandArr(arr, len, 0, len / 100);
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::selectSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("简单选择排序用时：%1 ms").arg(uTime);
+        countArr[0][1][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::bubbleSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("冒泡排序用时：%1 ms").arg(uTime);
+        countArr[1][1][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::insertSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("直接插入排序用时：%1 ms").arg(uTime);
+        countArr[2][1][i] = uTime;
+    }
+
+    for (int i = 0; i < times; i++)
+    {
+        resultArr[0][0] += countArr[0][0][i];
+        resultArr[1][0] += countArr[1][0][i];
+        resultArr[2][0] += countArr[2][0][i];
+        resultArr[0][1] += countArr[0][1][i];
+        resultArr[1][1] += countArr[1][1][i];
+        resultArr[2][1] += countArr[2][1][i];
+    }
+    resultArr[0][0] /= times;
+    resultArr[1][0] /= times;
+    resultArr[2][0] /= times;
+    resultArr[0][1] /= times;
+    resultArr[1][1] /= times;
+    resultArr[2][1] /= times;
+    DEBUG<<"重复元素较少的平均用时统计：";
+    DEBUG<<QString("简单选择排序用时：%1 ms").arg(resultArr[0][0]);
+    DEBUG<<QString("冒泡排序用时：%1 ms").arg(resultArr[1][0]);
+    DEBUG<<QString("直接插入排序用时：%1 ms").arg(resultArr[2][0]);
+    DEBUG<<"重复元素较多的平均用时统计：";
+    DEBUG<<QString("简单选择排序用时：%1 ms").arg(resultArr[0][1]);
+    DEBUG<<QString("冒泡排序用时：%1 ms").arg(resultArr[1][1]);
+    DEBUG<<QString("直接插入排序用时：%1 ms").arg(resultArr[2][1]);
+
+    delete[] arr;
+    delete[] copyArr;
+}
+
+/*
+O(nlogn)排序算法统计
+Debug统计：
+"chapter9_part1.cpp practice_051:274 排序元素个数：10000000, 统计次数：10"
+"chapter9_part1.cpp practice_051:359 重复元素较少的平均用时统计："
+"chapter9_part1.cpp practice_051:360 希尔排序用时：5189 ms"
+"chapter9_part1.cpp practice_051:361 快速排序用时：4013 ms"
+"chapter9_part1.cpp practice_051:362 归并排序用时：2823 ms"
+"chapter9_part1.cpp practice_051:363 堆排序用时：2975 ms"
+"chapter9_part1.cpp practice_051:364 重复元素较多的平均用时统计："
+"chapter9_part1.cpp practice_051:365 希尔排序用时：4873 ms"
+"chapter9_part1.cpp practice_051:366 快速排序用时：10636 ms"
+"chapter9_part1.cpp practice_051:367 归并排序用时：2707 ms"
+"chapter9_part1.cpp practice_051:368 堆排序用时：2768 ms"
+
+Release版本：
+"chapter9_part1.cpp practice_051:290 排序元素个数：10000000, 统计次数：10"
+"chapter9_part1.cpp practice_051:375 重复元素较少的平均用时统计："
+"chapter9_part1.cpp practice_051:376 希尔排序用时：2862 ms"
+"chapter9_part1.cpp practice_051:377 快速排序用时：1377 ms"
+"chapter9_part1.cpp practice_051:378 归并排序用时：1772 ms"
+"chapter9_part1.cpp practice_051:379 堆排序用时：2103 ms"
+"chapter9_part1.cpp practice_051:380 重复元素较多的平均用时统计："
+"chapter9_part1.cpp practice_051:381 希尔排序用时：2727 ms"
+"chapter9_part1.cpp practice_051:382 快速排序用时：2817 ms"
+"chapter9_part1.cpp practice_051:383 归并排序用时：1715 ms"
+"chapter9_part1.cpp practice_051:384 堆排序用时：1920 ms"
+
+"chapter9_part1.cpp practice_051:312 排序元素个数：50000000, 统计次数：1"
+"chapter9_part1.cpp practice_051:397 重复元素较少的平均用时统计："
+"chapter9_part1.cpp practice_051:398 希尔排序用时：20831 ms"
+"chapter9_part1.cpp practice_051:399 快速排序用时：19617 ms"
+"chapter9_part1.cpp practice_051:400 归并排序用时：9566 ms"
+"chapter9_part1.cpp practice_051:401 堆排序用时：12620 ms"
+"chapter9_part1.cpp practice_051:402 重复元素较多的平均用时统计："
+"chapter9_part1.cpp practice_051:403 希尔排序用时：20577 ms"
+"chapter9_part1.cpp practice_051:404 快速排序用时：19357 ms"
+"chapter9_part1.cpp practice_051:405 归并排序用时：9359 ms"
+"chapter9_part1.cpp practice_051:406 堆排序用时：12514 ms"
+*/
+void Chapter9_Part1::practice_051()
+{
+    const int len = 50000000;//排序元素个数
+    const int times = 1;//统计次数
+    int *arr, *copyArr;
+    quint64 countArr[4][2][100] = {0}, resultArr[4][2] = {0};
+    QDateTime start;
+    quint64 uTime;
+    arr = new int[len];
+    copyArr = new int[len];
+
+    DEBUG<<"排序元素个数："<<len<<", 统计次数："<<times;
+    for (int i = 0; i < times; i++)
+    {
+        DEBUG<<"重复元素较少的统计结果：";
+        Tool::createRandArr(arr, len, -len * 10, len * 10);
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::shellSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("希尔排序用时：%1 ms").arg(uTime);
+        countArr[0][0][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::quickSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("快速排序用时：%1 ms").arg(uTime);
+        countArr[1][0][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::mergeSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("归并排序用时：%1 ms").arg(uTime);
+        countArr[2][0][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::heapSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("堆排序用时：%1 ms").arg(uTime);
+        countArr[3][0][i] = uTime;
+
+        DEBUG<<"重复元素较多的统计结果：";
+        Tool::createRandArr(arr, len, 0, len / 1000);
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::shellSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("希尔排序用时：%1 ms").arg(uTime);
+        countArr[0][1][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::quickSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("快速排序用时：%1 ms").arg(uTime);
+        countArr[1][1][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::mergeSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("归并排序用时：%1 ms").arg(uTime);
+        countArr[2][1][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::heapSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("堆排序用时：%1 ms").arg(uTime);
+        countArr[3][1][i] = uTime;
+    }
+
+    for (int i = 0; i < times; i++)
+    {
+        resultArr[0][0] += countArr[0][0][i];
+        resultArr[1][0] += countArr[1][0][i];
+        resultArr[2][0] += countArr[2][0][i];
+        resultArr[3][0] += countArr[3][0][i];
+        resultArr[0][1] += countArr[0][1][i];
+        resultArr[1][1] += countArr[1][1][i];
+        resultArr[2][1] += countArr[2][1][i];
+        resultArr[3][1] += countArr[3][1][i];
+    }
+    resultArr[0][0] /= times;
+    resultArr[1][0] /= times;
+    resultArr[2][0] /= times;
+    resultArr[3][0] /= times;
+    resultArr[0][1] /= times;
+    resultArr[1][1] /= times;
+    resultArr[2][1] /= times;
+    resultArr[3][1] /= times;
+    DEBUG<<"重复元素较少的平均用时统计：";
+    DEBUG<<QString("希尔排序用时：%1 ms").arg(resultArr[0][0]);
+    DEBUG<<QString("快速排序用时：%1 ms").arg(resultArr[1][0]);
+    DEBUG<<QString("归并排序用时：%1 ms").arg(resultArr[2][0]);
+    DEBUG<<QString("堆排序用时：%1 ms").arg(resultArr[3][0]);
+    DEBUG<<"重复元素较多的平均用时统计：";
+    DEBUG<<QString("希尔排序用时：%1 ms").arg(resultArr[0][1]);
+    DEBUG<<QString("快速排序用时：%1 ms").arg(resultArr[1][1]);
+    DEBUG<<QString("归并排序用时：%1 ms").arg(resultArr[2][1]);
+    DEBUG<<QString("堆排序用时：%1 ms").arg(resultArr[3][1]);
+
+    delete[] arr;
+    delete[] copyArr;
+}
+
+/*
+非比较排序算法统计
+Debug统计：
+"chapter9_part1.cpp practice_052:442 排序元素个数：50000000, 统计次数：10"
+"chapter9_part1.cpp practice_052:509 重复元素较少的平均用时统计："
+"chapter9_part1.cpp practice_052:510 计数排序用时：870 ms"
+"chapter9_part1.cpp practice_052:511 桶排序用时：326 ms"
+"chapter9_part1.cpp practice_052:512 基数排序用时：3537 ms"
+"chapter9_part1.cpp practice_052:513 重复元素较多的平均用时统计："
+"chapter9_part1.cpp practice_052:514 计数排序用时：873 ms"
+"chapter9_part1.cpp practice_052:515 桶排序用时：327 ms"
+"chapter9_part1.cpp practice_052:516 基数排序用时：3534 ms"
+
+Release版本：
+"chapter9_part1.cpp practice_052:450 排序元素个数：50000000, 统计次数：10"
+"chapter9_part1.cpp practice_052:517 重复元素较少的平均用时统计："
+"chapter9_part1.cpp practice_052:518 计数排序用时：776 ms"
+"chapter9_part1.cpp practice_052:519 桶排序用时：93 ms"
+"chapter9_part1.cpp practice_052:520 基数排序用时：2134 ms"
+"chapter9_part1.cpp practice_052:521 重复元素较多的平均用时统计："
+"chapter9_part1.cpp practice_052:522 计数排序用时：766 ms"
+"chapter9_part1.cpp practice_052:523 桶排序用时：92 ms"
+"chapter9_part1.cpp practice_052:524 基数排序用时：2130 ms"
+
+"chapter9_part1.cpp practice_052:459 排序元素个数：50000000, 统计次数：10"
+"chapter9_part1.cpp practice_052:544 重复元素较少的平均用时统计："
+"chapter9_part1.cpp practice_052:545 计数排序用时：762 ms"
+"chapter9_part1.cpp practice_052:546 桶排序用时：93 ms"
+"chapter9_part1.cpp practice_052:547 基数排序用时：2184 ms"
+"chapter9_part1.cpp practice_052:548 基数2排序用时：837 ms"
+"chapter9_part1.cpp practice_052:549 重复元素较多的平均用时统计："
+"chapter9_part1.cpp practice_052:550 计数排序用时：768 ms"
+"chapter9_part1.cpp practice_052:551 桶排序用时：93 ms"
+"chapter9_part1.cpp practice_052:552 基数排序用时：2170 ms"
+"chapter9_part1.cpp practice_052:553 基数2排序用时：840 ms"
+*/
+void Chapter9_Part1::practice_052()
+{
+    const int len = 50000000;//排序元素个数
+    const int times = 10;//统计次数
+    int *arr, *copyArr;
+    quint64 countArr[4][2][100] = {0}, resultArr[4][2] = {0};
+    QDateTime start;
+    quint64 uTime;
+    arr = new int[len];
+    copyArr = new int[len];
+
+    DEBUG<<"排序元素个数："<<len<<", 统计次数："<<times;
+    for (int i = 0; i < times; i++)
+    {
+        DEBUG<<"重复元素较少的统计结果：";
+        Tool::createRandArr(arr, len, 0, len * 10);
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::countSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("计数排序用时：%1 ms").arg(uTime);
+        countArr[0][0][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::bucketSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("桶排序用时：%1 ms").arg(uTime);
+        countArr[1][0][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::radixSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("基数排序用时：%1 ms").arg(uTime);
+        countArr[2][0][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::radixSort2<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("基数排序2用时：%1 ms").arg(uTime);
+        countArr[3][0][i] = uTime;
+
+        DEBUG<<"重复元素较多的统计结果：";
+        Tool::createRandArr(arr, len, 0, len / 1000);
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::countSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("计数排序用时：%1 ms").arg(uTime);
+        countArr[0][1][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::bucketSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("桶排序用时：%1 ms").arg(uTime);
+        countArr[1][1][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::radixSort<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("基数排序用时：%1 ms").arg(uTime);
+        countArr[2][1][i] = uTime;
+
+        memcpy(copyArr, arr, sizeof(int) * len);
+        start = QDateTime::currentDateTime();
+        Sorting::radixSort2<int>(copyArr, 0, len - 1);
+        uTime = start.msecsTo(QDateTime::currentDateTime());
+        DEBUG<<QString("基数排序2用时：%1 ms").arg(uTime);
+        countArr[3][1][i] = uTime;
+    }
+
+    for (int i = 0; i < times; i++)
+    {
+        resultArr[0][0] += countArr[0][0][i];
+        resultArr[1][0] += countArr[1][0][i];
+        resultArr[2][0] += countArr[2][0][i];
+        resultArr[3][0] += countArr[3][0][i];
+        resultArr[0][1] += countArr[0][1][i];
+        resultArr[1][1] += countArr[1][1][i];
+        resultArr[2][1] += countArr[2][1][i];
+        resultArr[3][1] += countArr[3][1][i];
+    }
+    resultArr[0][0] /= times;
+    resultArr[1][0] /= times;
+    resultArr[2][0] /= times;
+    resultArr[3][0] /= times;
+    resultArr[0][1] /= times;
+    resultArr[1][1] /= times;
+    resultArr[2][1] /= times;
+    resultArr[3][1] /= times;
+    DEBUG<<"重复元素较少的平均用时统计：";
+    DEBUG<<QString("计数排序用时：%1 ms").arg(resultArr[0][0]);
+    DEBUG<<QString("桶排序用时：%1 ms").arg(resultArr[1][0]);
+    DEBUG<<QString("基数排序用时：%1 ms").arg(resultArr[2][0]);
+    DEBUG<<QString("基数2排序用时：%1 ms").arg(resultArr[3][0]);
+    DEBUG<<"重复元素较多的平均用时统计：";
+    DEBUG<<QString("计数排序用时：%1 ms").arg(resultArr[0][1]);
+    DEBUG<<QString("桶排序用时：%1 ms").arg(resultArr[1][1]);
+    DEBUG<<QString("基数排序用时：%1 ms").arg(resultArr[2][1]);
+    DEBUG<<QString("基数2排序用时：%1 ms").arg(resultArr[3][1]);
+
+    delete[] arr;
+    delete[] copyArr;
 }
 
 /*

@@ -63,6 +63,7 @@ public:
     /* 其他 */
     static int rand(const int &a, const int &b);//得到一个 [a, b] 范围内的随机数
     static void createRandArr(int arr[], int len, int left, int right);//生成随机数组
+    static void createRandArr(long long arr[], long long len, long long left, long long right);//生成随机数组
     template<typename T>
     static QString printArr(T arr[], int low, int high);
     template<typename T>

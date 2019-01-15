@@ -60,7 +60,10 @@ void Widget::loadQuestion()
     m_bank.addQuestion(8, Question("快速排序demo", Chapter9_Part1::practice_004, 3, "大话"));
     m_bank.addQuestion(8, Question("计数排序demo", Chapter9_Part1::practice_005, 3, "网络"));
     m_bank.addQuestion(8, Question("桶排序demo", Chapter9_Part1::practice_006, 2, "网络"));
-    m_bank.addQuestion(8, Question("基数排序demo", Chapter9_Part1::practice_006, 3, "网络"));
+    m_bank.addQuestion(8, Question("基数排序demo", Chapter9_Part1::practice_007, 3, "网络"));
+    m_bank.addQuestion(8, Question("O(n2)排序算法统计", Chapter9_Part1::practice_050, 2, "无"));
+    m_bank.addQuestion(8, Question("O(nlogn)排序算法统计", Chapter9_Part1::practice_051, 2, "无"));
+    m_bank.addQuestion(8, Question("非比较排序算法统计", Chapter9_Part1::practice_052, 2, "无"));
     m_bank.addQuestion(8, Question("范围查询(Range)", Chapter9_Part1::practice_000, 4, "邓俊辉"));
 }
 

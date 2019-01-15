@@ -85,3 +85,11 @@ void Tool::createRandArr(int arr[], int len, int left, int right)
         arr[i] = rand(left, right);
     }
 }
+
+void Tool::createRandArr(long long arr[], long long len, long long left, long long right)
+{
+    for (long long i = 0; i < len; i++)
+    {
+        arr[i] = rand(left, right);
+    }
+}

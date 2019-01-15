@@ -16,6 +16,9 @@ public:
     static void practice_005();
     static void practice_006();
     static void practice_007();
+    static void practice_050();
+    static void practice_051();
+    static void practice_052();
     static void practice_100();
 
 

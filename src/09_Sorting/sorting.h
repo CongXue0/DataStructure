@@ -31,7 +31,7 @@ public:
     static void mergeSort(T arr[], int low, int high);//归并排序
 
     template <typename T>
-    static void heapAdjust(T arr[], int s, int m);
+    static void heapAdjust(T arr[], int i, int len);
     template <typename T>
     static void heapSort(T arr[], int low, int high);//堆排序
 
@@ -44,6 +44,8 @@ public:
 
     template <typename T>
     static void radixSort(T arr[], int low, int high);//基数排序
+    template <typename T>
+    static void radixSort2(T arr[], int low, int high);//基数排序2
 
 };
 
@@ -452,6 +454,50 @@ void Sorting::radixSort(T arr[], int low, int high)
 
             //简便写法
             pArr[(buckets[(copyArr[i] / exp) % 10]--) - 1] = copyArr[i];
+        }
+    }
+
+    delete[] copyArr;
+}
+
+template <typename T>
+void Sorting::radixSort2(T arr[], int low, int high)//以1024作为进制
+{
+    T *pArr = arr + low;
+    int len = high - low + 1, exp, i, j;
+    T /*tmp, */maxElem;
+    T buckets[1024];//桶数组
+    T *copyArr = new T[len];//备份数组
+
+    for (i = 1, j = 0; i < len; i++)//查找最大值
+    {
+        if (pArr[i] > pArr[j])
+            j = i;
+    }
+    maxElem = arr[j];
+
+    for (exp = 1; maxElem / exp > 0; exp *= 1024)
+    {
+        for (i = 0; i < 1024; i++)//桶数组初始化
+            buckets[i] = 0;
+        for (i = 0; i < len; i++)//排序数组备份
+            copyArr[i] = pArr[i];
+
+        //统计每个元素出现的次数，再统计元素值到0之间的元素个数
+        for (i = 0; i < len; i++)
+            buckets[(copyArr[i] / exp) % 1024]++;
+        for (i = 1; i < 1024; i++)
+            buckets[i] += buckets[i - 1];
+
+        for (i = len - 1; i >= 0; i--)
+        {
+//            tmp = copyArr[i];
+//            j = buckets[(tmp / exp) % 10] - 1;
+//            pArr[j] = tmp;
+//            buckets[(tmp / exp) % 10]--;
+
+            //简便写法
+            pArr[(buckets[(copyArr[i] / exp) % 1024]--) - 1] = copyArr[i];
         }
     }
 
