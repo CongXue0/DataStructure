@@ -22,6 +22,15 @@ void VirtualIO::clearInput()
     m_info.clear();
 }
 
+void VirtualIO::flush()
+{
+    if (!m_info.isEmpty())
+    {
+        MyDebug::info() << m_info;
+        m_info.clear();
+    }
+}
+
 int VirtualIO::scanf(const char *format, ...)
 {
     static char buf[2048];

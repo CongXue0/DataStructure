@@ -1,8 +1,6 @@
 #ifndef CHAPTER8_PART1_H
 #define CHAPTER8_PART1_H
 
-#include <QString>
-
 class Chapter8_Part1
 {
 public:

@@ -305,10 +305,10 @@ void printZumaStr()
 {
     for (int i = 0; i < zumaLen; i++)
     {
-//        VIO::printf("%c", str[i]);
-        VIO::putchar(zumaStr[i]);
+//        PRINTF("%c", str[i]);
+        PUTCHAR(zumaStr[i]);
     }
-    VIO::putchar('\n');
+    PUTCHAR('\n');
 }
 inline void zumaMemcpy(void *dst, void *src, int size)
 {
@@ -379,7 +379,7 @@ void Chapter1_Part1::practice_052()
 {
     int opNum, pos, i;
     char ch;
-    VIO::scanf("%s", zumaStr);
+    SCANF("%s", zumaStr);
     zumaLen = strlen(zumaStr);
     if (zumaStr[0] >= '0' && zumaStr[1] <= '9')
     {
@@ -394,20 +394,20 @@ void Chapter1_Part1::practice_052()
     }
     else
     {
-        VIO::scanf("%d", &opNum);
+        SCANF("%d", &opNum);
     }
     for (i = 0; i < opNum; i++)
     {
-        VIO::scanf("%d %c", &pos, &ch);
+        SCANF("%d %c", &pos, &ch);
         shootBead(pos, ch);
         if (zumaLen > 0)
         {
-            VIO::printf("%s\n", zumaStr);
+            PRINTF("%s\n", zumaStr);
             //printStr();
         }
         else
         {
-            VIO::printf("-\n");
+            PRINTF("-\n");
         }
     }
     //system("pause");

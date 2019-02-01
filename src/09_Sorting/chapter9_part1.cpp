@@ -576,6 +576,7 @@ void Chapter9_Part1::practice_052()
 }
 
 /*
+范围查询(Range)：
 描述
     数轴上有n个点，对于任一闭区间 [a, b]，试计算落在其内的点数。
 
@@ -676,13 +677,13 @@ void Chapter9_Part1::practice_100()
     int i;
     int size, count, left, right;
     int *arr = NULL;
-    VIO::scanf("%d %d", &size, &count);
+    SCANF("%d %d", &size, &count);
     if (size > 0)
         arr = new int[size];
 
     for (i = 0; i < size; i++)
     {
-        VIO::scanf("%d", arr + i);
+        SCANF("%d", arr + i);
     }
 
     if (arr != NULL)
@@ -690,15 +691,15 @@ void Chapter9_Part1::practice_100()
         Sorting::mergeSort<int>(arr, 0, size - 1);
     for (i = 0; i < count; i++)
     {
-        VIO::scanf("%d %d", &left, &right);
+        SCANF("%d %d", &left, &right);
         if (size <= 0)
             printf("0\n");
         else
         {
             //i1 = searchLeft(arr, 0, size - 1, left);
             //i2 = searchRight(arr, 0, size - 1, right);
-            //VIO::printf("%d\n", i2 - i1);
-            VIO::printf("%d\n", searchRight(arr, 0, size - 1, right) - searchLeft(arr, 0, size - 1, left));
+            //PRINTF("%d\n", i2 - i1);
+            PRINTF("%d\n", searchRight(arr, 0, size - 1, right) - searchLeft(arr, 0, size - 1, left));
         }
     }
     if (arr != NULL)

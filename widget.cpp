@@ -11,6 +11,7 @@
 #include "src/06_Graph/chapter6_part1.h"
 #include "src/utils/virtualio.h"
 #include "src/03_String/chapter3_part1.h"
+#include "src/11_LogicThinking/logicthinking_part1.h"
 
 void Widget::loadQuestion()
 {
@@ -64,7 +65,10 @@ void Widget::loadQuestion()
     m_bank.addQuestion(8, Question("O(n2)排序算法统计", Chapter9_Part1::practice_050, 2, "无"));
     m_bank.addQuestion(8, Question("O(nlogn)排序算法统计", Chapter9_Part1::practice_051, 2, "无"));
     m_bank.addQuestion(8, Question("非比较排序算法统计", Chapter9_Part1::practice_052, 2, "无"));
-    m_bank.addQuestion(8, Question("范围查询(Range)", Chapter9_Part1::practice_000, 4, "邓俊辉"));
+    m_bank.addQuestion(8, Question("范围查询(Range)", Chapter9_Part1::practice_100, 4, "邓俊辉"));
+
+    m_bank.addQuestion(10, Question("灯塔(LightHouse)", LogicThinking_Part1::practice_000, 4, "邓俊辉"));
+    m_bank.addQuestion(10, Question("2的指数判断", LogicThinking_Part1::practice_050, 2, "无"));
 }
 
 Widget::Widget(QWidget *parent) :
@@ -156,6 +160,7 @@ void Widget::slot_pushButton_exec_clicked()
     VIO::clearInput();
     VIO::setInput(input);
     m_bank.execSolution(ui->comboBox_chapter->currentIndex(), ui->comboBox_question->currentIndex());
+    VIO::flush();
     QString result = MyDebug::infoPop();
     ui->textEdit_result->setText(result);
 }

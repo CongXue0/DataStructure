@@ -33,7 +33,6 @@ SOURCES += main.cpp \
     src/11_LogicThinking/logicthinking_part1.cpp \
     src/12_ClassicAlgorithm/classicalgorithm_part1.cpp \
     src/08_Search/search.cpp \
-    src/09_Sorting/sorting.cpp \
     src/09_Sorting/chapter9_part1.cpp \
     src/08_Search/chapter8_part1.cpp \
     src/utils/mydebug.cpp \

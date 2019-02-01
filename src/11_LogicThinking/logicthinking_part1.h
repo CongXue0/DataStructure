@@ -8,7 +8,8 @@ class LogicThinking_Part1
 public:
     LogicThinking_Part1() = delete;
 
-    static void practice_000();//L:1
+    static void practice_000();
+    static void practice_050();
 
 
 
