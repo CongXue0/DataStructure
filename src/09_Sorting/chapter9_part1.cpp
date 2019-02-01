@@ -606,102 +606,173 @@ Output
     时间：2 sec
     内存：256 MB
 */
-int searchLeft(int arr[], int low, int high,  const int &key)//二分之左
-{
-    if (key <= arr[low])
-    {
-        return low;
-    }
-    else if (key == arr[high])
-    {
-        return high;
-    }
-    else if (key > arr[high])
-    {
-        return high + 1;
-    }
-    int mid;
-    while (low < high)
-    {
-        mid = (low + high) / 2;
-        if (key > arr[mid])
-        {
-            low = mid + 1;
-        }
-        else if (key < arr[mid])
-        {
-            high = mid;
-        }
-        else
-        {
-            return mid;
-        }
-    }
-    return low;
-}
-int searchRight(int arr[], int low, int high,  const int &key)//二分之右
-{
-    if (key < arr[low])
-    {
-        return low;
-    }
-    else if (key == arr[low])
-    {
-        return low + 1;
-    }
-    else if (key >= arr[high])
-    {
-        return high + 1;
-    }
-    int mid;
-    while (low < high)
-    {
-        mid = (low + high) / 2;
-        if (key > arr[mid])
-        {
-            low = mid + 1;
-        }
-        else if (key < arr[mid])
-        {
-            high = mid;
-        }
-        else
-        {
-            return mid + 1;
-        }
-    }
-    return high;
-}
+/*
+归并 + 二分查找 方式
+*/
+//#if OJ_TEST == 1
+//int p100_arr[10000000];
+//#else
+//int p100_arr[100];
+//#endif
+//void p100_merge(int arr[], int low, int mid, int high)
+//{
+//    if (low <= mid && mid < high)
+//    {
+//        int len = high - low + 1;
+//        int *tmp = new int[len];
+//        int i = low, j = mid + 1, k = 0;
+
+//        while (i <= mid && j <= high)
+//        {
+//            if (arr[i] <= arr[j])
+//            {
+//                tmp[k] = arr[i];
+//                k++;
+//                i++;
+//            }
+//            else
+//            {
+//                tmp[k] = arr[j];
+//                k++;
+//                j++;
+//            }
+//        }
+//        for (; i <= mid; i++, k++)//剩余表元素插入 tmp
+//        {
+//            tmp[k] = arr[i];
+//        }
+//        for (; j <= high; j++, k++)//剩余表元素插入 tmp
+//        {
+//            tmp[k] = arr[j];
+//        }
+
+//        for (i = 0; i < len; i++)
+//        {
+//            arr[low + i] = tmp[i];
+//        }
+//        delete[] tmp;
+//    }
+//}
+//void p100_mergeSort(int arr[], int low, int high)//归并排序
+//{
+//    if (low < high)
+//    {
+//        int mid = (low + high) / 2;
+//        p100_mergeSort(arr, low, mid);
+//        p100_mergeSort(arr, mid + 1, high);
+//        p100_merge(arr, low, mid, high);//合并两个序列
+//    }
+//}
+//int p100_searchLeft(int arr[], int low, int high,  const int &key)//二分之左
+//{
+//    if (key <= arr[low])
+//    {
+//        return low;
+//    }
+//    else if (key == arr[high])
+//    {
+//        return high;
+//    }
+//    else if (key > arr[high])
+//    {
+//        return high + 1;
+//    }
+//    int mid;
+//    while (low < high)
+//    {
+//        mid = (low + high) / 2;
+//        if (key > arr[mid])
+//        {
+//            low = mid + 1;
+//        }
+//        else if (key < arr[mid])
+//        {
+//            high = mid;
+//        }
+//        else
+//        {
+//            return mid;
+//        }
+//    }
+//    return low;
+//}
+//int p100_searchRight(int arr[], int low, int high,  const int &key)//二分之右
+//{
+//    if (key < arr[low])
+//    {
+//        return low;
+//    }
+//    else if (key == arr[low])
+//    {
+//        return low + 1;
+//    }
+//    else if (key >= arr[high])
+//    {
+//        return high + 1;
+//    }
+//    int mid;
+//    while (low < high)
+//    {
+//        mid = (low + high) / 2;
+//        if (key > arr[mid])
+//        {
+//            low = mid + 1;
+//        }
+//        else if (key < arr[mid])
+//        {
+//            high = mid;
+//        }
+//        else
+//        {
+//            return mid + 1;
+//        }
+//    }
+//    return high;
+//}
+//void Chapter9_Part1::practice_100()
+//{
+//    setvbuf(stdin, new char[1 << 20], _IOFBF, 1 << 20);
+//    int i, size, n, left, right;
+//    SCANF("%d %d", &size, &n);
+
+//    for (i = 0; i < size; i++)
+//        SCANF("%d", p100_arr + i);
+
+//    p100_mergeSort(p100_arr, 0, size - 1);
+//    for (i = 0; i < n; i++)
+//    {
+//        SCANF("%d %d", &left, &right);
+//        PRINTF("%d\n", p100_searchRight(p100_arr, 0, size - 1, right) - p100_searchLeft(p100_arr, 0, size - 1, left));
+//    }
+//}
+
+/*
+计数排序 方式
+*/
+#if OJ_TEST == 1
+    #define p100_ARRSIZE 10000000
+#else
+    #define p100_ARRSIZE 100
+#endif
+int p100_arr[p100_ARRSIZE];
 void Chapter9_Part1::practice_100()
 {
-    int i;
-    int size, count, left, right;
-    int *arr = NULL;
-    SCANF("%d %d", &size, &count);
-    if (size > 0)
-        arr = new int[size];
+    setvbuf(stdin, new char[1 << 20], _IOFBF, 1 << 20);
+    int i, j, size, n, left, right;
+    SCANF("%d %d", &size, &n);
 
+    //统计每个元素出现的次数，再统计元素值到0之间的元素个数
     for (i = 0; i < size; i++)
     {
-        SCANF("%d", arr + i);
+        SCANF("%d", &j);
+        p100_arr[j]++;
     }
+    for (i = 1; i <= p100_ARRSIZE; i++)
+        p100_arr[i] += p100_arr[i - 1];
 
-    if (arr != NULL)
-//        mergeSort(arr, 0, size - 1);
-        Sorting::mergeSort<int>(arr, 0, size - 1);
-    for (i = 0; i < count; i++)
+    for (i = 0; i < n; i++)
     {
         SCANF("%d %d", &left, &right);
-        if (size <= 0)
-            printf("0\n");
-        else
-        {
-            //i1 = searchLeft(arr, 0, size - 1, left);
-            //i2 = searchRight(arr, 0, size - 1, right);
-            //PRINTF("%d\n", i2 - i1);
-            PRINTF("%d\n", searchRight(arr, 0, size - 1, right) - searchLeft(arr, 0, size - 1, left));
-        }
+        PRINTF("%d\n", p100_arr[right] - p100_arr[left - 1]);
     }
-    if (arr != NULL)
-        delete[] arr;
 }

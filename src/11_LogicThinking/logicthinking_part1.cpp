@@ -49,10 +49,13 @@ typedef struct
     int x, y;
 } p000_POINT;
 INT64 p000_reverseCount;
-//p000_POINT p000_tmp[4000001];
-//p000_POINT p000_arr[4000001];
-p000_POINT p000_tmp[100];//oj上使用上面的大小
+#if OJ_TEST == 1
+p000_POINT p000_tmp[4000001];
+p000_POINT p000_arr[4000001];
+#else
+p000_POINT p000_tmp[100];
 p000_POINT p000_arr[100];
+#endif
 void p000_xmerge(p000_POINT arr[], int low, int mid, int high)
 {
     if (low <= mid && mid < high)
