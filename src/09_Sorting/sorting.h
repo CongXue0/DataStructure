@@ -97,20 +97,42 @@ void Sorting::bubbleSort(T arr[], int low, int high)
                 arr[j + 1] = tmp;
                 exchange = true;
                 j++;
-                break;
-            }
-        }
-        for (; j < i; j++)
-        {
-            if (arr[j] > arr[j + 1])
-            {
-                tmp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = tmp;
             }
         }
     }
 }
+//template <typename T>
+//void Sorting::bubbleSort(T arr[], int low, int high)
+//{
+//    int i, j;
+//    bool exchange = true;
+//    T tmp;
+//    for (i = high; i > low && exchange; i--)
+//    {
+//        exchange = false;
+//        for (j = low; j < i; j++)
+//        {
+//            if (arr[j] > arr[j + 1])
+//            {
+//                tmp = arr[j];
+//                arr[j] = arr[j + 1];
+//                arr[j + 1] = tmp;
+//                exchange = true;
+//                j++;
+//                break;
+//            }
+//        }
+//        for (; j < i; j++)
+//        {
+//            if (arr[j] > arr[j + 1])
+//            {
+//                tmp = arr[j];
+//                arr[j] = arr[j + 1];
+//                arr[j + 1] = tmp;
+//            }
+//        }
+//    }
+//}
 
 /*
 直接插入排序：

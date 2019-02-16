@@ -10,6 +10,8 @@ public:
 
     static void practice_000();
     static void practice_050();
+    static void practice_051();
+    static void practice_052();
 
 
 
