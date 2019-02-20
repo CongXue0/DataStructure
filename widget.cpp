@@ -12,6 +12,7 @@
 #include "src/utils/virtualio.h"
 #include "src/03_String/chapter3_part1.h"
 #include "src/11_LogicThinking/logicthinking_part1.h"
+#include "src/12_ClassicAlgorithm/classicalgorithm_part1.h"
 
 void Widget::loadQuestion()
 {
@@ -71,6 +72,9 @@ void Widget::loadQuestion()
     m_bank.addQuestion(10, Question("2的指数判断", LogicThinking_Part1::practice_050, 2, "无"));
     m_bank.addQuestion(10, Question("罗马数字转整数", LogicThinking_Part1::practice_051, 2, "leetcode"));
     m_bank.addQuestion(10, Question("整数转罗马数字", LogicThinking_Part1::practice_052, 2, "leetcode"));
+
+    m_bank.addQuestion(11, Question("最长公共子序列", ClassicAlgorithm_Part1::practice_000, 3, "邓俊辉"));
+    m_bank.addQuestion(11, Question("最长公共子串", ClassicAlgorithm_Part1::practice_001, 3, "无"));
 }
 
 Widget::Widget(QWidget *parent) :
