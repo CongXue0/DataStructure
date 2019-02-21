@@ -1,6 +1,7 @@
 #include "logicthinking_part1.h"
 #include "src/utils/virtualio.h"
 #include "src/utils/tool.h"
+#include "src/02_StackAndQueue/seqstack.h"
 
 /*
 灯塔(LightHouse)：
@@ -329,4 +330,42 @@ char *p052_intToRomain(int num)
 void LogicThinking_Part1::practice_052()
 {
     DEBUG<<p052_intToRomain(1994);
+}
+
+/*
+给定一个数组，找出这个数组中每一个数右边的第一个比它大的数，如果不存在填入-1
+思路：
+一个数arr[i]如果右边第一个数arr[i + 1]大于arr[i]，retArr[i]存的一定是arr[i + 1]，
+    利用一个栈存连续递减的arr[i]~arr[i + k]，直到arr[i + k + 1] > arr[i + k]，从栈顶往下从栈中消除值，
+    最后剩余的位置填入-1
+*/
+void p053_buildArr(int arr[], int len, int retArr[])
+{
+    int i = 0;
+    SeqStack<int> stack;
+    while (i < len)
+    {
+        if (stack.getSize() == 0 || arr[stack.top()] >= arr[i])//栈为空，或者小于上一个值，入栈
+        {
+            stack.push(i++);
+        }
+        else
+        {
+            while (stack.getSize() > 0 && arr[i] > arr[stack.top()])//遇到第一个大于左边的数，从栈中连续消除，直到栈为空或者栈顶值大于当前值
+            {
+                retArr[stack.pop()] = arr[i];
+            }
+        }
+    }
+    while (stack.getSize() > 0)//剩余位置填-1
+    {
+        retArr[stack.pop()] = -1;
+    }
+}
+void LogicThinking_Part1::practice_053()
+{
+    int arr1[7] = {10, 50, 30, 20, 12, 40, 90};//50 90 40 40 40 90 -1
+    int arr2[7];
+    p053_buildArr(arr1, 7, arr2);
+    DEBUG<<Tool::printArr<int>(arr2, 0, 6);
 }
