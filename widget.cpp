@@ -31,6 +31,7 @@ void Widget::loadQuestion()
     m_bank.addQuestion(1, Question("就近匹配", Chapter2_Part1::practice_002, 2, "邓俊辉"));
     m_bank.addQuestion(1, Question("栈混洗", Chapter2_Part1::practice_003, 2, "邓俊辉"));
     m_bank.addQuestion(1, Question("表达式求值", Chapter2_Part1::practice_004, 3, "扫地僧"));
+    m_bank.addQuestion(1, Question("列车调度(Train)", Chapter2_Part1::practice_050, 3, "邓俊辉"));
 
     m_bank.addQuestion(2, Question("串demo1", Chapter3_Part1::practice_000, 2, "大话"));
     m_bank.addQuestion(2, Question("串demo2", Chapter3_Part1::practice_001, 2, "大话"));

@@ -13,6 +13,7 @@ public:
     static void practice_002();
     static void practice_003();
     static void practice_004();
+    static void practice_050();
 };
 
 #endif // CHAPTER2_PART1_H

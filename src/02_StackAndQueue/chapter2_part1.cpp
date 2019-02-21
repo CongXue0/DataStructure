@@ -4,6 +4,7 @@
 #include "src/02_StackAndQueue/seqqueue.h"
 #include "src/02_StackAndQueue/linkqueue.h"
 #include "src/utils/tool.h"
+#include "src/utils/virtualio.h"
 
 /*
 栈与队列demo
@@ -129,7 +130,7 @@ B = [ ak1, ak2, ..., akn >
 则该序列称作原输入序列的一个栈混洗（stack permutation）。
 判断栈B是否石栈A的栈混洗
 */
-bool isStackShuffle(int arrA[], int arrB[], int len)
+bool isStackShuffle(int arrA[], int arrB[], int len)//判断栈B是否石栈A的栈混洗
 {
     if (len <= 0)
         return false;
@@ -154,6 +155,7 @@ bool isStackShuffle(int arrA[], int arrB[], int len)
             pb++;
         }
     }
+    delete[] tmpArr;
     return (pt == -1);
 }
 void Chapter2_Part1::practice_003()
@@ -324,4 +326,106 @@ void Chapter2_Part1::practice_004()
     DEBUG<<"expression2:"<<expression2;
     DEBUG<<"expression2 tran:"<<buffer;
     DEBUG<<"结果为: "<<suffixExpression_calc(buffer);
+}
+
+/*
+列车调度(Train)
+描述
+某列车调度站的铁道联接结构如Figure 1所示。
+其中，A为入口，B为出口，S为中转盲端。所有铁道均为单轨单向式：列车行驶的方向只能是从A到S，再从S到B；另外，不允许超车。因为车厢可在S中驻留，所以它们从B端驶出的次序，可能与从A端驶入的次序不同。不过S的容量有限，同时驻留的车厢不得超过m节。
+设某列车由编号依次为{1, 2, ..., n}的n节车厢组成。调度员希望知道，按照以上交通规则，这些车厢能否以{a1, a2, ..., an}的次序，重新排列后从B端驶出。如果可行，应该以怎样的次序操作?
+
+输入
+共两行。
+第一行为两个整数n，m。
+第二行为以空格分隔的n个整数，保证为{1, 2, ..., n}的一个排列，表示待判断可行性的驶出序列{a1，a2，...，an}。
+
+输出
+若驶出序列可行，则输出操作序列，其中push表示车厢从A进入S，pop表示车厢从S进入B，每个操作占一行。
+若不可行，则输出No。
+
+样例
+Example 1
+Input:
+5 2
+1 2 3 5 4
+Output:
+push
+pop
+push
+pop
+push
+pop
+push
+push
+pop
+pop
+
+Example 2
+Input:
+5 5
+3 1 2 4 5
+Output:
+No
+
+限制
+1 ≤ n ≤ 1600000
+0 ≤ m ≤ 1600000
+时间：2 sec
+空间：256 MB
+*/
+#if OJ_TEST == 1
+    #define p050_ARRSIZE 1600000
+#else
+    #define p050_ARRSIZE 100
+#endif
+int p050_tmpStack[p050_ARRSIZE];
+int p050_stack[p050_ARRSIZE];
+char p050_output[p050_ARRSIZE * 5];
+void Chapter2_Part1::practice_050()
+{
+    setvbuf(stdin, new char[1 << 20], _IOFBF, 1 << 20);
+    int i, j = 0, m = -1, k = 0;//i 初始栈的指针, j 结果栈的指针, m 辅助栈的指针, k 输出结果的长度
+    int stackSize, tmpStackSize;
+    SCANF("%d %d", &stackSize, &tmpStackSize);
+    for (i = 0; i < stackSize; i++)
+        SCANF("%d", &p050_stack[i]);
+    if (tmpStackSize == 0)
+        goto p050_EXIT;
+
+    i = 1;
+    while (i <= stackSize)
+    {
+        while (i <= stackSize)//先入辅助栈
+        {
+            if (i == p050_stack[j])
+            {
+                if (m + 2 > tmpStackSize)
+                    goto p050_EXIT;
+                p050_output[k] = 'p', p050_output[k + 1] = 'u', p050_output[k + 2] = 's', p050_output[k + 3] = 'h', p050_output[k + 4] = '\n';
+                k += 5;
+                p050_output[k] = 'p', p050_output[k + 1] = 'o', p050_output[k + 2] = 'p', p050_output[k + 3] = '\n';
+                k += 4;
+                i++, j++;
+                break;
+            }
+            if (m + 2 > tmpStackSize)
+                goto p050_EXIT;
+            p050_output[k] = 'p', p050_output[k + 1] = 'u', p050_output[k + 2] = 's', p050_output[k + 3] = 'h', p050_output[k + 4] = '\n';
+            k += 5;
+            p050_tmpStack[++m] = i++;
+        }
+        while (m > -1 && p050_tmpStack[m] == p050_stack[j])//辅助栈元素入结果栈
+        {
+            p050_output[k] = 'p', p050_output[k + 1] = 'o', p050_output[k + 2] = 'p', p050_output[k + 3] = '\n';
+            k += 4;
+            m--, j++;
+        }
+    }
+p050_EXIT:
+    p050_output[k] = '\0';
+    if (m == -1 && k > 0)
+        PRINTF("%s", p050_output);
+    else
+        PRINTF("No\n");
 }
